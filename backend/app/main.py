@@ -1,5 +1,13 @@
+import os
+import sys
 import logging
 from contextlib import asynccontextmanager
+
+# Ensure project root is in sys.path so direct execution (python backend/app/main.py) works
+ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
+if ROOT_DIR not in sys.path:
+    sys.path.insert(0, ROOT_DIR)
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -71,3 +79,7 @@ def root():
         "scope": "Karnataka State Board SSLC Class 10",
         "docs_url": "/docs"
     }
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("backend.app.main:app", host="127.0.0.1", port=8000, reload=True)
