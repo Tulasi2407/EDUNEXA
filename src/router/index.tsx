@@ -15,6 +15,8 @@ import { Attendance } from '../pages/student/Attendance';
 import { Assignments } from '../pages/student/Assignments';
 import { Achievements } from '../pages/student/Achievements';
 import { StudentProfile } from '../pages/student/Profile';
+import { LearningPace } from '../pages/student/LearningPace';
+import { PracticeGenerator } from '../pages/student/PracticeGenerator';
 
 // Teacher Pages
 import { TeacherDashboard } from '../pages/teacher/Dashboard';
@@ -55,6 +57,8 @@ export const AppRoutes: React.FC = () => {
         <Route path="planner" element={<StudyPlanner />} />
         <Route path="tutor" element={<AITutor />} />
         <Route path="quiz" element={<Quiz />} />
+        <Route path="practice" element={<PracticeGenerator />} />
+        <Route path="pace" element={<LearningPace />} />
         <Route path="results" element={<Results />} />
         <Route path="attendance" element={<Attendance />} />
         <Route path="assignments" element={<Assignments />} />

@@ -24,7 +24,9 @@ import {
   ChevronRight,
   LogOut,
   FolderTree,
-  UserCheck
+  UserCheck,
+  Zap,
+  Sliders
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -53,6 +55,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onCloseMobile }) => {
           { to: '/student/planner', label: 'Study Planner', icon: CalendarDays },
           { to: '/student/tutor', label: 'Nexa AI Tutor', icon: Bot, highlight: true },
           { to: '/student/quiz', label: 'Quizzes & Tests', icon: GraduationCap },
+          { to: '/student/practice', label: 'Practice Drills', icon: Zap },
+          { to: '/student/pace', label: 'Learning Pace', icon: Sliders },
           { to: '/student/results', label: 'My Results', icon: BarChart3 },
           { to: '/student/attendance', label: 'Attendance', icon: CalendarCheck },
           { to: '/student/assignments', label: 'Assignments', icon: ClipboardList },

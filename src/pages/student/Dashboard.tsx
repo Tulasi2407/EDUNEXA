@@ -63,20 +63,32 @@ export const StudentDashboard: React.FC = () => {
           </p>
         </div>
 
-        <div className="flex items-center gap-3 z-10">
+        <div className="flex flex-wrap items-center gap-2.5 z-10">
           <button
             onClick={() => navigate('/student/gap-finder')}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#7657F6] hover:bg-[#6442E8] text-xs font-bold text-white shadow-glow-primary transition-all hover:scale-105"
+            className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#7657F6] hover:bg-[#6442E8] text-xs font-bold text-white shadow-glow-primary transition-all hover:scale-105"
           >
-            <Sparkles className="w-4 h-4 text-[#FFC857]" />
-            <span>AI Learning Gap Finder</span>
+            <Sparkles className="w-3.5 h-3.5 text-[#FFC857]" />
+            <span>AI Gap Finder</span>
+          </button>
+          <button
+            onClick={() => navigate('/student/practice')}
+            className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#EF4444]/20 hover:bg-[#EF4444]/30 border border-[#EF4444]/40 text-[#EF4444] text-xs font-bold transition-colors"
+          >
+            <span>🎯 Practice Drills</span>
+          </button>
+          <button
+            onClick={() => navigate('/student/pace')}
+            className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold text-white transition-colors"
+          >
+            <span>⚙️ Learning Pace</span>
           </button>
           <button
             onClick={() => navigate('/student/tutor')}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold text-white transition-colors"
+            className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold text-white transition-colors"
           >
-            <Bot className="w-4 h-4 text-[#A78BFA]" />
-            <span>Open Nexa AI</span>
+            <Bot className="w-3.5 h-3.5 text-[#A78BFA]" />
+            <span>Nexa AI</span>
           </button>
         </div>
       </div>

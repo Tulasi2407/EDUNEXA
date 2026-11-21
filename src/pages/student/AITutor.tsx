@@ -237,6 +237,51 @@ How would you like to explore this today? Feel free to ask any question or try o
         <div ref={messagesEndRef} />
       </div>
 
+      {/* TEQORA Objective 3: Explain It Differently bar */}
+      <div className="px-4 py-2 border-t border-white/5 bg-[#171F3A]/80 flex flex-wrap items-center justify-between gap-2">
+        <span className="text-[11px] font-bold text-[#FFC857] flex items-center gap-1.5 shrink-0">
+          <Sparkles className="w-3.5 h-3.5 text-[#FFC857]" />
+          <span>Explain It Differently:</span>
+        </span>
+        <div className="flex flex-wrap items-center gap-1.5">
+          <button
+            type="button"
+            onClick={() => handleSendMessage(`Can you explain that again using very simple language suitable for a beginner?`)}
+            className="text-[10px] font-semibold px-2.5 py-1 rounded-lg bg-[#111831] hover:bg-[#7657F6]/20 border border-white/5 text-slate-300 hover:text-white transition-colors"
+          >
+            🗣️ Simple Language
+          </button>
+          <button
+            type="button"
+            onClick={() => handleSendMessage(`Please explain this concept using a concrete, real-life everyday example.`)}
+            className="text-[10px] font-semibold px-2.5 py-1 rounded-lg bg-[#111831] hover:bg-[#7657F6]/20 border border-white/5 text-slate-300 hover:text-white transition-colors"
+          >
+            🌍 Real-Life Example
+          </button>
+          <button
+            type="button"
+            onClick={() => handleSendMessage(`Break down this concept step-by-step with clearly numbered milestones.`)}
+            className="text-[10px] font-semibold px-2.5 py-1 rounded-lg bg-[#111831] hover:bg-[#7657F6]/20 border border-white/5 text-slate-300 hover:text-white transition-colors"
+          >
+            🔢 Step-by-Step Method
+          </button>
+          <button
+            type="button"
+            onClick={() => handleSendMessage(`Give me an intuitive real-world analogy to help me picture this concept.`)}
+            className="text-[10px] font-semibold px-2.5 py-1 rounded-lg bg-[#111831] hover:bg-[#7657F6]/20 border border-white/5 text-slate-300 hover:text-white transition-colors"
+          >
+            💡 An Analogy
+          </button>
+          <button
+            type="button"
+            onClick={() => handleSendMessage(`Give me a 60-second high-yield bulleted summary of this concept.`)}
+            className="text-[10px] font-semibold px-2.5 py-1 rounded-lg bg-[#111831] hover:bg-[#7657F6]/20 border border-white/5 text-slate-300 hover:text-white transition-colors"
+          >
+            ⚡ Short Summary
+          </button>
+        </div>
+      </div>
+
       {/* Suggested Chips */}
       <div className="px-4 py-2 border-t border-white/5 bg-[#111831]/50 overflow-x-auto flex items-center gap-2">
         <span className="text-[10px] uppercase font-bold text-slate-400 shrink-0">Try Asking:</span>

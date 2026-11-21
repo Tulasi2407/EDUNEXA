@@ -16,9 +16,12 @@ import {
   Bot,
   Flame,
   Award,
-  ChevronRight
+  ChevronRight,
+  Activity,
+  Layers
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { ConceptDependencyMap } from '../../components/common/ConceptDependencyMap';
 
 export const LearningGapFinder: React.FC = () => {
   const { learningGaps, addLearningGap, resolveLearningGap, addXP } = useEduData();
@@ -411,6 +414,79 @@ export const LearningGapFinder: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* TEQORA Objective 2: Concept Dependency Map */}
+      <ConceptDependencyMap />
+
+      {/* TEQORA Objective 1: Strong vs Weak Learning Areas & Repeated Mistake Detector */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="p-6 rounded-2xl bg-[#171F3A] border border-[#10B981]/30 space-y-4">
+          <div className="flex items-center justify-between">
+            <h3 className="text-sm font-bold text-white flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-[#10B981]" />
+              <span>Verified Strong Learning Areas (Mastery &gt; 80%)</span>
+            </h3>
+            <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#10B981]/20 text-[#10B981]">
+              4 Topics
+            </span>
+          </div>
+          <div className="space-y-2 text-xs">
+            <div className="p-3 rounded-xl bg-[#111831] border border-white/5 flex items-center justify-between">
+              <div>
+                <p className="font-bold text-white">Wave Optics & Reflection</p>
+                <p className="text-[10px] text-slate-400">Physics • Ray diagrams & Laws of reflection</p>
+              </div>
+              <span className="font-bold text-[#10B981]">92% Mastery</span>
+            </div>
+            <div className="p-3 rounded-xl bg-[#111831] border border-white/5 flex items-center justify-between">
+              <div>
+                <p className="font-bold text-white">Triangles & Similar Figures</p>
+                <p className="text-[10px] text-slate-400">Geometry • Proportionality theorems</p>
+              </div>
+              <span className="font-bold text-[#10B981]">88% Mastery</span>
+            </div>
+            <div className="p-3 rounded-xl bg-[#111831] border border-white/5 flex items-center justify-between">
+              <div>
+                <p className="font-bold text-white">Cellular Aerobic Pathways</p>
+                <p className="text-[10px] text-slate-400">Biology • Krebs cycle & ATP formation</p>
+              </div>
+              <span className="font-bold text-[#10B981]">85% Mastery</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="p-6 rounded-2xl bg-[#171F3A] border border-[#EF4444]/30 space-y-4">
+          <div className="flex items-center justify-between">
+            <h3 className="text-sm font-bold text-white flex items-center gap-2">
+              <AlertTriangle className="w-4 h-4 text-[#EF4444]" />
+              <span>Repeated Mistake Patterns (Requires Revision)</span>
+            </h3>
+            <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#EF4444]/20 text-[#EF4444]">
+              High Priority
+            </span>
+          </div>
+          <div className="space-y-2 text-xs">
+            <div className="p-3 rounded-xl bg-[#111831] border border-white/5 space-y-1">
+              <div className="flex items-center justify-between">
+                <span className="font-bold text-white">Pattern: Sign Transposition Errors</span>
+                <span className="text-[10px] text-[#EF4444] font-bold">3 Repeated Occurrences</span>
+              </div>
+              <p className="text-[11px] text-slate-300">
+                Dropping negative multipliers when isolating variables (e.g., writing x = 21 instead of x = 7 from -3x = -21).
+              </p>
+            </div>
+            <div className="p-3 rounded-xl bg-[#111831] border border-white/5 space-y-1">
+              <div className="flex items-center justify-between">
+                <span className="font-bold text-white">Pattern: Mirror Sign Convention Confusion</span>
+                <span className="text-[10px] text-[#F59E0B] font-bold">2 Repeated Occurrences</span>
+              </div>
+              <p className="text-[11px] text-slate-300">
+                Assuming concave mirror focal lengths are positive rather than adhering to the left-of-pole negative convention.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
 
       {/* STEP 5: Interactive Learning Gap Dashboard Heatmap */}
       <div className="p-6 rounded-2xl bg-[#171F3A] border border-white/5 space-y-4">

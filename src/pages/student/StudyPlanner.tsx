@@ -12,7 +12,8 @@ import {
   ChevronRight,
   Plus,
   Play,
-  RotateCcw
+  RotateCcw,
+  Target
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
@@ -23,12 +24,21 @@ export const StudyPlanner: React.FC = () => {
   const [dailyHours, setDailyHours] = useState<number>(3);
   const [examDate, setExamDate] = useState<string>('2026-12-05');
   const [selectedDayFilter, setSelectedDayFilter] = useState<string>('All');
+  const [schoolHours, setSchoolHours] = useState<string>('08:00 AM - 03:30 PM (School Session)');
+  const [sleepHours, setSleepHours] = useState<string>('10:30 PM - 06:30 AM (Sleep Window)');
   const [isGenerating, setIsGenerating] = useState(false);
 
   const daysOfWeek = ['All', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
   const weakSubjects = Array.from(new Set(learningGaps.filter(g => g.status !== 'RESOLVED').map(g => g.subject)));
   const strongSubjects = ['Computer Science', 'English Literature'];
+
+  // Today's Mission Tasks (Monday by default for demo)
+  const todayTasks = studyPlan.tasks.filter(t => t.day === 'Monday');
+  const todayCompleted = todayTasks.filter(t => t.completed).length;
+  const todayTotal = todayTasks.length;
+  const todayPercent = todayTotal > 0 ? Math.round((todayCompleted / todayTotal) * 100) : 0;
+  const todayDuration = todayTasks.reduce((acc, t) => acc + t.durationMinutes, 0);
 
   const handleGeneratePlan = async () => {
     setIsGenerating(true);
@@ -97,20 +107,93 @@ export const StudyPlanner: React.FC = () => {
         </div>
       </div>
 
+      {/* TEQORA Objective 7: Today's Learning Mission */}
+      <div className="p-6 rounded-2xl bg-gradient-to-r from-[#171F3A] to-[#111831] border border-[#FFC857]/40 shadow-xl space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-[#FFC857]/20 border border-[#FFC857]/40 flex items-center justify-center text-[#FFC857]">
+              <Target className="w-5 h-5" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#FFC857]/20 text-[#FFC857]">
+                  Today's Learning Mission
+                </span>
+                <span className="text-xs text-slate-400">Total Duration: {Math.round(todayDuration / 60 * 10) / 10} hours</span>
+              </div>
+              <h3 className="text-base font-bold text-white mt-0.5">
+                {todayCompleted} of {todayTotal} Tasks Finished ({todayPercent}% Complete)
+              </h3>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handleGeneratePlan}
+              disabled={isGenerating}
+              className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#FFC857] hover:bg-amber-400 text-xs font-bold text-[#0B1020] shadow-glow-accent transition-all"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+              <span>Regenerate My Schedule</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Progress bar */}
+        <div className="w-full bg-[#0B1020] h-2 rounded-full overflow-hidden">
+          <div
+            className="bg-gradient-to-r from-[#7657F6] to-[#FFC857] h-full transition-all duration-300"
+            style={{ width: `${todayPercent}%` }}
+          />
+        </div>
+
+        {/* Quick Task Pills for Today */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+          {todayTasks.map(t => (
+            <div
+              key={t.id}
+              onClick={() => toggleStudyTask(t.id)}
+              className={`p-3 rounded-xl border flex items-center justify-between gap-3 cursor-pointer transition-all ${
+                t.completed
+                  ? 'bg-[#10B981]/10 border-[#10B981]/30 text-slate-300'
+                  : 'bg-[#171F3A] border-white/5 hover:border-[#7657F6]/40 text-white'
+              }`}
+            >
+              <div className="flex items-center gap-2.5 min-w-0">
+                <div className={`w-5 h-5 rounded-md flex items-center justify-center border ${
+                  t.completed ? 'bg-[#10B981] border-[#10B981] text-white' : 'border-white/20'
+                }`}>
+                  {t.completed && <CheckCircle2 className="w-3.5 h-3.5" />}
+                </div>
+                <div className="min-w-0">
+                  <p className="text-xs font-semibold truncate">{t.topic}</p>
+                  <p className="text-[10px] text-slate-400">{t.timeSlot} • {t.durationMinutes}m</p>
+                </div>
+              </div>
+              <span className={`text-[9px] font-bold px-2 py-0.5 rounded ${
+                t.type === 'PREREQUISITE_FIX' ? 'bg-[#EF4444]/20 text-[#EF4444]' : 'bg-[#7657F6]/20 text-[#A78BFA]'
+              }`}>
+                {t.type.replace('_', ' ')}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* AI Timetable Generator Controls */}
       <div className="p-6 rounded-2xl bg-[#171F3A] border border-white/5 space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="text-base font-bold text-white flex items-center gap-2">
             <Sparkles className="w-4 h-4 text-[#FFC857]" />
-            Regenerate AI Timetable
+            Free-Time Schedule Calibration
           </h2>
-          <span className="text-xs text-slate-400">Prioritizes active learning gaps</span>
+          <span className="text-xs text-slate-400">Strictly respects unavailable hours</span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="space-y-1.5">
             <label className="text-xs font-medium text-slate-300">
-              Available Daily Hours: <strong className="text-[#FFC857]">{dailyHours} hours/day</strong>
+              Available Free Time: <strong className="text-[#FFC857]">{dailyHours} hours/day</strong>
             </label>
             <input
               type="range"
@@ -129,24 +212,23 @@ export const StudyPlanner: React.FC = () => {
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-xs font-medium text-slate-300">Next Major Exam Date</label>
+            <label className="text-xs font-medium text-slate-300">School / College Timings (Protected)</label>
+            <input
+              type="text"
+              value={schoolHours}
+              onChange={e => setSchoolHours(e.target.value)}
+              className="w-full px-3.5 py-2 rounded-xl bg-[#111831] border border-white/10 text-xs text-slate-300"
+            />
+          </div>
+
+          <div className="space-y-1.5">
+            <label className="text-xs font-medium text-slate-300">Target Exam Date</label>
             <input
               type="date"
               value={examDate}
               onChange={(e) => setExamDate(e.target.value)}
               className="w-full px-3.5 py-2 rounded-xl bg-[#111831] border border-white/10 text-xs text-white focus:outline-none focus:border-[#7657F6]"
             />
-          </div>
-
-          <div className="flex items-end">
-            <button
-              onClick={handleGeneratePlan}
-              disabled={isGenerating}
-              className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-[#7657F6] hover:bg-[#6442E8] disabled:opacity-50 text-xs font-bold text-white shadow-glow-primary transition-all"
-            >
-              <Sparkles className="w-4 h-4" />
-              <span>{isGenerating ? 'AI Generating Schedule...' : 'Generate New Timetable'}</span>
-            </button>
           </div>
         </div>
       </div>

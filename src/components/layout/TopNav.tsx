@@ -12,9 +12,13 @@ import {
   Search,
   ExternalLink,
   Flame,
-  Check
+  Check,
+  ShieldCheck,
+  Compass
 } from 'lucide-react';
 import { DemoTourModal } from '../common/DemoTourModal';
+import { OnboardingWizardModal } from '../common/OnboardingWizardModal';
+import { PrivacyModal } from '../common/PrivacyModal';
 
 interface TopNavProps {
   onToggleSidebar: () => void;
@@ -33,6 +37,8 @@ export const TopNav: React.FC<TopNavProps> = ({
   const [showLangMenu, setShowLangMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showTour, setShowTour] = useState(false);
+  const [showOnboarding, setShowOnboarding] = useState(false);
+  const [showPrivacy, setShowPrivacy] = useState(false);
 
   const languages = [
     { code: 'en', label: 'English' },
@@ -71,6 +77,24 @@ export const TopNav: React.FC<TopNavProps> = ({
 
         {/* Right action group */}
         <div className="flex items-center gap-2.5">
+          {/* Onboarding Wizard (TEQORA Objective 9) */}
+          <button
+            onClick={() => setShowOnboarding(true)}
+            className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white text-xs font-semibold transition-colors"
+          >
+            <Compass className="w-3.5 h-3.5 text-[#3B82F6]" />
+            <span>Onboarding</span>
+          </button>
+
+          {/* Privacy & Responsible AI (TEQORA Objective 10) */}
+          <button
+            onClick={() => setShowPrivacy(true)}
+            className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white text-xs font-semibold transition-colors"
+          >
+            <ShieldCheck className="w-3.5 h-3.5 text-[#10B981]" />
+            <span>AI Privacy</span>
+          </button>
+
           {/* Judge Tour Button */}
           <button
             onClick={() => setShowTour(true)}
@@ -203,6 +227,12 @@ export const TopNav: React.FC<TopNavProps> = ({
 
       {/* Interactive Judge Tour Modal */}
       <DemoTourModal isOpen={showTour} onClose={() => setShowTour(false)} />
+
+      {/* TEQORA Objective 9: 7-Step Onboarding Wizard */}
+      <OnboardingWizardModal isOpen={showOnboarding} onClose={() => setShowOnboarding(false)} />
+
+      {/* TEQORA Objective 10: Responsible AI & Privacy Modal */}
+      <PrivacyModal isOpen={showPrivacy} onClose={() => setShowPrivacy(false)} />
     </>
   );
 };

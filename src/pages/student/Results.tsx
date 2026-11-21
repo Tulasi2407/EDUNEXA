@@ -6,7 +6,13 @@ import {
   Award,
   CheckCircle2,
   Calendar,
-  FileText
+  FileText,
+  Download,
+  Sparkles,
+  Milestone,
+  ArrowRight,
+  BrainCircuit,
+  Target
 } from 'lucide-react';
 import {
   ResponsiveContainer,
@@ -21,7 +27,7 @@ import {
 } from 'recharts';
 
 export const Results: React.FC = () => {
-  const { marks, subjects } = useEduData();
+  const { marks, subjects, addToast } = useEduData();
 
   // Filter Alex's marks
   const alexMarks = marks.filter(m => m.studentId === 'usr_student_01');
@@ -32,6 +38,10 @@ export const Results: React.FC = () => {
     { exam: 'Unit 2', math: 78, physics: 85, chemistry: 92 },
     { exam: 'Diag Quiz', math: 85, physics: 88, chemistry: 94 },
   ];
+
+  const handleExportReport = (type: 'Weekly' | 'Monthly') => {
+    addToast(`Exported Alex Johnson's ${type} Academic Growth & Gap Audit Report (PDF)`, 'success');
+  };
 
   return (
     <div className="space-y-8">
@@ -48,6 +58,72 @@ export const Results: React.FC = () => {
           <p className="text-xs text-slate-300 mt-1">
             Track multi-exam trajectory, subject mastery trends, and verified teacher feedback.
           </p>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => handleExportReport('Weekly')}
+            className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold text-white transition-colors"
+          >
+            <Download className="w-3.5 h-3.5 text-[#A78BFA]" />
+            <span>Weekly Report (PDF)</span>
+          </button>
+          <button
+            onClick={() => handleExportReport('Monthly')}
+            className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#7657F6] hover:bg-[#6442E8] text-xs font-bold text-white shadow-glow-primary transition-all"
+          >
+            <Download className="w-3.5 h-3.5" />
+            <span>Monthly Growth Audit</span>
+          </button>
+        </div>
+      </div>
+
+      {/* TEQORA Objective 8: My Learning Journey Timeline */}
+      <div className="p-6 rounded-2xl bg-[#171F3A] border border-[#7657F6]/30 space-y-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#FFC857]/20 text-[#FFC857]">
+                TEQORA Objective 8
+              </span>
+              <h2 className="text-base font-bold text-white">My Learning Journey</h2>
+            </div>
+            <p className="text-xs text-slate-400 mt-0.5">Where you started, skills conquered, and next milestone targets</p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="p-4 rounded-xl bg-[#111831] border border-white/5 space-y-2">
+            <span className="text-[10px] font-extrabold text-slate-400 uppercase">1. Where You Started</span>
+            <p className="text-xs font-bold text-white">Grade 9 Diagnostic Baseline</p>
+            <p className="text-[11px] text-slate-400">
+              Initial diagnostic score: 68% average with conceptual hesitation in Algebra.
+            </p>
+          </div>
+
+          <div className="p-4 rounded-xl bg-[#111831] border border-white/5 space-y-2">
+            <span className="text-[10px] font-extrabold text-[#10B981] uppercase">2. Improved Areas</span>
+            <p className="text-xs font-bold text-[#10B981]">+18.5% Net Growth</p>
+            <p className="text-[11px] text-slate-300">
+              Optics (+24%), Redox Reactions (+18%), and Triangle Proofs (+14%) fully mastered.
+            </p>
+          </div>
+
+          <div className="p-4 rounded-xl bg-[#111831] border border-white/5 space-y-2">
+            <span className="text-[10px] font-extrabold text-[#EF4444] uppercase">3. Remaining Needs</span>
+            <p className="text-xs font-bold text-[#EF4444]">Negative Sign Division</p>
+            <p className="text-[11px] text-slate-300">
+              Linear Equations Node 2 prerequisite remediation at 40% complete.
+            </p>
+          </div>
+
+          <div className="p-4 rounded-xl bg-[#111831] border border-[#7657F6]/40 space-y-2">
+            <span className="text-[10px] font-extrabold text-[#A78BFA] uppercase">4. What To Study Next</span>
+            <p className="text-xs font-bold text-white">Quadratic Trinomials</p>
+            <p className="text-[11px] text-slate-300">
+              Scheduled for Saturday 10:00 AM after final prerequisite check.
+            </p>
+          </div>
         </div>
       </div>
 
