@@ -54,6 +54,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onCloseMobile }) => {
           },
           { to: '/student/planner', label: 'Study Planner', icon: CalendarDays },
           { to: '/student/tutor', label: 'Nexa AI Tutor', icon: Bot, highlight: true },
+          { to: '/student/study-materials', label: 'Study Materials', icon: BookOpen },
           { to: '/student/quiz', label: 'Quizzes & Tests', icon: GraduationCap },
           { to: '/student/practice', label: 'Practice Drills', icon: Zap },
           { to: '/student/pace', label: 'Learning Pace', icon: Sliders },

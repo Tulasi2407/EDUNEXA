@@ -3,12 +3,15 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { AppLayout } from '../components/layout/AppLayout';
 import { Landing } from '../pages/Landing';
 import { Login } from '../pages/Login';
+import { Register } from '../pages/Register';
+import { Welcome } from '../pages/Welcome';
 
 // Student Pages
 import { StudentDashboard } from '../pages/student/Dashboard';
 import { LearningGapFinder } from '../pages/student/LearningGapFinder';
 import { StudyPlanner } from '../pages/student/StudyPlanner';
 import { AITutor } from '../pages/student/AITutor';
+import { StudyMaterials } from '../pages/student/StudyMaterials';
 import { Quiz } from '../pages/student/Quiz';
 import { Results } from '../pages/student/Results';
 import { Attendance } from '../pages/student/Attendance';
@@ -46,9 +49,11 @@ import { AdminSettings } from '../pages/admin/Settings';
 export const AppRoutes: React.FC = () => {
   return (
     <Routes>
-      {/* Public Pages */}
+      {/* Public & Onboarding Pages */}
       <Route path="/" element={<Landing />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/welcome" element={<Welcome />} />
 
       {/* Student Portal */}
       <Route path="/student" element={<AppLayout />}>
@@ -56,6 +61,7 @@ export const AppRoutes: React.FC = () => {
         <Route path="gap-finder" element={<LearningGapFinder />} />
         <Route path="planner" element={<StudyPlanner />} />
         <Route path="tutor" element={<AITutor />} />
+        <Route path="study-materials" element={<StudyMaterials />} />
         <Route path="quiz" element={<Quiz />} />
         <Route path="practice" element={<PracticeGenerator />} />
         <Route path="pace" element={<LearningPace />} />
