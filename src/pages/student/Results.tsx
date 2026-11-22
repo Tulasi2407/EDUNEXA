@@ -33,10 +33,10 @@ export const Results: React.FC = () => {
   const alexMarks = marks.filter(m => m.studentId === 'usr_student_01');
 
   const historyData = [
-    { exam: 'Unit 1', math: 68, physics: 78, chemistry: 85 },
-    { exam: 'Mid-Term', math: 74, physics: 82, chemistry: 88 },
-    { exam: 'Unit 2', math: 78, physics: 85, chemistry: 92 },
-    { exam: 'Diag Quiz', math: 85, physics: 88, chemistry: 94 },
+    { exam: 'Unit 1', math: 68, science: 78, social: 85 },
+    { exam: 'Mid-Term', math: 74, science: 82, social: 88 },
+    { exam: 'Unit 2', math: 78, science: 85, social: 92 },
+    { exam: 'Diag Quiz', math: 85, science: 88, social: 94 },
   ];
 
   const handleExportReport = (type: 'Weekly' | 'Monthly') => {
@@ -145,8 +145,8 @@ export const Results: React.FC = () => {
                 }}
               />
               <Line type="monotone" dataKey="math" name="Mathematics" stroke="#7657F6" strokeWidth={3} />
-              <Line type="monotone" dataKey="physics" name="Physics" stroke="#3B82F6" strokeWidth={3} />
-              <Line type="monotone" dataKey="chemistry" name="Chemistry" stroke="#10B981" strokeWidth={3} />
+              <Line type="monotone" dataKey="science" name="Science" stroke="#3B82F6" strokeWidth={3} />
+              <Line type="monotone" dataKey="social" name="Social Science" stroke="#10B981" strokeWidth={3} />
             </LineChart>
           </ResponsiveContainer>
         </div>

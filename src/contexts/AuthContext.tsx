@@ -1,13 +1,25 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { User, UserRole } from '../types';
 import { DEMO_USERS } from '../data/mockData';
+import { authApi, getStoredToken, setStoredToken, removeStoredToken } from '../lib/api';
+
+export const GUEST_USER: User = {
+  id: '',
+  name: 'Student',
+  email: '',
+  role: 'STUDENT',
+  avatar: '',
+  grade: 'Class 10',
+  section: 'Section A'
+};
 
 interface AuthContextType {
   user: User;
   role: UserRole;
+  isAuthenticated: boolean;
   switchRole: (role: UserRole) => void;
-  login: (email: string, role?: UserRole) => boolean;
-  register: (userData: Partial<User> & { password?: string; preferredLanguage?: string }) => boolean;
+  login: (email: string, password?: string, forcedRole?: UserRole) => Promise<boolean>;
+  register: (userData: Partial<User> & { password?: string; preferredLanguage?: string }) => Promise<boolean>;
   logout: () => void;
   isDemoMode: boolean;
 }
@@ -20,110 +32,191 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return (saved as UserRole) || 'STUDENT';
   });
 
-  const [user, setUser] = useState<User>(() => {
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
+    const token = localStorage.getItem('edunexa_token');
     const savedUser = localStorage.getItem('edunexa_active_user');
-    if (savedUser) {
-      try {
-        return JSON.parse(savedUser);
-      } catch (e) {
-        // fallback
-      }
-    }
-    const savedRole = (localStorage.getItem('edunexa_user_role') as UserRole) || 'STUDENT';
-    return DEMO_USERS[savedRole] || DEMO_USERS.STUDENT;
+    return !!token && !!savedUser;
   });
 
-  const [isDemoMode] = useState<boolean>(true);
+  const [user, setUser] = useState<User>(() => {
+    const savedUser = localStorage.getItem('edunexa_active_user');
+    const token = localStorage.getItem('edunexa_token');
+    if (savedUser && token) {
+      try {
+        const parsed = JSON.parse(savedUser);
+        if (parsed && parsed.email) {
+          return parsed;
+        }
+      } catch (e) {}
+    }
+    return GUEST_USER;
+  });
 
+  const DEMO_EMAILS = [
+    'alex.johnson@edunexa.ai',
+    'sarah.chen@edunexa.ai',
+    'robert.johnson@edunexa.ai',
+    'admin@edunexa.ai'
+  ];
+
+  const isDemoMode = !user?.email || DEMO_EMAILS.includes(user.email.toLowerCase().trim());
+
+  // Sync active user role
   useEffect(() => {
-    localStorage.setItem('edunexa_user_role', role);
+    if (role) {
+      localStorage.setItem('edunexa_user_role', role);
+    }
   }, [role]);
+
+  // Check token on mount and hydrate real user from MongoDB Atlas
+  useEffect(() => {
+    const token = getStoredToken();
+    if (token) {
+      authApi.getMe().then((res) => {
+        if (res && res.user) {
+          const u = res.user;
+          const mappedRole = (u.role as UserRole) || 'STUDENT';
+          setRole(mappedRole);
+          setIsAuthenticated(true);
+          const hydratedUser: User = {
+            id: u.id,
+            name: u.name,
+            email: u.email,
+            role: mappedRole,
+            avatar: u.avatar || '',
+            grade: u.grade || 'Class 10',
+            section: u.section || 'Section A',
+            phone: u.phone,
+            department: u.specialization
+          };
+          setUser(hydratedUser);
+          localStorage.setItem('edunexa_active_user', JSON.stringify(hydratedUser));
+        }
+      }).catch(() => {
+        // Token expired or invalid
+        removeStoredToken();
+        localStorage.removeItem('edunexa_active_user');
+        setIsAuthenticated(false);
+        setUser(GUEST_USER);
+      });
+    } else {
+      setIsAuthenticated(false);
+      setUser(GUEST_USER);
+    }
+  }, []);
 
   const switchRole = (newRole: UserRole) => {
     setRole(newRole);
     const demoUser = DEMO_USERS[newRole] || DEMO_USERS.STUDENT;
-    setUser(demoUser);
-    localStorage.setItem('edunexa_active_user', JSON.stringify(demoUser));
+    // Attempt real login on backend for evaluation demo account
+    authApi.login(demoUser.email, 'demo123', newRole).then((res) => {
+      if (res && res.token && res.user) {
+        setStoredToken(res.token);
+        setIsAuthenticated(true);
+        const mappedUser: User = {
+          id: res.user.id,
+          name: res.user.name,
+          email: res.user.email,
+          role: newRole,
+          avatar: res.user.avatar || demoUser.avatar,
+          grade: res.user.grade || 'Class 10',
+          section: res.user.section || 'Section A'
+        };
+        setUser(mappedUser);
+        localStorage.setItem('edunexa_active_user', JSON.stringify(mappedUser));
+      }
+    }).catch(() => {
+      setUser(demoUser);
+      setIsAuthenticated(true);
+      localStorage.setItem('edunexa_active_user', JSON.stringify(demoUser));
+    });
   };
 
-  const login = (email: string, forcedRole?: UserRole): boolean => {
-    if (forcedRole && DEMO_USERS[forcedRole]) {
-      setRole(forcedRole);
-      const u = DEMO_USERS[forcedRole];
-      setUser(u);
-      localStorage.setItem('edunexa_active_user', JSON.stringify(u));
-      return true;
+  const login = async (email: string, password: string = 'demo123', forcedRole?: UserRole): Promise<boolean> => {
+    try {
+      const res = await authApi.login(email.trim().toLowerCase(), password, forcedRole);
+      if (res && res.token && res.user) {
+        setStoredToken(res.token);
+        setIsAuthenticated(true);
+        const mappedRole = (res.user.role as UserRole) || forcedRole || 'STUDENT';
+        setRole(mappedRole);
+        const loggedUser: User = {
+          id: res.user.id,
+          name: res.user.name,
+          email: res.user.email,
+          role: mappedRole,
+          avatar: res.user.avatar || '',
+          grade: res.user.grade || 'Class 10',
+          section: res.user.section || 'Section A'
+        };
+        setUser(loggedUser);
+        localStorage.setItem('edunexa_active_user', JSON.stringify(loggedUser));
+        return true;
+      }
+      throw new Error('Authentication failed.');
+    } catch (err: any) {
+      // Check if it's a demo account offline
+      if (forcedRole && DEMO_USERS[forcedRole] && email.toLowerCase() === DEMO_USERS[forcedRole].email.toLowerCase()) {
+        setRole(forcedRole);
+        setIsAuthenticated(true);
+        const u = DEMO_USERS[forcedRole];
+        setUser(u);
+        localStorage.setItem('edunexa_active_user', JSON.stringify(u));
+        return true;
+      }
+      // Re-throw genuine error so Login screen can show "User not found" and link to Register!
+      throw err;
     }
-    
-    // Check if custom registered user exists in localStorage
-    const savedRegistered = localStorage.getItem('edunexa_custom_user');
-    if (savedRegistered) {
-      try {
-        const parsed = JSON.parse(savedRegistered);
-        if (parsed.email.toLowerCase() === email.toLowerCase()) {
-          setRole(parsed.role as UserRole);
-          setUser(parsed);
-          localStorage.setItem('edunexa_active_user', JSON.stringify(parsed));
-          return true;
-        }
-      } catch (e) {}
-    }
-
-    // Check demo accounts
-    const foundRole = (Object.keys(DEMO_USERS) as UserRole[]).find(
-      r => DEMO_USERS[r].email.toLowerCase() === email.toLowerCase()
-    );
-    if (foundRole) {
-      setRole(foundRole);
-      const u = DEMO_USERS[foundRole];
-      setUser(u);
-      localStorage.setItem('edunexa_active_user', JSON.stringify(u));
-      return true;
-    }
-
-    // Default fallback
-    setRole('STUDENT');
-    const defaultUser = DEMO_USERS.STUDENT;
-    setUser(defaultUser);
-    localStorage.setItem('edunexa_active_user', JSON.stringify(defaultUser));
-    return true;
   };
 
-  const register = (userData: Partial<User> & { password?: string; preferredLanguage?: string }): boolean => {
+  const register = async (userData: Partial<User> & { password?: string; preferredLanguage?: string }): Promise<boolean> => {
     const newUserRole = (userData.role as UserRole) || 'STUDENT';
-    const newUser: User = {
-      id: userData.id || `user-${Date.now().toString().slice(-6)}`,
-      name: userData.name || 'SSLC Scholar',
-      email: userData.email || 'scholar@sslc.karnataka.gov.in',
-      role: newUserRole,
-      avatar: userData.avatar || (
-        newUserRole === 'STUDENT' ? 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80' :
-        newUserRole === 'TEACHER' ? 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=256&q=80' :
-        'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=256&q=80'
-      ),
-      grade: 'Class 10',
-      section: userData.section || 'Section A',
-      phone: userData.phone,
-      studentId: userData.studentId,
-      department: userData.department
-    };
+    const pwd = userData.password || 'demo123';
 
-    setRole(newUserRole);
-    setUser(newUser);
-    localStorage.setItem('edunexa_user_role', newUserRole);
-    localStorage.setItem('edunexa_active_user', JSON.stringify(newUser));
-    localStorage.setItem('edunexa_custom_user', JSON.stringify(newUser));
-    return true;
+    const res = await authApi.register({
+      name: userData.name || 'SSLC Scholar',
+      email: userData.email?.trim().toLowerCase() || 'scholar@sslc.karnataka.gov.in',
+      password: pwd,
+      role: newUserRole,
+      section: userData.section || 'Section A',
+      preferred_language: userData.preferredLanguage || 'English',
+      specialization: userData.department
+    });
+
+    if (res && res.token && res.user) {
+      setStoredToken(res.token);
+      setIsAuthenticated(true);
+      const createdUser: User = {
+        id: res.user.id,
+        name: res.user.name,
+        email: res.user.email,
+        role: newUserRole,
+        avatar: res.user.avatar || '',
+        grade: res.user.grade || 'Class 10',
+        section: res.user.section || 'Section A'
+      };
+      setRole(newUserRole);
+      setUser(createdUser);
+      localStorage.setItem('edunexa_active_user', JSON.stringify(createdUser));
+      return true;
+    }
+
+    throw new Error('Registration failed.');
   };
 
   const logout = () => {
-    setRole('STUDENT');
-    setUser(DEMO_USERS.STUDENT);
+    if (user && user.email) {
+      authApi.logout(user.email);
+    }
+    removeStoredToken();
     localStorage.removeItem('edunexa_active_user');
+    setIsAuthenticated(false);
+    setUser(GUEST_USER);
+    setRole('STUDENT');
   };
 
   return (
-    <AuthContext.Provider value={{ user, role, switchRole, login, register, logout, isDemoMode }}>
+    <AuthContext.Provider value={{ user, role, isAuthenticated, switchRole, login, register, logout, isDemoMode }}>
       {children}
     </AuthContext.Provider>
   );

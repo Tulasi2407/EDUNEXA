@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { EduNexaLogo } from '../components/common/EduNexaLogo';
 import { useAuth } from '../contexts/AuthContext';
 import { UserRole } from '../types';
 import {
@@ -53,20 +54,11 @@ export const Landing: React.FC = () => {
     <div className="min-h-screen bg-[#0B1020] text-slate-100 selection:bg-[#7657F6] selection:text-white">
       {/* Top Navbar */}
       <nav className="h-20 border-b border-white/5 bg-[#0B1020]/90 backdrop-blur-md sticky top-0 z-40 px-6 lg:px-16 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#7657F6] to-[#A78BFA] flex items-center justify-center shadow-glow-primary">
-            <Sparkles className="w-6 h-6 text-white" />
-          </div>
-          <div>
-            <div className="flex items-center gap-1.5">
-              <span className="font-extrabold text-xl tracking-tight text-white">EduNexa</span>
-              <span className="text-[10px] uppercase font-bold px-1.5 py-0.5 rounded bg-[#7657F6]/30 text-[#A78BFA] border border-[#7657F6]/40">
-                AI
-              </span>
-            </div>
-            <p className="text-[10px] text-slate-400 font-medium">Smart Learning Ecosystem</p>
-          </div>
-        </div>
+        <EduNexaLogo
+          size="md"
+          subtitle="Smart Learning Ecosystem"
+          onClick={() => navigate('/')}
+        />
 
         <div className="hidden md:flex items-center gap-8 text-xs font-semibold text-slate-300">
           <a href="#features" className="hover:text-white transition-colors">Features</a>
@@ -77,14 +69,14 @@ export const Landing: React.FC = () => {
 
         <div className="flex items-center gap-3">
           <button
-            onClick={() => handleLaunchRole('STUDENT')}
-            className="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-xs font-semibold text-white border border-white/10 transition-colors"
+            onClick={() => navigate('/login')}
+            className="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-xs font-semibold text-white border border-white/10 transition-colors cursor-pointer"
           >
             Sign In
           </button>
           <button
-            onClick={() => handleLaunchRole('STUDENT')}
-            className="flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-[#7657F6] hover:bg-[#6442E8] text-xs font-bold text-white shadow-glow-primary transition-all hover:scale-105"
+            onClick={() => navigate('/register')}
+            className="flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-[#7657F6] hover:bg-[#6442E8] text-xs font-bold text-white shadow-glow-primary transition-all hover:scale-105 cursor-pointer"
           >
             <span>Start Learning</span>
             <ArrowRight className="w-4 h-4" />
@@ -115,19 +107,19 @@ export const Landing: React.FC = () => {
 
           <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
             <button
-              onClick={() => handleLaunchRole('STUDENT')}
-              className="flex items-center gap-2 px-8 py-3.5 rounded-xl bg-gradient-to-r from-[#7657F6] to-[#6442E8] text-sm font-bold text-white shadow-glow-primary hover:shadow-lg transition-all hover:scale-105"
+              onClick={() => navigate('/register')}
+              className="flex items-center gap-2 px-8 py-3.5 rounded-xl bg-gradient-to-r from-[#7657F6] to-[#6442E8] text-sm font-bold text-white shadow-glow-primary hover:shadow-lg transition-all hover:scale-105 cursor-pointer"
+            >
+              <Sparkles className="w-4 h-4 text-[#FFC857]" />
+              <span>Join SSLC Class 10 Portal</span>
+            </button>
+            <button
+              onClick={() => navigate('/login')}
+              className="flex items-center gap-2 px-6 py-3.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-sm font-semibold text-slate-200 transition-colors cursor-pointer"
             >
               <Play className="w-4 h-4 fill-white" />
-              <span>Launch Student Demo</span>
+              <span>Sign In / Demo Profiles</span>
             </button>
-            <a
-              href="#roles"
-              className="flex items-center gap-2 px-6 py-3.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-sm font-semibold text-slate-200 transition-colors"
-            >
-              <span>Explore All 4 Portals</span>
-              <ChevronDown className="w-4 h-4" />
-            </a>
           </div>
 
           {/* Key Stat Badges */}
@@ -203,7 +195,7 @@ export const Landing: React.FC = () => {
                 </div>
                 <div>
                   <h3 className="text-lg font-bold text-white">Ms. Sarah Chen</h3>
-                  <p className="text-xs text-slate-400 mt-0.5">Math & Physics Faculty</p>
+                  <p className="text-xs text-slate-400 mt-0.5">Science & Mathematics Faculty</p>
                 </div>
                 <p className="text-xs text-slate-300 leading-relaxed">
                   View class gap heatmaps, mark daily attendance, input exam marks, and target struggling students.
@@ -353,14 +345,17 @@ export const Landing: React.FC = () => {
       </section>
 
       {/* Footer */}
-      <footer className="py-12 px-6 lg:px-16 border-t border-white/5 bg-[#0B1020] text-center text-xs text-slate-400 space-y-3">
-        <div className="flex items-center justify-center gap-2">
-          <Sparkles className="w-4 h-4 text-[#7657F6]" />
-          <span className="font-bold text-white">EduNexa AI</span>
-          <span>— Smart Learning. Personalized Growth. Better Futures.</span>
-        </div>
-        <p className="text-slate-500">
-          Built for competitive hackathon evaluation. Demonstrates full-stack AI integration, normalized educational modeling, and adaptive pedagogical analysis.
+      <footer className="py-12 px-6 lg:px-16 border-t border-white/5 bg-[#0B1020] flex flex-col items-center text-center text-xs text-slate-400 space-y-3">
+        <EduNexaLogo
+          size="sm"
+          subtitle={null}
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        />
+        <p className="text-slate-400">
+          EduNexa AI — Smart Learning. Personalized Growth. Better Futures for Karnataka SSLC Class 10.
+        </p>
+        <p className="text-slate-500 max-w-xl">
+          Engineered for state board excellence. Demonstrates full-stack AI integration, normalized educational modeling, and adaptive prerequisite pedagogical analysis.
         </p>
       </footer>
     </div>

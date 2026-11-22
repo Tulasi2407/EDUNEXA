@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useEduData } from '../../contexts/DataContext';
+import { useLanguage, LanguageCode } from '../../contexts/LanguageContext';
 import { UserRole } from '../../types';
 import {
   Menu,
@@ -19,20 +20,22 @@ import {
 import { DemoTourModal } from '../common/DemoTourModal';
 import { OnboardingWizardModal } from '../common/OnboardingWizardModal';
 import { PrivacyModal } from '../common/PrivacyModal';
+import { UserAvatar } from '../common/UserAvatar';
 
 interface TopNavProps {
   onToggleSidebar: () => void;
-  selectedLanguage: 'en' | 'hi' | 'kn';
-  onChangeLanguage: (lang: 'en' | 'hi' | 'kn') => void;
+  selectedLanguage?: 'en' | 'hi' | 'kn';
+  onChangeLanguage?: (lang: 'en' | 'hi' | 'kn') => void;
 }
 
 export const TopNav: React.FC<TopNavProps> = ({
   onToggleSidebar,
-  selectedLanguage,
+  selectedLanguage: propLang,
   onChangeLanguage
 }) => {
-  const { user, role, switchRole } = useAuth();
+  const { user, role, switchRole, isDemoMode } = useAuth();
   const { announcements, studentXP } = useEduData();
+  const { language, setLanguage, t } = useLanguage();
   const [showRoleMenu, setShowRoleMenu] = useState(false);
   const [showLangMenu, setShowLangMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
@@ -40,10 +43,12 @@ export const TopNav: React.FC<TopNavProps> = ({
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [showPrivacy, setShowPrivacy] = useState(false);
 
-  const languages = [
-    { code: 'en', label: 'English' },
-    { code: 'hi', label: 'हिन्दी (Hindi)' },
-    { code: 'kn', label: 'ಕನ್ನಡ (Kannada)' },
+  const activeLanguage = language || propLang || 'en';
+
+  const languages: { code: LanguageCode; label: string; short: string; flag: string }[] = [
+    { code: 'en', label: 'English', short: 'EN', flag: '🇬🇧' },
+    { code: 'kn', label: 'ಕನ್ನಡ (Kannada)', short: 'ಕನ್ನಡ', flag: '🟡' },
+    { code: 'hi', label: 'हिन्दी (Hindi)', short: 'हिन्दी', flag: '🇮🇳' },
   ];
 
   const roles: { role: UserRole; label: string; desc: string }[] = [
@@ -68,10 +73,17 @@ export const TopNav: React.FC<TopNavProps> = ({
 
           <div className="hidden sm:flex items-center gap-2">
             <span className="text-xs font-medium text-slate-400">Environment:</span>
-            <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#10B981]/15 text-[#10B981] border border-[#10B981]/30 text-[11px] font-bold">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#10B981] animate-ping" />
-              Live AI Demo Mode
-            </span>
+            {isDemoMode ? (
+              <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#3B82F6]/15 text-[#60A5FA] border border-[#3B82F6]/30 text-[11px] font-bold">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#3B82F6]" />
+                Evaluation Demo Account
+              </span>
+            ) : (
+              <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#10B981]/15 text-[#10B981] border border-[#10B981]/30 text-[11px] font-bold">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#10B981] animate-pulse" />
+                Live Database Active • KSEAB Class 10
+              </span>
+            )}
           </div>
         </div>
 
@@ -108,31 +120,38 @@ export const TopNav: React.FC<TopNavProps> = ({
           <div className="relative">
             <button
               onClick={() => setShowLangMenu(!showLangMenu)}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-medium text-slate-300 transition-colors"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold text-slate-200 transition-colors cursor-pointer"
             >
               <Globe className="w-4 h-4 text-[#A78BFA]" />
-              <span className="uppercase font-bold">{selectedLanguage}</span>
+              <span className="font-bold text-white">
+                {languages.find(l => l.code === activeLanguage)?.short || 'EN'}
+              </span>
               <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
             </button>
 
             {showLangMenu && (
-              <div className="absolute right-0 mt-2 w-48 rounded-xl bg-[#171F3A] border border-white/10 shadow-2xl py-1 z-50">
+              <div className="absolute right-0 mt-2 w-52 rounded-xl bg-[#171F3A] border border-white/10 shadow-2xl py-1 z-50 animate-in fade-in-50">
                 <div className="px-3 py-1.5 text-[10px] uppercase font-bold text-slate-400 border-b border-white/5">
-                  Platform Language
+                  {t('top.platformLanguage', 'Platform Language')}
                 </div>
                 {languages.map((l) => (
                   <button
                     key={l.code}
+                    type="button"
                     onClick={() => {
-                      onChangeLanguage(l.code as any);
+                      setLanguage(l.code);
+                      onChangeLanguage?.(l.code);
                       setShowLangMenu(false);
                     }}
-                    className={`w-full flex items-center justify-between px-3 py-2 text-xs font-medium hover:bg-white/5 transition-colors ${
-                      selectedLanguage === l.code ? 'text-[#7657F6] font-bold bg-[#7657F6]/10' : 'text-slate-300'
+                    className={`w-full flex items-center justify-between px-3 py-2 text-xs font-medium hover:bg-white/5 transition-colors cursor-pointer ${
+                      activeLanguage === l.code ? 'text-[#A78BFA] font-bold bg-[#7657F6]/15' : 'text-slate-300'
                     }`}
                   >
-                    <span>{l.label}</span>
-                    {selectedLanguage === l.code && <Check className="w-4 h-4" />}
+                    <span className="flex items-center gap-2">
+                      <span>{l.flag}</span>
+                      <span>{l.label}</span>
+                    </span>
+                    {activeLanguage === l.code && <Check className="w-4 h-4 text-[#FFC857]" />}
                   </button>
                 ))}
               </div>
@@ -183,13 +202,9 @@ export const TopNav: React.FC<TopNavProps> = ({
               onClick={() => setShowRoleMenu(!showRoleMenu)}
               className="flex items-center gap-2.5 p-1.5 pr-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition-colors"
             >
-              <img
-                src={user.avatar}
-                alt={user.name}
-                className="w-7 h-7 rounded-lg object-cover ring-1 ring-[#7657F6]/50"
-              />
+              <UserAvatar name={user?.name} role={role} size="sm" rounded="lg" />
               <div className="text-left hidden sm:block">
-                <p className="text-xs font-bold text-white leading-tight">{user.name}</p>
+                <p className="text-xs font-bold text-white leading-tight">{user?.name || 'SSLC Scholar'}</p>
                 <p className="text-[10px] text-[#A78BFA] leading-tight font-medium uppercase tracking-wider">{role}</p>
               </div>
               <ChevronDown className="w-3.5 h-3.5 text-slate-400" />

@@ -1,15 +1,10 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
+/**
+ * EduNexa AI — AI Bridge Service
+ * Exclusively queries the FastAPI backend (which uses official Google GenAI Python SDK).
+ * Eliminates browser API key exposure while providing transparent offline resilience.
+ */
 
-const apiKey = import.meta.env.VITE_GEMINI_API_KEY || '';
-let genAI: GoogleGenerativeAI | null = null;
-
-if (apiKey && apiKey !== 'your_gemini_api_key_here') {
-  try {
-    genAI = new GoogleGenerativeAI(apiKey);
-  } catch (e) {
-    console.warn('Gemini AI initialization note:', e);
-  }
-}
+import { tutorApi, gapsApi, studyPlannerApi } from './api';
 
 export interface LearningGapAnalysisResult {
   weakTopics: {
@@ -27,83 +22,58 @@ export interface LearningGapAnalysisResult {
   recommendedFocus: string;
 }
 
-// 1. Core Innovation: Analyze Learning Gaps using AI with seamless rule-based fallback
+// 1. Analyze Learning Gaps using Backend AI Service
 export async function analyzeLearningGapsWithAI(
   subject: string,
   chapter: string,
-  quizResponses: { question: string; studentAnswer: string; correctAnswer: string; isCorrect: boolean; topic: string; prerequisite?: string }[]
+  quizResponses: {
+    question: string;
+    studentAnswer: string;
+    correctAnswer: string;
+    isCorrect: boolean;
+    topic: string;
+    prerequisite?: string;
+  }[]
 ): Promise<LearningGapAnalysisResult> {
-  const incorrectCount = quizResponses.filter(r => !r.isCorrect).length;
-  const accuracy = Math.round(((quizResponses.length - incorrectCount) / quizResponses.length) * 100);
-
-  if (genAI) {
-    try {
-      const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
-      const prompt = `You are the EduNexa AI Learning Gap Diagnostic Engine.
-A student just completed a diagnostic assessment in Subject: "${subject}", Chapter: "${chapter}".
-Their accuracy is ${accuracy}%.
-Assessment responses:
-${JSON.stringify(quizResponses, null, 2)}
-
-Analyze their specific errors. Do NOT just state that they got it wrong. TRACE THE ROOT CAUSE:
-1. What exact conceptual misunderstanding or prerequisite weakness caused the mistake? (e.g. if they failed linear equations with negative signs, the root cause may be negative integer arithmetic rules).
-2. Rate the severity: CRITICAL (<50%), MODERATE (50-75%), or MILD (>75%).
-3. Clearly separate detected mistakes from inferred prerequisite weaknesses.
-4. Provide a 4-step actionable remediation sequence.
-
-Respond strictly with valid JSON conforming to this structure:
-{
-  "weakTopics": [
-    {
-      "topic": "string",
-      "chapter": "string",
-      "subject": "string",
-      "accuracyScore": number,
-      "severity": "CRITICAL" | "MODERATE" | "MILD",
-      "identifiedGap": "string describing root cause",
-      "prerequisiteWeakness": "string naming foundational prerequisite concept",
-      "evidence": "string citing exact question evidence",
-      "revisionSteps": ["Step 1...", "Step 2...", "Step 3...", "Step 4..."]
+  try {
+    const result = await gapsApi.diagnose({
+      subject,
+      chapter,
+      responses: quizResponses,
+    });
+    if (result && result.weakTopics && result.weakTopics.length > 0) {
+      return {
+        weakTopics: result.weakTopics,
+        overallDiagnosis: result.overallDiagnosis,
+        recommendedFocus: result.recommendedFocus,
+      };
     }
-  ],
-  "overallDiagnosis": "2-3 sentences explaining overall academic health and foundational blockers",
-  "recommendedFocus": "1 concise sentence recommending immediate next action"
-}`;
-
-      const result = await model.generateContent(prompt);
-      const text = result.response.text();
-      // Clean possible markdown code fences
-      const cleanJson = text.replace(/```json/g, '').replace(/```/g, '').trim();
-      return JSON.parse(cleanJson);
-    } catch (err) {
-      console.warn('Gemini API query fallback to rule engine:', err);
-    }
+  } catch (err) {
+    console.warn('Backend AI diagnostic query fallback to local inference:', err);
   }
 
-  // Robust, intelligent rule-based fallback matching the prompt requirements
-  const wrongQuestions = quizResponses.filter(q => !q.isCorrect);
-  const detectedTopics = Array.from(new Set(wrongQuestions.map(q => q.topic)));
+  // Resilient fallback if backend is momentarily unreachable
+  const incorrect = quizResponses.filter(q => !q.isCorrect);
+  const accuracy = Math.round(((quizResponses.length - incorrect.length) / max(quizResponses.length, 1)) * 100);
+  const detectedTopics = Array.from(new Set(incorrect.map(q => q.topic))).filter(Boolean);
 
-  const gaps = (detectedTopics.length > 0 ? detectedTopics : ['Foundational Concept Fluency']).map((topic) => {
-    const relatedWrong = wrongQuestions.filter(q => q.topic === topic);
-    const topicPrereq = relatedWrong[0]?.prerequisite || 'Fundamental computational and conceptual definitions';
-    const topicScore = Math.max(25, accuracy - Math.floor(Math.random() * 15));
-    const severity: 'CRITICAL' | 'MODERATE' | 'MILD' = topicScore < 50 ? 'CRITICAL' : topicScore < 75 ? 'MODERATE' : 'MILD';
-
+  const fallbackTopics = (detectedTopics.length > 0 ? detectedTopics : ['Foundational Concept Fluency']).map((topic) => {
+    const relatedWrong = incorrect.filter(q => q.topic === topic);
+    const prereq = relatedWrong[0]?.prerequisite || 'Fundamental arithmetic definitions and inverse operations';
     return {
       topic,
       chapter: chapter || 'General Core',
       subject: subject || 'Mathematics',
-      accuracyScore: topicScore,
-      severity,
-      identifiedGap: `Difficulty isolating variables when signs or inverse operations are applied.`,
-      prerequisiteWeakness: topicPrereq,
+      accuracyScore: Math.max(30, accuracy - 10),
+      severity: (accuracy < 50 ? 'CRITICAL' : accuracy < 75 ? 'MODERATE' : 'MILD') as 'CRITICAL' | 'MODERATE' | 'MILD',
+      identifiedGap: `Difficulty isolating terms and applying sign rules in ${topic}.`,
+      prerequisiteWeakness: prereq,
       evidence: relatedWrong.length > 0
-        ? `Incorrect answer on: "${relatedWrong[0].question}". Student picked "${relatedWrong[0].studentAnswer}" instead of correct "${relatedWrong[0].correctAnswer}".`
-        : `Overall response latency and mixed accuracy across multi-step questions.`,
+        ? `Incorrect answer on: "${relatedWrong[0].question}". Selected "${relatedWrong[0].studentAnswer}".`
+        : `Overall performance below target Karnataka SSLC threshold.`,
       revisionSteps: [
-        `Step 1: 15-minute conceptual recap of ${topicPrereq}.`,
-        `Step 2: Guided practice with immediate feedback on 3 foundational sub-problems.`,
+        `Step 1: 15-minute conceptual recap of ${prereq}.`,
+        `Step 2: Guided practice on 3 foundational sub-problems.`,
         `Step 3: Self-paced 5-question mastery checkpoint.`,
         `Step 4: Real-time discussion with Nexa AI Tutor.`
       ]
@@ -111,13 +81,17 @@ Respond strictly with valid JSON conforming to this structure:
   });
 
   return {
-    weakTopics: gaps,
-    overallDiagnosis: `The diagnostic indicates that the primary difficulty in ${chapter} stems not from the core topic itself, but from foundational prerequisite concepts (${gaps[0]?.prerequisiteWeakness || 'arithmetic conventions'}). Addressing this prerequisite will rapidly restore confidence.`,
+    weakTopics: fallbackTopics,
+    overallDiagnosis: `The diagnostic indicates that difficulty in ${chapter} stems from foundational prerequisite concepts (${fallbackTopics[0]?.prerequisiteWeakness}). Addressing this prerequisite will rapidly restore confidence.`,
     recommendedFocus: `Dedicate 45 minutes to prerequisite remediation before taking another topic test.`
   };
 }
 
-// 2. Nexa AI Tutor Chat with 5 Learning Modes & Multilingual Support (en, hi, kn)
+function max(a: number, b: number) {
+  return a > b ? a : b;
+}
+
+// 2. Nexa AI Tutor Chat via FastAPI Backend
 export async function askNexaTutor(
   userMessage: string,
   subject: string = 'General',
@@ -125,103 +99,84 @@ export async function askNexaTutor(
   language: 'en' | 'hi' | 'kn' = 'en',
   chatHistory: { role: 'user' | 'model'; parts: string }[] = []
 ): Promise<string> {
-  const languageNames = {
+  const langMap: Record<'en' | 'hi' | 'kn', string> = {
     en: 'English',
-    hi: 'Hindi (हिंदी)',
-    kn: 'Kannada (ಕನ್ನಡ)'
+    hi: 'Hindi',
+    kn: 'Kannada'
   };
 
-  const modeInstructions = {
-    BEGINNER: 'Explain like I am a complete beginner using intuitive, real-world everyday analogies. Avoid jargon.',
-    STEP_BY_STEP: 'Provide a structured, step-by-step walkthrough. Clearly number each logical milestone.',
-    EXAM_PREP: 'Focus on high-yield exam patterns, common traps, marking criteria, and model answers.',
-    PRACTICE: 'Actively test the student by guiding them through a practice problem and asking them to solve the next sub-step.',
-    QUICK_REVISION: 'Give a bulleted, high-impact 60-second summary highlighting formulas, key definitions, and axioms.'
-  };
-
-  const systemInstruction = `You are Nexa AI, a patient, encouraging, and world-class educational AI tutor on the EduNexa AI platform.
-Current Subject: ${subject}
-Active Learning Mode: ${mode} (${modeInstructions[mode]})
-Target Language: ${languageNames[language]}. Respond primarily in ${languageNames[language]}.
-IMPORTANT EDUCATIONAL ETHICS:
-- Never fabricate facts or formulas.
-- Encourage critical thinking rather than just spoon-feeding the end answer.
-- If the student made an arithmetic or conceptual mistake, gently pinpoint the exact prerequisite misconception.
-- Keep formatting clean using markdown bolding, lists, and clear spacing.`;
-
-  if (genAI) {
-    try {
-      const model = genAI.getGenerativeModel({
-        model: 'gemini-1.5-flash',
-        systemInstruction: systemInstruction
-      });
-
-      const chat = model.startChat({
-        history: chatHistory.map(h => ({
-          role: h.role,
-          parts: [{ text: h.parts }]
-        }))
-      });
-
-      const result = await chat.sendMessage(userMessage);
-      return result.response.text();
-    } catch (err) {
-      console.warn('Gemini chat fallback:', err);
+  try {
+    const response = await tutorApi.chat({
+      message: userMessage,
+      subject,
+      mode,
+      language: langMap[language] || 'English',
+    });
+    if (response && response.reply) {
+      return response.reply;
     }
+  } catch (err) {
+    console.warn('Backend Nexa chat query fallback to local inference:', err);
   }
 
-  // High quality offline fallback responses tailored by mode and language
+  // High quality conversational fallback responses tailored by intent, mode and language
+  const msgL = userMessage.toLowerCase().trim();
+  const clean = msgL.replace(/[^\w\s]/g, '').trim();
+  const words = new Set(clean.split(/\s+/));
+  const isGreeting = clean === 'hi' || clean === 'hello' || clean === 'hey' || clean === 'hi there' ||
+    clean === 'hello there' || clean === 'hey there' || clean === 'how are you' || clean === 'good morning' ||
+    clean === 'good evening' || clean === 'who are you' || clean === 'namaste' || clean === 'namaskara' ||
+    (['hi', 'hello', 'hey', 'namaskara', 'namaste'].some(g => words.has(g)) && words.size <= 3);
+
+  if (isGreeting) {
+    if (language === 'kn') {
+      return `ನಮಸ್ಕಾರ! ಹೇಗಿದ್ದೀರಾ? ನಿಮ್ಮನ್ನು ಭೇಟಿಯಾಗಿದ್ದು ತುಂಬಾ ಸಂತೋಷವಾಯಿತು! 👋😊\n\nನಾನು ನಿಮ್ಮ **ನೆಕ್ಸಾ (Nexa)** — ಕರ್ನಾಟಕ 10ನೇ ತರಗತಿ (SSLC) ಪರೀಕ್ಷಾ ತಯಾರಿಗೆ ನಿಮ್ಮ ವೈಯಕ್ತಿಕ ಕಲಿಕಾ ಮಿತ್ರ. ಸ್ನೇಹಿತನಂತೆ ನನ್ನೊಂದಿಗೆ ಧೈರ್ಯವಾಗಿ ಮಾತನಾಡಬಹುದು!\n\nಇವತ್ತು ಗಣಿತ, ವಿಜ್ಞಾನ, ಸಮಾಜ ವಿಜ್ಞಾನ ಅಥವಾ ಭಾಷೆಗಳಲ್ಲಿ ಯಾವ ವಿಷಯ ಅಥವಾ ಪಾಠದ ಬಗ್ಗೆ ಕಲಿಯೋಣ? ನಿಮ್ಮ ಪ್ರಶ್ನೆಯನ್ನು ಟೈಪ್ ಮಾಡಿ, ಒಟ್ಟಿಗೆ ಕಲಿಯೋಣ!`;
+    } else if (language === 'hi') {
+      return `नमस्ते! कैसे हैं आप? आपसे मिलकर बहुत खुशी हुई! 👋😊\n\nमैं हूँ **नेक्सा (Nexa)** — कर्नाटक बोर्ड क्लास 10 (SSLC) की तैयारी के लिए आपका पर्सनल एआई स्टडी पार्टनर। मुझसे आप बिल्कुल एक दोस्त की तरह खुलकर बात कर सकते हैं!\n\nआज क्या पढ़ने का मूड है? कोई भी डाउट या मुश्किल टॉपिक हो, बताइए — हम मिलकर इसे आसान बनाएंगे!`;
+    }
+    return `Hey there! 👋 Great to see you! How's your day going?\n\nI'm **Nexa**, your personal 24/7 study buddy and AI tutor for Karnataka SSLC Class 10. Think of me like a supportive friend who's always here to help make learning simpler and way less stressful.\n\nAre we working on **${subject}** today, or would you like to explore something else? Got a tricky homework problem, need a concept explained in everyday words, or want to review a board exam question together?\n\nWhat's on your mind right now?`;
+  }
+
+  const isStress = ['stress', 'anxious', 'scared', 'fear', 'nervous', 'tired', 'cant do this', 'hard', 'difficult', 'overwhelmed'].some(s => msgL.includes(s));
+  if (isStress) {
+    return `Hey, take a deep breath! 💙 First off, it's completely normal to feel like that. Class 10 board exams can feel overwhelming, but remember: you don't need to master everything all at once.\n\nSuccess in Karnataka SSLC is all about small, steady wins. Pick just ONE small concept or formula today. Let's walk through it together with zero judgment.\n\nWhich subject has been feeling heaviest on your shoulders? Tell me and we'll take it step by step!`;
+  }
+
   if (language === 'hi') {
-    return `**Nexa AI शिक्षक (${mode}):**\n\nनमस्ते! आपका प्रश्न "${userMessage}" बहुत महत्वपूर्ण है।\n\n1. **मुख्य अवधारणा:** जब हम समीकरणों को हल करते हैं, तो ऋणात्मक चिह्नों (-ve signs) का विशेष ध्यान रखना होता है।\n2. **चरणबद्ध नियम:** यदि दोनों पक्षों को ऋणात्मक संख्या से विभाजित किया जाए, तो चिह्न बदल जाते हैं (उदाहरण: -3x = -21 => x = 7).\n\nक्या आप चाहते हैं कि हम इस पर एक अभ्यास प्रश्न हल करें?`;
+    return `नमस्ते! आपके प्रश्न "${userMessage}" को समझते हैं 💡\n\nकर्नाटक बोर्ड क्लास 10 (${subject}) के लिए:\n1. **मुख्य बात:** किसी भी समस्या को हल करते समय पहले मूल नियम और सूत्र को लिखें।\n2. **हल:** सूत्रों में मान रखते समय चिह्नों (+ और -) का ध्यान रखें।\n3. **परीक्षा टिप:** अंतिम उत्तर के साथ इकाई (units) अवश्य लिखें।\n\nक्या आप इस पर एक 2-मार्क्स का बोर्ड प्रश्न हल करना चाहेंगे?`;
   } else if (language === 'kn') {
-    return `**Nexa AI ಬೋಧಕ (${mode}):**\n\nನಮಸ್ಕಾರ! ನಿಮ್ಮ ಪ್ರಶ್ನೆ "${userMessage}" ಗೆ ಸುಲಭ ವಿವರಣೆ:\n\n1. **ಮೂಲ ಪರಿಕಲ್ಪನೆ:** ರೇಖೀಯ ಸಮೀಕರಣಗಳಲ್ಲಿ ಋಣಾತ್ಮಕ ಸಂಖ್ಯೆಗಳನ್ನು ಬಲಭಾಗಕ್ಕೆ ವರ್ಗಾಯಿಸಿದಾಗ ಚಿಹ್ನೆಗಳು ಬದಲಾಗುತ್ತವೆ.\n2. **ಹಂತಗಳು:** -3x = -21 ಇದ್ದಾಗ, x = -21 / -3 = 7 ಆಗುತ್ತದೆ.\n\nಮುಂದಿನ ಹಂತವನ್ನು ಅಭ್ಯಾಸ ಮಾಡಲು ನೀವು ಸಿದ್ಧರಿದ್ದೀರಾ?`;
+    return `ನಮಸ್ಕಾರ! ನಿಮ್ಮ ಪ್ರಶ್ನೆ "${userMessage}" ಗೆ ಸರಳ ವಿವರಣೆ 💡\n\nಕರ್ನಾಟಕ ಎಸ್‌ಎಸ್‌ಎಲ್‌ಸಿ (${subject}) ಪರೀಕ್ಷೆಯ ದೃಷ್ಟಿಯಿಂದ:\n1. **ಮೂಲ ಪರಿಕಲ್ಪನೆ:** ಪ್ರಶ್ನೆಯಲ್ಲಿ ಕೊಟ್ಟಿರುವ ಅಂಶಗಳನ್ನು ಗುರುತಿಸಿ ಸೂಕ್ತ ಸೂತ್ರವನ್ನು ಬರೆಯಿರಿ.\n2. **ಹಂತಗಳು:** ಗಣಿತ ಅಥವಾ ವಿಜ್ಞಾನದಲ್ಲಿ ಪ್ರತಿ ಹಂತಕ್ಕೂ (steps) ಪ್ರತ್ಯೇಕ ಅಂಕಗಳಿರುತ್ತವೆ.\n3. **ಪರೀಕ್ಷಾ ಸಲಹೆ:** ಅಂತಿಮ ಉತ್ತರವನ್ನು ಸ್ಪಷ್ಟವಾಗಿ ಚೌಕಟ್ಟು ಹಾಕಿ ಬರೆಯಿರಿ.\n\nಈ ವಿಷಯದಲ್ಲಿ ಇನ್ನಷ್ಟು ತಿಳಿಯಲು ಬಯಸುವಿರಾ?`;
   }
 
-  return `### Nexa AI Tutor • ${mode.replace('_', ' ')}\n\nGreat question! Let's break this down together.\n\n**1. The Core Concept:**\nWhen working on **${subject}**, confusion often arises not from the formula itself, but from the transition steps. For instance, when dealing with negative coefficients, remember that moving across the equals sign inverts the operation.\n\n**2. Step-by-Step Breakdown:**\n- **Identify given values:** Isolate variables from constants.\n- **Prerequisite Check:** Remember that $(-a) \\div (-b) = +(a/b)$. Two negatives cancel out to give a positive quotient.\n- **Verification:** Plug your answer back into the original equation to verify both sides match.\n\n**💡 Quick Practice Question for You:**\nIf $-5y + 15 = -10$, what is the first step you would take? Reply below and I'll verify!`;
+  return `That's a great question about **${userMessage}**! Let's break it down simply and intuitively. 🌟\n\nIn **${subject}** for Karnataka SSLC Class 10:\n\n1. **The Core Concept:**\nAlways start by separating what you know from what you need to solve. If you're working with negative signs, remember $(-a) \\div (-b) = +(a/b)$ — negatives cancel out.\n\n2. **Step-by-Step Logic:**\nWrite the standard formula first. Karnataka examiners award partial marks for each intermediate step!\n\n3. **Verification:**\nPlug your result back into the problem to confirm both sides balance.\n\n💡 **SSLC Board Tip:** Would you like to practice a standard model question from the board paper on this topic?`;
 }
 
-// 3. Personalized Study Plan Generator
+// 3. Personalized Study Plan Generator via FastAPI Backend
 export async function generateStudyPlanWithAI(
   availableDailyHours: number,
   examDate: string,
   weakSubjects: string[],
   strongSubjects: string[]
 ) {
-  if (genAI) {
-    try {
-      const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
-      const prompt = `Create a personalized 7-day study timetable for a student with:
-- Available study hours per day: ${availableDailyHours} hours
-- Target Examination Date: ${examDate}
-- Weak Subjects needing gap remediation: ${weakSubjects.join(', ')}
-- Strong Subjects: ${strongSubjects.join(', ')}
-
-Structure the plan to prioritize weak topics with prerequisite remediation, followed by active recall and rest breaks.
-Respond strictly in JSON:
-{
-  "weeklyTargetHours": number,
-  "dailyGoalHours": number,
-  "tasks": [
-    {
-      "day": "Monday",
-      "timeSlot": "04:30 PM - 05:30 PM",
-      "subject": "Mathematics",
-      "topic": "Specific Topic",
-      "type": "PREREQUISITE_FIX" | "CONCEPT_REVIEW" | "PRACTICE_QUIZ" | "ACTIVE_RECALL" | "BREAK",
-      "durationMinutes": 60,
-      "priority": "HIGH" | "MEDIUM" | "LOW"
+  try {
+    const res = await studyPlannerApi.generatePlan({
+      daily_hours: availableDailyHours,
+      exam_date: examDate,
+      weak_subjects: weakSubjects,
+      strong_subjects: strongSubjects,
+    });
+    if (res && res.plan && res.plan.tasks && res.plan.tasks.length > 0) {
+      return {
+        weeklyTargetHours: res.plan.weeklyTargetHours,
+        dailyGoalHours: res.plan.dailyGoalHours,
+        tasks: res.plan.tasks,
+      };
     }
-  ]
-}`;
-      const res = await model.generateContent(prompt);
-      const cleanJson = res.response.text().replace(/```json/g, '').replace(/```/g, '').trim();
-      return JSON.parse(cleanJson);
-    } catch (e) {
-      console.warn('AI study plan fallback:', e);
-    }
+  } catch (err) {
+    console.warn('Backend AI study plan query fallback:', err);
   }
 
-  // Intelligent fallback schedule
+  // Local fallback
   const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
   const tasks = days.flatMap((day, idx) => {
     const isWeekend = idx >= 5;
@@ -242,7 +197,7 @@ Respond strictly in JSON:
         id: `gen_task_${idx}_2`,
         day,
         timeSlot: isWeekend ? '11:30 AM - 12:15 PM' : '05:45 PM - 06:30 PM',
-        subject: strongSubjects[0] || 'Physics',
+        subject: strongSubjects[0] || 'Science',
         topic: 'Concept Review & Active Recall Flashcards',
         type: 'ACTIVE_RECALL' as const,
         durationMinutes: 45,
@@ -255,6 +210,6 @@ Respond strictly in JSON:
   return {
     weeklyTargetHours: Math.round(availableDailyHours * 7),
     dailyGoalHours: availableDailyHours,
-    tasks
+    tasks,
   };
 }

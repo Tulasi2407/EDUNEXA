@@ -35,15 +35,15 @@ export const Assignments: React.FC = () => {
     {
       id: 'asg_02',
       title: 'Ray Optics Mirror Formula Numerical Set',
-      subject: 'Physics',
+      subject: 'Science',
       dueDate: 'Nov 25, 2026',
       points: 50,
       status: 'PENDING'
     },
     {
       id: 'asg_03',
-      title: 'Redox Reactions Balancing Lab Report',
-      subject: 'Chemistry',
+      title: 'Social Science: European Expansion Treaty Analysis',
+      subject: 'Social Science',
       dueDate: 'Nov 18, 2026',
       points: 50,
       status: 'GRADED',
@@ -51,8 +51,8 @@ export const Assignments: React.FC = () => {
     },
     {
       id: 'asg_04',
-      title: 'Cellular Respiration Krebs Cycle Diagram',
-      subject: 'Biology',
+      title: 'English: Reported Speech & Active-Passive Worksheet',
+      subject: 'English',
       dueDate: 'Nov 15, 2026',
       points: 40,
       status: 'GRADED',

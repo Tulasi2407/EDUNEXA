@@ -26,11 +26,11 @@ export const AdminDashboard: React.FC = () => {
   const { user } = useAuth();
 
   const activityData = [
-    { grade: 'Grade 8', students: 180, avgGPA: 3.52 },
-    { grade: 'Grade 9', students: 210, avgGPA: 3.64 },
-    { grade: 'Grade 10', students: 240, avgGPA: 3.71 },
-    { grade: 'Grade 11', students: 110, avgGPA: 3.58 },
-    { grade: 'Grade 12', students: 102, avgGPA: 3.69 },
+    { grade: 'Class 10-A', students: 42, avgGPA: 3.78 },
+    { grade: 'Class 10-B', students: 40, avgGPA: 3.65 },
+    { grade: 'Class 10-C', students: 44, avgGPA: 3.72 },
+    { grade: 'Class 10-D', students: 38, avgGPA: 3.82 },
+    { grade: 'Class 10-E', students: 41, avgGPA: 3.69 },
   ];
 
   return (

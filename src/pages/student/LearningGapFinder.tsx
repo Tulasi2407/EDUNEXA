@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useEduData } from '../../contexts/DataContext';
+import { useLanguage } from '../../contexts/LanguageContext';
 import { DIAGNOSTIC_QUESTIONS } from '../../data/mockData';
 import { analyzeLearningGapsWithAI, LearningGapAnalysisResult } from '../../lib/gemini';
 import {
@@ -23,14 +24,107 @@ import {
 import confetti from 'canvas-confetti';
 import { ConceptDependencyMap } from '../../components/common/ConceptDependencyMap';
 
+export const SSLC_SUBJECTS = [
+  'Kannada',
+  'English',
+  'Hindi',
+  'Mathematics',
+  'Science',
+  'Social Science'
+] as const;
+
+export const SSLC_CHAPTERS: Record<string, string[]> = {
+  'Mathematics': [
+    'Arithmetic Progressions',
+    'Triangles',
+    'Pair of Linear Equations in Two Variables',
+    'Circles',
+    'Areas Related to Circles',
+    'Constructions',
+    'Coordinate Geometry',
+    'Real Numbers',
+    'Polynomials',
+    'Quadratic Equations',
+    'Introduction to Trigonometry',
+    'Some Applications of Trigonometry',
+    'Statistics',
+    'Probability',
+    'Surface Areas and Volumes'
+  ],
+  'Science': [
+    'Chemical Reactions and Equations',
+    'Acids, Bases and Salts',
+    'Metals and Non-metals',
+    'Carbon and Its Compounds',
+    'Periodic Classification of Elements',
+    'Life Processes',
+    'Control and Coordination',
+    'How do Organisms Reproduce?',
+    'Heredity and Evolution',
+    'Light - Reflection and Refraction',
+    'The Human Eye and Colourful World',
+    'Electricity',
+    'Magnetic Effects of Electric Current',
+    'Sources of Energy',
+    'Our Environment',
+    'Sustainable Management of Natural Resources'
+  ],
+  'Social Science': [
+    'Advent of Europeans to India',
+    'The Extension of the British Rule',
+    'The Impact of the British Rule',
+    'Opposition to British Rule in Karnataka',
+    'Social and Religious Reformation Movements',
+    'First War of Indian Independence (1857)',
+    'Freedom Movement',
+    'Era of Gandhi and National Movement',
+    'Post Independent India',
+    'Political Dimensions of the 20th Century',
+    "India's Foreign Policy",
+    'Global Problems and India’s Role',
+    'Indian Physiography & Climate',
+    'Indian Soils & Forest Resources',
+    'Economy and Government',
+    'Rural Development & Banking'
+  ],
+  'Kannada': [
+    'ಯುದ್ಧ (ಕಥೆ - ಸಾರಾ ಅಬೂಬಕ್ಕರ್)',
+    'ಶಬರಿ (ನಾಟಕ - ಪು.ತಿ.ನ.)',
+    'ಭಾಗ್ಯಶಿಲ್ಪಿಗಳು (ವ್ಯಕ್ತಿಚಿತ್ರ)',
+    'ಎದೆಗೆ ಬಿದ್ದ ಅಕ್ಷರ (ದೇವನೂರ ಮಹಾದೇವ)',
+    'ವ್ಯಾಘ್ರಗೀತೆ (ಎ.ಎನ್. ಮೂರ್ತಿರಾವ್)',
+    'ಸಂಕಲ್ಪ ಗೀತೆ (ಜಿ.ಎಸ್. ಶಿವರುದ್ರಪ್ಪ)',
+    'ಹಲ್ಮಿಡಿ ಶಾಸನ ಮತ್ತು ಸಂಧಿ-ಸಮಾಸಗಳು'
+  ],
+  'English': [
+    'A Hero (R. K. Narayan)',
+    "There's a Girl by the Tracks! (Deven Kanal)",
+    'Gentleman of Rio en Medio (Juan A.A. Sedillo)',
+    'Dr. B. R. Ambedkar (Sri R. Venkataraman)',
+    'The Concert (Shanta Rameshwar Rao)',
+    'Colours of School (Anuradha De)',
+    'Quality (John Galsworthy)',
+    'Grammar: Reported Speech, Voice & Clauses'
+  ],
+  'Hindi': [
+    'मातृभूमि (भगवतीचरण वर्मा)',
+    'कश्मीरी सेब (प्रेमचंद)',
+    'गिल्लू (महादेवी वर्मा)',
+    'अभिनव मनुष्य (रामधारी सिंह दिनकर)',
+    'मेरा बचपन (सुभद्रा कुमारी चौहान)',
+    'व्याकरण: संधि, समास और मुहावरे'
+  ]
+};
+
 export const LearningGapFinder: React.FC = () => {
   const { learningGaps, addLearningGap, resolveLearningGap, addXP } = useEduData();
+  const { t } = useLanguage();
   const navigate = useNavigate();
 
   // Wizard State
-  const [selectedGrade, setSelectedGrade] = useState('Grade 10');
+  const [selectedGrade, setSelectedGrade] = useState('Class 10');
   const [selectedSubject, setSelectedSubject] = useState('Mathematics');
-  const [selectedChapter, setSelectedChapter] = useState('Algebra & Linear Equations');
+  const [selectedChapter, setSelectedChapter] = useState('Pair of Linear Equations in Two Variables');
   const [reportedDifficulty, setReportedDifficulty] = useState('Struggling with negative signs when rearranging equations.');
 
   // Diagnostic Quiz State
@@ -40,8 +134,20 @@ export const LearningGapFinder: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [aiResult, setAiResult] = useState<LearningGapAnalysisResult | null>(null);
 
-  // Relevant questions for diagnostic
-  const activeQuestions = DIAGNOSTIC_QUESTIONS.slice(0, 4);
+  // Relevant questions for diagnostic matching active subject
+  const subjectIdMap: Record<string, string> = {
+    'Kannada': 'sub_kan',
+    'English': 'sub_eng',
+    'Hindi': 'sub_hin',
+    'Mathematics': 'sub_math',
+    'Science': 'sub_sci',
+    'Social Science': 'sub_soc',
+  };
+
+  const matchedQuestions = DIAGNOSTIC_QUESTIONS.filter(
+    q => q.subjectId === subjectIdMap[selectedSubject]
+  );
+  const activeQuestions = matchedQuestions.length > 0 ? matchedQuestions : DIAGNOSTIC_QUESTIONS.slice(0, 4);
 
   const handleSelectOption = (optionIndex: number) => {
     const updated = [...userAnswers];
@@ -142,59 +248,69 @@ export const LearningGapFinder: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 p-6 rounded-2xl bg-[#171F3A] border border-white/5 space-y-6">
             <div>
-              <h2 className="text-lg font-bold text-white">Step 1: Diagnostic Scope Selection</h2>
-              <p className="text-xs text-slate-400">Tell us what you want to assess today</p>
+              <h2 className="text-lg font-bold text-white">{t('gap.title', 'Step 1: Diagnostic Scope Selection')}</h2>
+              <p className="text-xs text-slate-400">{t('gap.subtitle', 'Tell us what you want to assess today')}</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-slate-300">Grade Level</label>
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-medium text-slate-300">{t('common.gradeLevel', 'Grade Level')}</label>
+                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#FFC857]/20 text-[#FFC857] border border-[#FFC857]/30 font-bold">
+                    Class 10 Exclusively
+                  </span>
+                </div>
                 <select
                   value={selectedGrade}
                   onChange={(e) => setSelectedGrade(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#111831] border border-white/10 text-xs text-white focus:outline-none focus:border-[#7657F6]"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#111831] border border-[#7657F6]/40 text-xs text-white focus:outline-none focus:border-[#7657F6] font-bold"
                 >
-                  <option>Grade 8</option>
-                  <option>Grade 9</option>
-                  <option>Grade 10</option>
-                  <option>Grade 11 (Science)</option>
-                  <option>Grade 12 (Science)</option>
+                  <option value="Class 10">Class 10 (Karnataka SSLC State Board)</option>
                 </select>
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-slate-300">Subject</label>
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-medium text-slate-300">{t('common.subject', 'Subject')}</label>
+                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#7657F6]/20 text-[#A78BFA] border border-[#7657F6]/30 font-semibold">
+                    6 Board Subjects
+                  </span>
+                </div>
                 <select
                   value={selectedSubject}
-                  onChange={(e) => setSelectedSubject(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#111831] border border-white/10 text-xs text-white focus:outline-none focus:border-[#7657F6]"
+                  onChange={(e) => {
+                    const newSub = e.target.value;
+                    setSelectedSubject(newSub);
+                    const chaps = SSLC_CHAPTERS[newSub] || [];
+                    setSelectedChapter(chaps[0] || 'Chapter 1');
+                  }}
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#111831] border border-white/10 text-xs text-white focus:outline-none focus:border-[#7657F6] font-semibold"
                 >
-                  <option>Mathematics</option>
-                  <option>Physics</option>
-                  <option>Chemistry</option>
-                  <option>Biology</option>
-                  <option>Computer Science</option>
+                  <option value="Kannada">{t('sub.kannada', 'Kannada (First Language)')}</option>
+                  <option value="English">{t('sub.english', 'English (Second Language)')}</option>
+                  <option value="Hindi">{t('sub.hindi', 'Hindi (Third Language)')}</option>
+                  <option value="Mathematics">{t('sub.mathematics', 'Mathematics')}</option>
+                  <option value="Science">{t('sub.science', 'Science')}</option>
+                  <option value="Social Science">{t('sub.socialScience', 'Social Science')}</option>
                 </select>
               </div>
 
               <div className="md:col-span-2 space-y-1.5">
-                <label className="text-xs font-medium text-slate-300">Target Chapter</label>
+                <label className="text-xs font-medium text-slate-300">{t('common.targetChapter', 'Target Chapter')}</label>
                 <select
                   value={selectedChapter}
                   onChange={(e) => setSelectedChapter(e.target.value)}
                   className="w-full px-3.5 py-2.5 rounded-xl bg-[#111831] border border-white/10 text-xs text-white focus:outline-none focus:border-[#7657F6]"
                 >
-                  <option>Algebra & Linear Equations</option>
-                  <option>Quadratic Equations & Polynomials</option>
-                  <option>Geometric Similarity & Trigonometry</option>
-                  <option>Light & Spherical Mirrors</option>
-                  <option>Chemical Reactions & Redox Processes</option>
+                  {(SSLC_CHAPTERS[selectedSubject] || ['General Chapter']).map((chap) => (
+                    <option key={chap} value={chap}>{chap}</option>
+                  ))}
                 </select>
               </div>
 
               <div className="md:col-span-2 space-y-1.5">
                 <label className="text-xs font-medium text-slate-300">
-                  Self-Reported Stumbling Blocks (Optional)
+                  {t('gap.stumblingBlocks', 'Self-Reported Stumbling Blocks (Optional)')}
                 </label>
                 <textarea
                   rows={3}
@@ -210,7 +326,7 @@ export const LearningGapFinder: React.FC = () => {
               onClick={() => setQuizStarted(true)}
               className="flex items-center gap-2 px-6 py-3 rounded-xl bg-[#7657F6] hover:bg-[#6442E8] text-xs font-bold text-white shadow-glow-primary transition-all hover:scale-105"
             >
-              <span>Begin AI Diagnostic Assessment (4 Questions)</span>
+              <span>{t('gap.startBtn', 'Begin AI Diagnostic Assessment (4 Questions)')}</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>
@@ -434,7 +550,7 @@ export const LearningGapFinder: React.FC = () => {
             <div className="p-3 rounded-xl bg-[#111831] border border-white/5 flex items-center justify-between">
               <div>
                 <p className="font-bold text-white">Wave Optics & Reflection</p>
-                <p className="text-[10px] text-slate-400">Physics • Ray diagrams & Laws of reflection</p>
+                <p className="text-[10px] text-slate-400">Science • Ray diagrams & Laws of reflection</p>
               </div>
               <span className="font-bold text-[#10B981]">92% Mastery</span>
             </div>

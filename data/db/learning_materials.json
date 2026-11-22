@@ -1,0 +1,26 @@
+[
+  {
+    "_id": "6b0201cb3ba2ef7976f72033",
+    "id": "mod-math-2025",
+    "type": "MODEL_QUESTION_PAPER",
+    "title": "KSEAB Official Model Paper 2024-2025 with Blueprint",
+    "subject": "Mathematics",
+    "year": 2025,
+    "marks": 80,
+    "duration": "3 Hours 15 Minutes",
+    "pdf_url": "https://kseab.karnataka.gov.in/model_papers/maths_2025_em.pdf",
+    "blueprint_summary": "16 MCQs (1 mark), 8 1-mark VSA, 8 2-mark SA, 9 3-mark LA-1, 4 4-mark LA-2, 1 5-mark LA-3 (Total 38 questions)."
+  },
+  {
+    "_id": "6b0201cb3ba2ef7976f72034",
+    "id": "mod-sci-2025",
+    "type": "MODEL_QUESTION_PAPER",
+    "title": "KSEAB Official Model Paper 2024-2025 with Blueprint",
+    "subject": "Science",
+    "year": 2025,
+    "marks": 80,
+    "duration": "3 Hours 15 Minutes",
+    "pdf_url": "https://kseab.karnataka.gov.in/model_papers/science_2025_em.pdf",
+    "blueprint_summary": "Physics (28 marks), Chemistry (25 marks), Biology (27 marks). High weightage on Electricity, Chemical Reactions, Life Processes."
+  }
+]

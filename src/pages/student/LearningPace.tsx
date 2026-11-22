@@ -64,7 +64,7 @@ export const LearningPace: React.FC = () => {
             <span className="text-xs text-[#A78BFA] font-semibold">(Level 14 Scholar)</span>
           </div>
           <p className="text-xs text-slate-300">
-            Fast-tracks advanced problem sets in Physics and Chemistry; provides scaffolded drills for Algebra.
+            Fast-tracks advanced problem sets in Science and Mathematics; provides scaffolded drills for Algebra.
           </p>
         </div>
 
@@ -189,9 +189,9 @@ export const LearningPace: React.FC = () => {
             </p>
           </div>
           <div className="p-3.5 rounded-xl bg-[#171F3A] border border-white/5 space-y-1">
-            <p className="font-bold text-[#10B981]">Physics Next Step:</p>
+            <p className="font-bold text-[#10B981]">Science Next Step:</p>
             <p className="text-slate-300">
-              88% mastery verified in spherical mirrors. Recommended to advance directly to Snell's Law and Total Internal Reflection.
+              88% mastery verified in spherical mirrors & refraction. Recommended to advance directly to Snell's Law and Total Internal Reflection.
             </p>
           </div>
         </div>

@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { studyMaterialsApi } from '../../lib/api';
 import {
   BookOpen,
   Download,
@@ -71,7 +72,7 @@ export const StudyMaterials: React.FC = () => {
   const [downloadSuccessToast, setDownloadSuccessToast] = useState<string | null>(null);
 
   // Curated Karnataka SSLC Class 10 Textbooks
-  const textbooks: Textbook[] = [
+  const [textbooks, setTextbooks] = useState<Textbook[]>([
     {
       id: 'tb-math-10',
       title: 'Mathematics (Part 1 & 2) - English Medium',
@@ -197,10 +198,10 @@ export const StudyMaterials: React.FC = () => {
         { number: 3, title: 'गिल्लू (महादेवी वर्मा)', pages: '23-34' }
       ]
     }
-  ];
+  ]);
 
   // Karnataka SSLC Previous Year Question Papers (2020-2024)
-  const questionPapers: QuestionPaper[] = [
+  const [questionPapers, setQuestionPapers] = useState<QuestionPaper[]>([
     {
       id: 'qp-2024-math',
       title: 'SSLC Board Annual Main Exam March/April 2024',
@@ -322,10 +323,10 @@ export const StudyMaterials: React.FC = () => {
       pdfUrl: 'https://kseab.karnataka.gov.in/storage/pdf-files/SSLC_2020_Maths_EM.pdf',
       solutionAvailable: true
     }
-  ];
+  ]);
 
   // Chapter-wise Revision Notes
-  const chapterNotes: ChapterNote[] = [
+  const [chapterNotes, setChapterNotes] = useState<ChapterNote[]>([
     {
       id: 'cn-math-10',
       subject: 'Mathematics',
@@ -410,7 +411,58 @@ export const StudyMaterials: React.FC = () => {
         }
       ]
     }
-  ];
+  ]);
+
+  useEffect(() => {
+    // Hydrate study materials from live MongoDB Atlas backend
+    studyMaterialsApi.getTextbooks().then((tb) => {
+      if (tb && tb.length > 0) {
+        setTextbooks(tb.map((t: any) => ({
+          id: t.id,
+          title: t.title,
+          subject: t.subject,
+          medium: t.medium,
+          academicYear: t.academic_year || t.academicYear,
+          totalChapters: t.total_chapters || t.totalChapters,
+          pdfUrl: t.pdf_url || t.pdfUrl,
+          fileSize: t.file_size || t.fileSize,
+          thumbnail: t.thumbnail,
+          chapters: t.chapters || []
+        })));
+      }
+    }).catch(() => {});
+
+    studyMaterialsApi.getPyqPapers().then((papers) => {
+      if (papers && papers.length > 0) {
+        setQuestionPapers(papers.map((p: any) => ({
+          id: p.id,
+          title: p.title,
+          subject: p.subject,
+          year: p.year,
+          examType: p.exam_type || p.examType,
+          totalMarks: p.total_marks || p.totalMarks,
+          duration: p.duration_hours ? `${p.duration_hours} Hours` : (p.duration || '3 Hours'),
+          pdfUrl: p.pdf_url || p.pdfUrl,
+          solutionAvailable: p.solution_available ?? true
+        })));
+      }
+    }).catch(() => {});
+
+    studyMaterialsApi.getNotes().then((n) => {
+      if (n && n.length > 0) {
+        setChapterNotes(n.map((note: any) => ({
+          id: note.id,
+          subject: note.subject,
+          chapterNo: note.chapter_no || note.chapterNo,
+          chapterTitle: note.chapter_title || note.chapterTitle,
+          summary: note.summary,
+          importantPoints: note.important_points || note.importantPoints || [],
+          formulaeOrTerms: note.formulae_or_terms || note.formulaeOrTerms || [],
+          modelQA: note.model_qa || note.modelQA || []
+        })));
+      }
+    }).catch(() => {});
+  }, []);
 
   const handleDownload = (title: string) => {
     setDownloadSuccessToast(`Downloading official PDF for "${title}"...`);

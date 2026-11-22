@@ -1,0 +1,24 @@
+[
+  {
+    "id": "gap-a2b72a4b",
+    "student_id": "student-10-alex",
+    "subject": "Mathematics",
+    "chapter": "Quadratic Equations",
+    "topic": "Discriminant Calculation",
+    "performanceScore": 30,
+    "severity": "CRITICAL",
+    "identifiedGap": "Difficulty applying core Discriminant Calculation principles when sign rules or inverse transformations are required.",
+    "prerequisiteWeakness": "Negative multiplication rules",
+    "evidence": "Incorrect answer on: 'What is the discriminant of 2x^2 - 4x + 3 = 0?'",
+    "recommendedSequence": [
+      "Step 1: 15-minute conceptual recap of Negative multiplication rules.",
+      "Step 2: Guided practice with immediate feedback on 3 foundational sub-problems.",
+      "Step 3: Self-paced 5-question mastery checkpoint.",
+      "Step 4: Real-time discussion with Nexa AI Tutor."
+    ],
+    "status": "PENDING",
+    "detectedDate": "2026-11-22",
+    "created_at": "2026-11-22T00:14:44.589993+00:00",
+    "_id": "6b0233f43e540b628537159b"
+  }
+]

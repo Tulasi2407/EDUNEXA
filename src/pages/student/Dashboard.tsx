@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { useEduData } from '../../contexts/DataContext';
+import { useLanguage } from '../../contexts/LanguageContext';
 import {
   Sparkles,
   Flame,
@@ -34,6 +35,7 @@ import { WEEKLY_PERFORMANCE_DATA } from '../../data/mockData';
 export const StudentDashboard: React.FC = () => {
   const { user } = useAuth();
   const { subjects, learningGaps, studyPlan, marks, studentXP, streakDays } = useEduData();
+  const { t, language } = useLanguage();
   const navigate = useNavigate();
 
   const unresolvedGaps = learningGaps.filter(g => g.status !== 'RESOLVED');
@@ -45,6 +47,9 @@ export const StudentDashboard: React.FC = () => {
     score: s.currentScore,
   }));
 
+  const welcomeText = language === 'kn' ? 'ಮರಳಿ ಸ್ವಾಗತ' : language === 'hi' ? 'वापसी पर स्वागत है' : 'Welcome back';
+  const gradeBadge = language === 'kn' ? '10ನೇ ತರಗತಿ-A' : language === 'hi' ? 'कक्षा 10-A' : 'Class 10-A';
+
   return (
     <div className="space-y-8">
       {/* 1. Personalized Welcome Header & 3 Core Answers */}
@@ -52,14 +57,18 @@ export const StudentDashboard: React.FC = () => {
         <div className="space-y-1 z-10">
           <div className="flex items-center gap-2">
             <h1 className="text-2xl sm:text-3xl font-extrabold text-white">
-              Welcome back, {user.name.split(' ')[0]}! 👋
+              {welcomeText}, {user.name.split(' ')[0]}! 👋
             </h1>
             <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-[#7657F6]/20 text-[#A78BFA] border border-[#7657F6]/40">
-              Grade 10-A
+              {gradeBadge}
             </span>
           </div>
           <p className="text-xs text-slate-300">
-            You're on an <strong className="text-[#FFC857]">{streakDays}-day learning streak</strong>. Let's conquer your identified prerequisite gaps today!
+            {language === 'kn'
+              ? `ನೀವು ${streakDays}-ದಿನಗಳ ಸತತ ಕಲಿಕೆಯಲ್ಲಿದ್ದೀರಿ. ಇಂದು ನಿಮ್ಮ ಕಲಿಕಾ ನ್ಯೂನತೆಗಳನ್ನು ಸುಧಾರಿಸೋಣ!`
+              : language === 'hi'
+              ? `आप ${streakDays}-दिनों की अध्ययन लकीर पर हैं। आइए आज अपनी अध्ययन कमियों को दूर करें!`
+              : `You're on an ${streakDays}-day learning streak. Let's conquer your identified prerequisite gaps today!`}
           </p>
         </div>
 
@@ -69,26 +78,26 @@ export const StudentDashboard: React.FC = () => {
             className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#7657F6] hover:bg-[#6442E8] text-xs font-bold text-white shadow-glow-primary transition-all hover:scale-105"
           >
             <Sparkles className="w-3.5 h-3.5 text-[#FFC857]" />
-            <span>AI Gap Finder</span>
+            <span>{t('nav.gapFinder', 'AI Gap Finder')}</span>
           </button>
           <button
             onClick={() => navigate('/student/practice')}
             className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#EF4444]/20 hover:bg-[#EF4444]/30 border border-[#EF4444]/40 text-[#EF4444] text-xs font-bold transition-colors"
           >
-            <span>🎯 Practice Drills</span>
+            <span>🎯 {t('nav.practice', 'Practice Drills')}</span>
           </button>
           <button
             onClick={() => navigate('/student/pace')}
             className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold text-white transition-colors"
           >
-            <span>⚙️ Learning Pace</span>
+            <span>⚙️ {t('nav.pace', 'Learning Pace')}</span>
           </button>
           <button
             onClick={() => navigate('/student/tutor')}
             className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold text-white transition-colors"
           >
             <Bot className="w-3.5 h-3.5 text-[#A78BFA]" />
-            <span>Nexa AI</span>
+            <span>{t('nav.tutor', 'Nexa AI')}</span>
           </button>
         </div>
       </div>

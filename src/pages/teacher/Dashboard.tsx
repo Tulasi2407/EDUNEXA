@@ -56,7 +56,7 @@ export const TeacherDashboard: React.FC = () => {
             Welcome, {user.name}
           </h1>
           <p className="text-xs text-slate-300 mt-1">
-            Monitoring Grade 10-A & Grade 9-B. 2 students flagged today with foundational prerequisite gaps.
+            Monitoring Class 10-A & Class 10-B (Karnataka SSLC). 2 students flagged today with foundational prerequisite gaps.
           </p>
         </div>
 

@@ -1,0 +1,323 @@
+[
+  {
+    "_id": "6b0202b9c0b4427ce8fdc963",
+    "student_id": "student-10-alex",
+    "completedHours": 0.0,
+    "dailyGoalHours": 3.0,
+    "examDate": "2026-12-05",
+    "id": "plan-bdfa75b7",
+    "tasks": [
+      {
+        "id": "task-plan-1",
+        "day": "Monday",
+        "timeSlot": "04:30 PM - 05:30 PM",
+        "subject": "Science",
+        "topic": "Science: Prerequisite Remediation & SSLC Drill",
+        "type": "PREREQUISITE_FIX",
+        "durationMinutes": 60,
+        "completed": false,
+        "priority": "HIGH"
+      },
+      {
+        "id": "task-plan-2",
+        "day": "Monday",
+        "timeSlot": "05:45 PM - 06:45 PM",
+        "subject": "Mathematics",
+        "topic": "Mathematics: Chapter Concept Mastery",
+        "type": "CONCEPT_REVIEW",
+        "durationMinutes": 60,
+        "completed": false,
+        "priority": "MEDIUM"
+      },
+      {
+        "id": "task-plan-3",
+        "day": "Monday",
+        "timeSlot": "07:30 PM - 08:30 PM",
+        "subject": "Science",
+        "topic": "Science: Chapter Concept Mastery",
+        "type": "PRACTICE_QUIZ",
+        "durationMinutes": 60,
+        "completed": false,
+        "priority": "HIGH"
+      },
+      {
+        "id": "task-plan-4",
+        "day": "Monday",
+        "timeSlot": "09:00 PM - 09:45 PM",
+        "subject": "Mathematics",
+        "topic": "Mathematics: Chapter Concept Mastery",
+        "type": "ACTIVE_RECALL",
+        "durationMinutes": 45,
+        "completed": false,
+        "priority": "MEDIUM"
+      },
+      {
+        "id": "task-plan-5",
+        "day": "Tuesday",
+        "timeSlot": "04:30 PM - 05:30 PM",
+        "subject": "Science",
+        "topic": "Science: Prerequisite Remediation & SSLC Drill",
+        "type": "PREREQUISITE_FIX",
+        "durationMinutes": 60,
+        "completed": false,
+        "priority": "HIGH"
+      },
+      {
+        "id": "task-plan-6",
+        "day": "Tuesday",
+        "timeSlot": "05:45 PM - 06:45 PM",
+        "subject": "Mathematics",
+        "topic": "Mathematics: Chapter Concept Mastery",
+        "type": "CONCEPT_REVIEW",
+        "durationMinutes": 60,
+        "completed": false,
+        "priority": "MEDIUM"
+      },
+      {
+        "id": "task-plan-7",
+        "day": "Tuesday",
+        "timeSlot": "07:30 PM - 08:30 PM",
+        "subject": "Science",
+        "topic": "Science: Chapter Concept Mastery",
+        "type": "PRACTICE_QUIZ",
+        "durationMinutes": 60,
+        "completed": false,
+        "priority": "HIGH"
+      },
+      {
+        "id": "task-plan-8",
+        "day": "Tuesday",
+        "timeSlot": "09:00 PM - 09:45 PM",
+        "subject": "Mathematics",
+        "topic": "Mathematics: Chapter Concept Mastery",
+        "type": "ACTIVE_RECALL",
+        "durationMinutes": 45,
+        "completed": false,
+        "priority": "MEDIUM"
+      },
+      {
+        "id": "task-plan-9",
+        "day": "Wednesday",
+        "timeSlot": "04:30 PM - 05:30 PM",
+        "subject": "Science",
+        "topic": "Science: Prerequisite Remediation & SSLC Drill",
+        "type": "PREREQUISITE_FIX",
+        "durationMinutes": 60,
+        "completed": false,
+        "priority": "HIGH"
+      },
+      {
+        "id": "task-plan-10",
+        "day": "Wednesday",
+        "timeSlot": "05:45 PM - 06:45 PM",
+        "subject": "Mathematics",
+        "topic": "Mathematics: Chapter Concept Mastery",
+        "type": "CONCEPT_REVIEW",
+        "durationMinutes": 60,
+        "completed": false,
+        "priority": "MEDIUM"
+      },
+      {
+        "id": "task-plan-11",
+        "day": "Wednesday",
+        "timeSlot": "07:30 PM - 08:30 PM",
+        "subject": "Science",
+        "topic": "Science: Chapter Concept Mastery",
+        "type": "PRACTICE_QUIZ",
+        "durationMinutes": 60,
+        "completed": false,
+        "priority": "HIGH"
+      },
+      {
+        "id": "task-plan-12",
+        "day": "Wednesday",
+        "timeSlot": "09:00 PM - 09:45 PM",
+        "subject": "Mathematics",
+        "topic": "Mathematics: Chapter Concept Mastery",
+        "type": "ACTIVE_RECALL",
+        "durationMinutes": 45,
+        "completed": false,
+        "priority": "MEDIUM"
+      },
+      {
+        "id": "task-plan-13",
+        "day": "Thursday",
+        "timeSlot": "04:30 PM - 05:30 PM",
+        "subject": "Science",
+        "topic": "Science: Prerequisite Remediation & SSLC Drill",
+        "type": "PREREQUISITE_FIX",
+        "durationMinutes": 60,
+        "completed": false,
+        "priority": "HIGH"
+      },
+      {
+        "id": "task-plan-14",
+        "day": "Thursday",
+        "timeSlot": "05:45 PM - 06:45 PM",
+        "subject": "Mathematics",
+        "topic": "Mathematics: Chapter Concept Mastery",
+        "type": "CONCEPT_REVIEW",
+        "durationMinutes": 60,
+        "completed": false,
+        "priority": "MEDIUM"
+      },
+      {
+        "id": "task-plan-15",
+        "day": "Thursday",
+        "timeSlot": "07:30 PM - 08:30 PM",
+        "subject": "Science",
+        "topic": "Science: Chapter Concept Mastery",
+        "type": "PRACTICE_QUIZ",
+        "durationMinutes": 60,
+        "completed": false,
+        "priority": "HIGH"
+      },
+      {
+        "id": "task-plan-16",
+        "day": "Thursday",
+        "timeSlot": "09:00 PM - 09:45 PM",
+        "subject": "Mathematics",
+        "topic": "Mathematics: Chapter Concept Mastery",
+        "type": "ACTIVE_RECALL",
+        "durationMinutes": 45,
+        "completed": false,
+        "priority": "MEDIUM"
+      },
+      {
+        "id": "task-plan-17",
+        "day": "Friday",
+        "timeSlot": "04:30 PM - 05:30 PM",
+        "subject": "Science",
+        "topic": "Science: Prerequisite Remediation & SSLC Drill",
+        "type": "PREREQUISITE_FIX",
+        "durationMinutes": 60,
+        "completed": false,
+        "priority": "HIGH"
+      },
+      {
+        "id": "task-plan-18",
+        "day": "Friday",
+        "timeSlot": "05:45 PM - 06:45 PM",
+        "subject": "Mathematics",
+        "topic": "Mathematics: Chapter Concept Mastery",
+        "type": "CONCEPT_REVIEW",
+        "durationMinutes": 60,
+        "completed": false,
+        "priority": "MEDIUM"
+      },
+      {
+        "id": "task-plan-19",
+        "day": "Friday",
+        "timeSlot": "07:30 PM - 08:30 PM",
+        "subject": "Science",
+        "topic": "Science: Chapter Concept Mastery",
+        "type": "PRACTICE_QUIZ",
+        "durationMinutes": 60,
+        "completed": false,
+        "priority": "HIGH"
+      },
+      {
+        "id": "task-plan-20",
+        "day": "Friday",
+        "timeSlot": "09:00 PM - 09:45 PM",
+        "subject": "Mathematics",
+        "topic": "Mathematics: Chapter Concept Mastery",
+        "type": "ACTIVE_RECALL",
+        "durationMinutes": 45,
+        "completed": false,
+        "priority": "MEDIUM"
+      },
+      {
+        "id": "task-plan-21",
+        "day": "Saturday",
+        "timeSlot": "08:30 AM - 10:00 AM",
+        "subject": "Science",
+        "topic": "Science: Chapter Concept Mastery",
+        "type": "CONCEPT_REVIEW",
+        "durationMinutes": 90,
+        "completed": false,
+        "priority": "HIGH"
+      },
+      {
+        "id": "task-plan-22",
+        "day": "Saturday",
+        "timeSlot": "10:30 AM - 12:00 PM",
+        "subject": "Mathematics",
+        "topic": "Mathematics: Chapter Concept Mastery",
+        "type": "PRACTICE_QUIZ",
+        "durationMinutes": 90,
+        "completed": false,
+        "priority": "HIGH"
+      },
+      {
+        "id": "task-plan-23",
+        "day": "Saturday",
+        "timeSlot": "04:00 PM - 05:30 PM",
+        "subject": "Science",
+        "topic": "Science: Prerequisite Remediation & SSLC Drill",
+        "type": "PREREQUISITE_FIX",
+        "durationMinutes": 90,
+        "completed": false,
+        "priority": "HIGH"
+      },
+      {
+        "id": "task-plan-24",
+        "day": "Saturday",
+        "timeSlot": "06:30 PM - 08:00 PM",
+        "subject": "Mathematics",
+        "topic": "Mathematics: Chapter Concept Mastery",
+        "type": "ACTIVE_RECALL",
+        "durationMinutes": 90,
+        "completed": false,
+        "priority": "MEDIUM"
+      },
+      {
+        "id": "task-plan-25",
+        "day": "Sunday",
+        "timeSlot": "08:30 AM - 10:00 AM",
+        "subject": "Science",
+        "topic": "Science: Chapter Concept Mastery",
+        "type": "CONCEPT_REVIEW",
+        "durationMinutes": 90,
+        "completed": false,
+        "priority": "HIGH"
+      },
+      {
+        "id": "task-plan-26",
+        "day": "Sunday",
+        "timeSlot": "10:30 AM - 12:00 PM",
+        "subject": "Mathematics",
+        "topic": "Mathematics: Chapter Concept Mastery",
+        "type": "PRACTICE_QUIZ",
+        "durationMinutes": 90,
+        "completed": false,
+        "priority": "HIGH"
+      },
+      {
+        "id": "task-plan-27",
+        "day": "Sunday",
+        "timeSlot": "04:00 PM - 05:30 PM",
+        "subject": "Science",
+        "topic": "Science: Prerequisite Remediation & SSLC Drill",
+        "type": "PREREQUISITE_FIX",
+        "durationMinutes": 90,
+        "completed": false,
+        "priority": "HIGH"
+      },
+      {
+        "id": "task-plan-28",
+        "day": "Sunday",
+        "timeSlot": "06:30 PM - 08:00 PM",
+        "subject": "Mathematics",
+        "topic": "Mathematics: Chapter Concept Mastery",
+        "type": "ACTIVE_RECALL",
+        "durationMinutes": 90,
+        "completed": false,
+        "priority": "MEDIUM"
+      }
+    ],
+    "title": "AI Prerequisite Remediation Timetable (3.0h/day)",
+    "updated_at": "2026-11-21T23:50:04.376989+00:00",
+    "weeklyTargetHours": 21.0
+  }
+]

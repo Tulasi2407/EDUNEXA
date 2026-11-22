@@ -5,6 +5,8 @@ import { Landing } from '../pages/Landing';
 import { Login } from '../pages/Login';
 import { Register } from '../pages/Register';
 import { Welcome } from '../pages/Welcome';
+import { useAuth } from '../contexts/AuthContext';
+import { UserRole } from '../types';
 
 // Student Pages
 import { StudentDashboard } from '../pages/student/Dashboard';
@@ -46,6 +48,23 @@ import { AdminClasses } from '../pages/admin/Classes';
 import { AdminReports } from '../pages/admin/Reports';
 import { AdminSettings } from '../pages/admin/Settings';
 
+const ProtectedRoute: React.FC<{ allowedRoles: UserRole[]; children: React.ReactNode }> = ({ allowedRoles, children }) => {
+  const { user, role, isAuthenticated } = useAuth();
+  if (!isAuthenticated || !user || !user.id || !user.email) {
+    return <Navigate to="/login" replace />;
+  }
+  if (!allowedRoles.includes(role)) {
+    const roleRoutes: Record<UserRole, string> = {
+      STUDENT: '/student',
+      TEACHER: '/teacher',
+      PARENT: '/parent',
+      ADMIN: '/admin'
+    };
+    return <Navigate to={roleRoutes[role] || '/login'} replace />;
+  }
+  return <>{children}</>;
+};
+
 export const AppRoutes: React.FC = () => {
   return (
     <Routes>
@@ -56,7 +75,11 @@ export const AppRoutes: React.FC = () => {
       <Route path="/welcome" element={<Welcome />} />
 
       {/* Student Portal */}
-      <Route path="/student" element={<AppLayout />}>
+      <Route path="/student" element={
+        <ProtectedRoute allowedRoles={['STUDENT', 'ADMIN']}>
+          <AppLayout />
+        </ProtectedRoute>
+      }>
         <Route index element={<StudentDashboard />} />
         <Route path="gap-finder" element={<LearningGapFinder />} />
         <Route path="planner" element={<StudyPlanner />} />
@@ -73,7 +96,11 @@ export const AppRoutes: React.FC = () => {
       </Route>
 
       {/* Teacher Portal */}
-      <Route path="/teacher" element={<AppLayout />}>
+      <Route path="/teacher" element={
+        <ProtectedRoute allowedRoles={['TEACHER', 'ADMIN']}>
+          <AppLayout />
+        </ProtectedRoute>
+      }>
         <Route index element={<TeacherDashboard />} />
         <Route path="students" element={<TeacherStudents />} />
         <Route path="attendance" element={<TeacherAttendance />} />
@@ -86,7 +113,11 @@ export const AppRoutes: React.FC = () => {
       </Route>
 
       {/* Parent Portal */}
-      <Route path="/parent" element={<AppLayout />}>
+      <Route path="/parent" element={
+        <ProtectedRoute allowedRoles={['PARENT', 'ADMIN']}>
+          <AppLayout />
+        </ProtectedRoute>
+      }>
         <Route index element={<ParentDashboard />} />
         <Route path="progress" element={<ParentProgress />} />
         <Route path="attendance" element={<ParentAttendance />} />
@@ -95,7 +126,11 @@ export const AppRoutes: React.FC = () => {
       </Route>
 
       {/* Admin Portal */}
-      <Route path="/admin" element={<AppLayout />}>
+      <Route path="/admin" element={
+        <ProtectedRoute allowedRoles={['ADMIN']}>
+          <AppLayout />
+        </ProtectedRoute>
+      }>
         <Route index element={<AdminDashboard />} />
         <Route path="users" element={<AdminUsers />} />
         <Route path="classes" element={<AdminClasses />} />

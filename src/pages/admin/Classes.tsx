@@ -3,10 +3,10 @@ import { FolderTree, Plus, BookOpen, Users } from 'lucide-react';
 
 export const AdminClasses: React.FC = () => {
   const classes = [
-    { name: 'Grade 10 - Section A', students: 28, head: 'Ms. Sarah Chen', room: 'Lab 4' },
-    { name: 'Grade 10 - Section B', students: 30, head: 'Dr. Marcus Vance', room: 'Hall 2' },
-    { name: 'Grade 9 - Section A', students: 32, head: 'Mrs. Anita Rao', room: 'Room 101' },
-    { name: 'Grade 11 - Physics Core', students: 24, head: 'Prof. Alan Wright', room: 'Optics Lab' },
+    { name: 'Class 10 - Section A', students: 28, head: 'Ms. Sarah Chen', room: 'Room 101' },
+    { name: 'Class 10 - Section B', students: 30, head: 'Dr. Marcus Vance', room: 'Room 102' },
+    { name: 'Class 10 - Section C', students: 32, head: 'Mrs. Anita Rao', room: 'Room 103' },
+    { name: 'Class 10 - Section D (Kannada Medium)', students: 26, head: 'ಶ್ರೀ ರಮೇಶ್ ಭಟ್', room: 'Room 104' },
   ];
 
   return (

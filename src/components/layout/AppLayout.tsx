@@ -3,10 +3,11 @@ import { Outlet } from 'react-router-dom';
 import { Sidebar } from './Sidebar';
 import { TopNav } from './TopNav';
 import { ToastContainer } from '../ui/ToastContainer';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 export const AppLayout: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [language, setLanguage] = useState<'en' | 'hi' | 'kn'>('en');
+  const { language, setLanguage } = useLanguage();
 
   return (
     <div className="min-h-screen bg-[#0B1020] text-slate-100 flex flex-col">

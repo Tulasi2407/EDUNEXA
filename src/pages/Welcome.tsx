@@ -1,36 +1,29 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
+import { useNavigate, Navigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { EduNexaLogo } from '../components/common/EduNexaLogo';
+import { UserAvatar } from '../components/common/UserAvatar';
 import {
   Sparkles,
   ArrowRight,
   BookOpen,
-  GraduationCap,
-  CalendarDays,
   Bot,
-  Zap,
-  CheckCircle2,
   Flame,
-  Award
+  CheckCircle2,
+  LogOut,
+  Users,
+  BarChart3,
+  ShieldCheck,
+  GraduationCap
 } from 'lucide-react';
 
 export const Welcome: React.FC = () => {
   const navigate = useNavigate();
-  const { user, role } = useAuth();
-  const [secondsLeft, setSecondsLeft] = useState(6);
-  const [autoRedirectPaused, setAutoRedirectPaused] = useState(false);
+  const { user, role, isAuthenticated, logout } = useAuth();
 
-  useEffect(() => {
-    if (autoRedirectPaused) return;
-    if (secondsLeft <= 1) {
-      handleProceed();
-      return;
-    }
-    const timer = setInterval(() => {
-      setSecondsLeft((prev) => prev - 1);
-    }, 1000);
-    return () => clearInterval(timer);
-  }, [secondsLeft, autoRedirectPaused]);
+  if (!isAuthenticated || !user || !user.id || !user.email) {
+    return <Navigate to="/login" replace />;
+  }
 
   const handleProceed = (targetPath?: string) => {
     if (targetPath) {
@@ -44,60 +37,214 @@ export const Welcome: React.FC = () => {
     else navigate('/student');
   };
 
+  const getCardsForRole = () => {
+    if (role === 'TEACHER') {
+      return [
+        {
+          title: 'Class Gap Analytics',
+          desc: 'Class-wide prerequisite diagnostic heatmaps & gap clusters',
+          path: '/teacher/analytics',
+          icon: BarChart3,
+          color: '#3B82F6',
+          bg: 'bg-[#3B82F6]/20',
+          textColor: 'text-[#60A5FA]',
+          borderHover: 'hover:border-[#3B82F6]'
+        },
+        {
+          title: 'Student Roster',
+          desc: 'Monitor Class 10 student progress, attendance & mastery',
+          path: '/teacher/students',
+          icon: Users,
+          color: '#10B981',
+          bg: 'bg-[#10B981]/20',
+          textColor: 'text-[#34D399]',
+          borderHover: 'hover:border-[#10B981]'
+        },
+        {
+          title: 'Quiz & Test Builder',
+          desc: 'Create KSEAB blueprint-aligned assessments & practice drills',
+          path: '/teacher/quiz-builder',
+          icon: GraduationCap,
+          color: '#FFC857',
+          bg: 'bg-[#FFC857]/20',
+          textColor: 'text-[#FFC857]',
+          borderHover: 'hover:border-[#FFC857]'
+        }
+      ];
+    }
+    if (role === 'PARENT') {
+      return [
+        {
+          title: 'Academic Progress',
+          desc: 'Plain-language progress summaries and mastery breakdown',
+          path: '/parent/progress',
+          icon: Sparkles,
+          color: '#7657F6',
+          bg: 'bg-[#7657F6]/20',
+          textColor: 'text-[#A78BFA]',
+          borderHover: 'hover:border-[#7657F6]'
+        },
+        {
+          title: 'Attendance Alerts',
+          desc: 'Real-time school attendance logs & leave notifications',
+          path: '/parent/attendance',
+          icon: ShieldCheck,
+          color: '#10B981',
+          bg: 'bg-[#10B981]/20',
+          textColor: 'text-[#34D399]',
+          borderHover: 'hover:border-[#10B981]'
+        },
+        {
+          title: 'Teacher Notices',
+          desc: 'Direct announcements & upcoming board exam milestones',
+          path: '/parent/communication',
+          icon: BookOpen,
+          color: '#FFC857',
+          bg: 'bg-[#FFC857]/20',
+          textColor: 'text-[#FFC857]',
+          borderHover: 'hover:border-[#FFC857]'
+        }
+      ];
+    }
+    if (role === 'ADMIN') {
+      return [
+        {
+          title: 'User Management',
+          desc: 'Manage Class 10 students, teachers, parents and roles',
+          path: '/admin/users',
+          icon: Users,
+          color: '#FFC857',
+          bg: 'bg-[#FFC857]/20',
+          textColor: 'text-[#FFC857]',
+          borderHover: 'hover:border-[#FFC857]'
+        },
+        {
+          title: 'Class & Sections',
+          desc: 'Class 10 section configurations, allocations & teachers',
+          path: '/admin/classes',
+          icon: BarChart3,
+          color: '#3B82F6',
+          bg: 'bg-[#3B82F6]/20',
+          textColor: 'text-[#60A5FA]',
+          borderHover: 'hover:border-[#3B82F6]'
+        },
+        {
+          title: 'System Reports',
+          desc: 'Atlas database sync status, exam readiness & audit logs',
+          path: '/admin/reports',
+          icon: Sparkles,
+          color: '#7657F6',
+          bg: 'bg-[#7657F6]/20',
+          textColor: 'text-[#A78BFA]',
+          borderHover: 'hover:border-[#7657F6]'
+        }
+      ];
+    }
+    // Default: STUDENT
+    return [
+      {
+        title: 'AI Gap Finder',
+        desc: 'Detect root cause weaknesses & prerequisite dependency graphs',
+        path: '/student/gap-finder',
+        icon: Sparkles,
+        color: '#7657F6',
+        bg: 'bg-[#7657F6]/20',
+        textColor: 'text-[#A78BFA]',
+        borderHover: 'hover:border-[#7657F6]'
+      },
+      {
+        title: 'Nexa AI Tutor',
+        desc: '5 learning modes in English, Kannada & Hindi with step-by-step guidance',
+        path: '/student/tutor',
+        icon: Bot,
+        color: '#FFC857',
+        bg: 'bg-[#FFC857]/20',
+        textColor: 'text-[#FFC857]',
+        borderHover: 'hover:border-[#FFC857]'
+      },
+      {
+        title: 'Study Materials',
+        desc: 'Official KTBS Textbooks, PYQs (2020-2024), Solutions & Notes',
+        path: '/student/study-materials',
+        icon: BookOpen,
+        color: '#10B981',
+        bg: 'bg-[#10B981]/20',
+        textColor: 'text-[#34D399]',
+        borderHover: 'hover:border-[#10B981]'
+      }
+    ];
+  };
+
+  const featureCards = getCardsForRole();
+
   return (
     <div className="min-h-screen bg-[#0B1020] flex items-center justify-center p-4">
       {/* Background radial glow */}
       <div className="absolute w-[600px] h-[600px] bg-[#7657F6]/15 rounded-full blur-[160px] pointer-events-none" />
 
       <div className="max-w-2xl w-full bg-[#171F3A] border border-white/10 rounded-2xl p-6 sm:p-10 shadow-2xl relative z-10 space-y-6">
-        {/* Welcome Top Banner */}
-        <div className="flex flex-col sm:flex-row items-center sm:items-start gap-5 border-b border-white/5 pb-6">
-          <img
-            src={user.avatar}
-            alt={user.name}
-            className="w-20 h-20 rounded-2xl object-cover ring-4 ring-[#7657F6]/40 shadow-glow-primary shrink-0"
+        {/* Top bar with Logo & Logout */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-white/5">
+          <EduNexaLogo
+            size="sm"
+            subtitle="Karnataka SSLC Class 10"
+            onClick={() => navigate('/')}
           />
+
+          <div className="flex items-center gap-2">
+            <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-[#7657F6]/20 text-[#A78BFA] border border-[#7657F6]/30 uppercase">
+              {role} Portal
+            </span>
+
+            <button
+              type="button"
+              onClick={() => {
+                logout();
+                navigate('/login');
+              }}
+              className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-white px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 transition-colors cursor-pointer"
+            >
+              <LogOut className="w-3.5 h-3.5" />
+              <span>Sign Out</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Welcome Top Banner */}
+        <div className="flex flex-col sm:flex-row items-center sm:items-start gap-5">
+          <UserAvatar name={user.name} role={role} size="2xl" rounded="2xl" />
           <div className="text-center sm:text-left space-y-1.5 flex-1">
-            <div className="flex items-center justify-center sm:justify-start gap-2">
-              <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-[#7657F6]/20 text-[#A78BFA] border border-[#7657F6]/30 uppercase">
-                {role} Portal
-              </span>
-              <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-[#FFC857]/20 text-[#FFC857] border border-[#FFC857]/30">
-                Karnataka SSLC Class 10
-              </span>
-            </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold text-white">
-              Welcome back, {user.name}! 👋
+              Welcome, {user.name}! 👋
             </h1>
             <p className="text-xs text-slate-300">
-              Your personalized AI learning workspace is loaded and synchronized.
+              Your personalized SSLC learning workspace is live and connected directly to MongoDB Atlas.
+            </p>
+            <p className="text-[11px] text-slate-400">
+              Signed in as: <strong className="text-slate-200">{user.email}</strong>
             </p>
           </div>
         </div>
 
-        {/* SSLC Exam Countdown Widget */}
+        {/* SSLC Exam Target Widget */}
         <div className="p-4 rounded-xl bg-gradient-to-r from-[#111831] via-[#1A2342] to-[#111831] border border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-[#FFC857]/20 flex items-center justify-center shrink-0">
               <Flame className="w-5 h-5 text-[#FFC857]" />
             </div>
             <div>
-              <p className="text-xs font-bold text-white">Karnataka SSLC Board Exam 2025</p>
-              <p className="text-[11px] text-slate-400">Target score: 95%+ Distinction across all 6 subjects</p>
+              <p className="text-xs font-bold text-white">Karnataka SSLC Board Exam Preparation</p>
+              <p className="text-[11px] text-slate-400">Targeting Distinction (95%+) in KSEAB State Board Exams</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
             <div className="text-center px-3 py-1.5 rounded-lg bg-[#0B1020] border border-white/5">
-              <span className="text-base font-extrabold text-white">64</span>
-              <span className="block text-[9px] text-slate-400 uppercase">Days</span>
+              <span className="text-base font-extrabold text-white">Class 10</span>
+              <span className="block text-[9px] text-slate-400 uppercase">Karnataka</span>
             </div>
             <div className="text-center px-3 py-1.5 rounded-lg bg-[#0B1020] border border-white/5">
-              <span className="text-base font-extrabold text-[#A78BFA]">14</span>
-              <span className="block text-[9px] text-slate-400 uppercase">Hours</span>
-            </div>
-            <div className="text-center px-3 py-1.5 rounded-lg bg-[#0B1020] border border-white/5">
-              <span className="text-base font-extrabold text-[#FFC857]">32</span>
-              <span className="block text-[9px] text-slate-400 uppercase">Mins</span>
+              <span className="text-base font-extrabold text-[#A78BFA]">6</span>
+              <span className="block text-[9px] text-slate-400 uppercase">Subjects</span>
             </div>
           </div>
         </div>
@@ -105,74 +252,46 @@ export const Welcome: React.FC = () => {
         {/* Quick Launch Recommendations */}
         <div className="space-y-3">
           <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
-            Recommended Starting Points for SSLC Class 10:
+            Choose Your Starting Point (Click to Open Directly):
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <button
-              onClick={() => handleProceed('/student/gap-finder')}
-              className="p-3.5 rounded-xl bg-[#111831] hover:bg-[#1A2342] border border-white/5 hover:border-[#7657F6]/50 text-left transition-all group"
-            >
-              <div className="w-8 h-8 rounded-lg bg-[#7657F6]/20 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
-                <Sparkles className="w-4 h-4 text-[#A78BFA]" />
-              </div>
-              <p className="text-xs font-bold text-white group-hover:text-[#A78BFA] transition-colors">
-                AI Gap Finder
-              </p>
-              <p className="text-[10px] text-slate-400 mt-0.5">
-                Detect root cause weaknesses & concept graphs
-              </p>
-            </button>
-
-            <button
-              onClick={() => handleProceed('/student/tutor')}
-              className="p-3.5 rounded-xl bg-[#111831] hover:bg-[#1A2342] border border-white/5 hover:border-[#7657F6]/50 text-left transition-all group"
-            >
-              <div className="w-8 h-8 rounded-lg bg-[#FFC857]/20 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
-                <Bot className="w-4 h-4 text-[#FFC857]" />
-              </div>
-              <p className="text-xs font-bold text-white group-hover:text-[#FFC857] transition-colors">
-                Nexa AI Tutor
-              </p>
-              <p className="text-[10px] text-slate-400 mt-0.5">
-                5 explanation modes in English, Kannada & Hindi
-              </p>
-            </button>
-
-            <button
-              onClick={() => handleProceed('/student/study-materials')}
-              className="p-3.5 rounded-xl bg-[#111831] hover:bg-[#1A2342] border border-white/5 hover:border-[#7657F6]/50 text-left transition-all group"
-            >
-              <div className="w-8 h-8 rounded-lg bg-[#10B981]/20 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
-                <BookOpen className="w-4 h-4 text-[#34D399]" />
-              </div>
-              <p className="text-xs font-bold text-white group-hover:text-[#34D399] transition-colors">
-                Study Materials
-              </p>
-              <p className="text-[10px] text-slate-400 mt-0.5">
-                KSEAB Textbooks, PYQs (2020-2024) & Notes
-              </p>
-            </button>
+            {featureCards.map((card) => {
+              const Icon = card.icon;
+              return (
+                <button
+                  key={card.title}
+                  type="button"
+                  onClick={() => handleProceed(card.path)}
+                  className={`p-3.5 rounded-xl bg-[#111831] hover:bg-[#1A2342] border border-white/5 ${card.borderHover} text-left transition-all group cursor-pointer`}
+                >
+                  <div className={`w-8 h-8 rounded-lg ${card.bg} flex items-center justify-center mb-2 group-hover:scale-110 transition-transform`}>
+                    <Icon className={`w-4 h-4 ${card.textColor}`} />
+                  </div>
+                  <p className={`text-xs font-bold text-white group-hover:${card.textColor} transition-colors`}>
+                    {card.title}
+                  </p>
+                  <p className="text-[10px] text-slate-400 mt-0.5 line-clamp-2">
+                    {card.desc}
+                  </p>
+                </button>
+              );
+            })}
           </div>
         </div>
 
-        {/* Action / Auto-redirect Footer */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-3 border-t border-white/5">
+        {/* Action Footer */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-white/5">
           <div className="flex items-center gap-2 text-xs text-slate-400">
-            <span>Auto-entering dashboard in</span>
-            <span className="font-extrabold text-[#FFC857]">{secondsLeft}s</span>
-            <button
-              onClick={() => setAutoRedirectPaused(!autoRedirectPaused)}
-              className="text-[10px] underline hover:text-white ml-1"
-            >
-              {autoRedirectPaused ? 'Resume countdown' : 'Pause'}
-            </button>
+            <CheckCircle2 className="w-4 h-4 text-[#10B981]" />
+            <span>MongoDB Atlas persistence active</span>
           </div>
 
           <button
+            type="button"
             onClick={() => handleProceed()}
             className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-[#7657F6] hover:bg-[#6442E8] text-xs font-bold text-white shadow-glow-primary flex items-center justify-center gap-2 transition-all cursor-pointer"
           >
-            <span>Enter Dashboard Now</span>
+            <span>Enter Full Dashboard</span>
             <ArrowRight className="w-4 h-4" />
           </button>
         </div>

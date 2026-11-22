@@ -60,10 +60,40 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return saved ? JSON.parse(saved) : INITIAL_STUDY_PLAN;
   });
 
+  const SSLC_SUBJECT_LIST = ['Kannada', 'English', 'Hindi', 'Mathematics', 'Science', 'Social Science'];
+
   const [attendance, setAttendance] = useState<AttendanceRecord[]>(() => {
-    const saved = localStorage.getItem('edunexa_attendance');
-    return saved ? JSON.parse(saved) : INITIAL_ATTENDANCE;
+    try {
+      const saved = localStorage.getItem('edunexa_attendance_kseab');
+      if (saved) {
+        const parsed: AttendanceRecord[] = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          const hasInvalidSubject = parsed.some(
+            p => !p.subject || !SSLC_SUBJECT_LIST.includes(p.subject)
+          );
+          if (!hasInvalidSubject) {
+            return parsed;
+          }
+        }
+      }
+    } catch (e) {}
+    localStorage.removeItem('edunexa_attendance');
+    localStorage.setItem('edunexa_attendance_kseab', JSON.stringify(INITIAL_ATTENDANCE));
+    return INITIAL_ATTENDANCE;
   });
+
+  // Guard against any non-SSLC subjects persisted in memory or storage
+  useEffect(() => {
+    setAttendance(prev => {
+      const hasInvalid = prev.some(p => !p.subject || !SSLC_SUBJECT_LIST.includes(p.subject));
+      if (hasInvalid) {
+        localStorage.setItem('edunexa_attendance_kseab', JSON.stringify(INITIAL_ATTENDANCE));
+        localStorage.setItem('edunexa_attendance', JSON.stringify(INITIAL_ATTENDANCE));
+        return INITIAL_ATTENDANCE;
+      }
+      return prev;
+    });
+  }, []);
 
   const [marks, setMarks] = useState<MarkRecord[]>(() => {
     const saved = localStorage.getItem('edunexa_marks');
@@ -99,6 +129,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [studyPlan]);
 
   useEffect(() => {
+    localStorage.setItem('edunexa_attendance_kseab', JSON.stringify(attendance));
     localStorage.setItem('edunexa_attendance', JSON.stringify(attendance));
   }, [attendance]);
 

@@ -6,7 +6,7 @@ export const DEMO_USERS: Record<string, User> = {
     name: 'Alex Johnson',
     email: 'alex.johnson@edunexa.ai',
     role: 'STUDENT',
-    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+    avatar: '',
     grade: 'Grade 10',
     section: 'Section A',
   },
@@ -15,7 +15,7 @@ export const DEMO_USERS: Record<string, User> = {
     name: 'Ms. Sarah Chen',
     email: 'sarah.chen@edunexa.ai',
     role: 'TEACHER',
-    avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80',
+    avatar: '',
     department: 'Mathematics & Natural Sciences',
   },
   PARENT: {
@@ -23,7 +23,7 @@ export const DEMO_USERS: Record<string, User> = {
     name: 'Robert Johnson',
     email: 'robert.johnson@edunexa.ai',
     role: 'PARENT',
-    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
+    avatar: '',
     studentId: 'usr_student_01',
     linkedStudentName: 'Alex Johnson',
   },
@@ -32,26 +32,26 @@ export const DEMO_USERS: Record<string, User> = {
     name: 'Dr. Emma Wilson',
     email: 'admin@edunexa.ai',
     role: 'ADMIN',
-    avatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150&auto=format&fit=crop&q=80',
+    avatar: '',
     department: 'Central Academic Administration',
   }
 };
 
 export const INITIAL_SUBJECTS: Subject[] = [
-  { id: 'sub_math', name: 'Mathematics', code: 'MATH-10', color: '#7657F6', teacherName: 'Ms. Sarah Chen', currentScore: 78, totalChapters: 12, completedChapters: 8 },
-  { id: 'sub_phys', name: 'Physics', code: 'PHYS-10', color: '#3B82F6', teacherName: 'Dr. Marcus Vance', currentScore: 84, totalChapters: 10, completedChapters: 7 },
-  { id: 'sub_chem', name: 'Chemistry', code: 'CHEM-10', color: '#10B981', teacherName: 'Mrs. Anita Rao', currentScore: 91, totalChapters: 9, completedChapters: 7 },
-  { id: 'sub_bio', name: 'Biology', code: 'BIOL-10', color: '#EC4899', teacherName: 'Mr. David Lee', currentScore: 88, totalChapters: 11, completedChapters: 9 },
-  { id: 'sub_eng', name: 'English Literature', code: 'ENG-10', color: '#F59E0B', teacherName: 'Ms. Claire Harper', currentScore: 92, totalChapters: 8, completedChapters: 7 },
-  { id: 'sub_cs', name: 'Computer Science', code: 'CS-10', color: '#06B6D4', teacherName: 'Prof. Alan Wright', currentScore: 96, totalChapters: 10, completedChapters: 9 },
+  { id: 'sub_kan', name: 'Kannada', code: 'KAN-10', color: '#10B981', teacherName: 'ಶ್ರೀ ರಮೇಶ್ ಭಟ್', currentScore: 88, totalChapters: 18, completedChapters: 12 },
+  { id: 'sub_eng', name: 'English', code: 'ENG-10', color: '#3B82F6', teacherName: 'Ms. Claire Harper', currentScore: 92, totalChapters: 14, completedChapters: 10 },
+  { id: 'sub_hin', name: 'Hindi', code: 'HIN-10', color: '#F59E0B', teacherName: 'श्रीमती सुनीता शर्मा', currentScore: 85, totalChapters: 12, completedChapters: 8 },
+  { id: 'sub_math', name: 'Mathematics', code: 'MATH-10', color: '#7657F6', teacherName: 'Ms. Sarah Chen', currentScore: 78, totalChapters: 15, completedChapters: 9 },
+  { id: 'sub_sci', name: 'Science', code: 'SCI-10', color: '#06B6D4', teacherName: 'Dr. Marcus Vance', currentScore: 84, totalChapters: 16, completedChapters: 11 },
+  { id: 'sub_soc', name: 'Social Science', code: 'SOC-10', color: '#EC4899', teacherName: 'Mrs. Anita Rao', currentScore: 89, totalChapters: 24, completedChapters: 16 },
 ];
 
 export const DIAGNOSTIC_QUESTIONS: QuizQuestion[] = [
   {
     id: 'q_alg_01',
     subjectId: 'sub_math',
-    chapter: 'Algebra',
-    topic: 'Linear Equations',
+    chapter: 'Algebra & Linear Equations',
+    topic: 'Linear Equations in Two Variables',
     question: 'Solve for x: -3x + 7 = -14',
     options: ['x = 7', 'x = -7', 'x = 21/3', 'x = -2.33'],
     correctIndex: 0,
@@ -62,8 +62,8 @@ export const DIAGNOSTIC_QUESTIONS: QuizQuestion[] = [
   {
     id: 'q_alg_02',
     subjectId: 'sub_math',
-    chapter: 'Algebra',
-    topic: 'Linear Equations',
+    chapter: 'Algebra & Linear Equations',
+    topic: 'Linear Equations in Two Variables',
     question: 'If 4(2x - 3) = -20, what is the value of x?',
     options: ['x = -1', 'x = -4', 'x = 1', 'x = 2'],
     correctIndex: 0,
@@ -74,8 +74,8 @@ export const DIAGNOSTIC_QUESTIONS: QuizQuestion[] = [
   {
     id: 'q_alg_03',
     subjectId: 'sub_math',
-    chapter: 'Algebra',
-    topic: 'Quadratic Equations',
+    chapter: 'Quadratic Equations',
+    topic: 'Roots of Quadratic Equations',
     question: 'What are the roots of x² - 5x + 6 = 0?',
     options: ['x = 2 and x = 3', 'x = -2 and x = -3', 'x = 1 and x = 6', 'x = -1 and x = -6'],
     correctIndex: 0,
@@ -84,10 +84,10 @@ export const DIAGNOSTIC_QUESTIONS: QuizQuestion[] = [
     difficulty: 'MEDIUM'
   },
   {
-    id: 'q_phys_01',
-    subjectId: 'sub_phys',
-    chapter: 'Light & Optics',
-    topic: 'Spherical Mirrors',
+    id: 'q_sci_01',
+    subjectId: 'sub_sci',
+    chapter: 'Light - Reflection and Refraction',
+    topic: 'Spherical Mirrors & Focal Length',
     question: 'According to Cartesian sign convention, the focal length of a concave mirror is always:',
     options: ['Negative', 'Positive', 'Zero', 'Depends on object position'],
     correctIndex: 0,
@@ -96,22 +96,10 @@ export const DIAGNOSTIC_QUESTIONS: QuizQuestion[] = [
     difficulty: 'EASY'
   },
   {
-    id: 'q_phys_02',
-    subjectId: 'sub_phys',
-    chapter: 'Light & Optics',
-    topic: 'Refraction & Snell Law',
-    question: 'When light travels from an optically denser medium to a rarer medium, it bends:',
-    options: ['Away from normal', 'Towards normal', 'Undeviated', 'Reflected completely at all angles'],
-    correctIndex: 0,
-    explanation: 'Speed increases as light enters rarer medium, hence the wavefront bends away from the normal.',
-    prerequisiteConcept: 'Wave speed change at optical boundary',
-    difficulty: 'MEDIUM'
-  },
-  {
-    id: 'q_chem_01',
-    subjectId: 'sub_chem',
-    chapter: 'Chemical Reactions',
-    topic: 'Redox Reactions',
+    id: 'q_sci_02',
+    subjectId: 'sub_sci',
+    chapter: 'Chemical Reactions and Equations',
+    topic: 'Redox Reactions & Oxidation',
     question: 'In the reaction CuO + H₂ → Cu + H₂O, which substance is oxidized?',
     options: ['H₂', 'CuO', 'Cu', 'H₂O'],
     correctIndex: 0,
@@ -120,10 +108,10 @@ export const DIAGNOSTIC_QUESTIONS: QuizQuestion[] = [
     difficulty: 'MEDIUM'
   },
   {
-    id: 'q_bio_01',
-    subjectId: 'sub_bio',
+    id: 'q_sci_03',
+    subjectId: 'sub_sci',
     chapter: 'Life Processes',
-    topic: 'Cellular Respiration',
+    topic: 'Cellular Respiration Pathways',
     question: 'The breakdown of pyruvate to give carbon dioxide, water and energy takes place in:',
     options: ['Mitochondria', 'Cytoplasm', 'Chloroplast', 'Endoplasmic Reticulum'],
     correctIndex: 0,
@@ -132,16 +120,57 @@ export const DIAGNOSTIC_QUESTIONS: QuizQuestion[] = [
     difficulty: 'MEDIUM'
   },
   {
-    id: 'q_math_04',
-    subjectId: 'sub_math',
-    chapter: 'Geometry',
-    topic: 'Triangles & Similarity',
-    question: 'If two triangles are similar, their corresponding sides are:',
-    options: ['In the same ratio (proportional)', 'Equal in length', 'Perpendicular', 'Double in length'],
+    id: 'q_soc_01',
+    subjectId: 'sub_soc',
+    chapter: 'Advent of Europeans to India',
+    topic: 'Carnatic Wars & Battle of Plassey',
+    question: 'Which treaty ended the First Anglo-Maratha War in 1782?',
+    options: ['Salbai Agreement', 'Treaty of Bassein', 'Treaty of Madras', 'Treaty of Srirangapatna'],
     correctIndex: 0,
-    explanation: 'Similar figures have congruent corresponding angles and proportional corresponding side lengths.',
-    prerequisiteConcept: 'Ratios and basic geometric transformations',
+    explanation: 'The Salbai Agreement was signed between the Marathas and the British East India Company in 1782.',
+    prerequisiteConcept: 'Chronology of British expansion treaties in India',
+    difficulty: 'MEDIUM'
+  },
+  {
+    id: 'q_kan_01',
+    subjectId: 'sub_kan',
+    chapter: 'ಯುದ್ಧ (ಕಥೆ)',
+    topic: 'ಕನ್ನಡ ವ್ಯಾಕರಣ - ಸಂಧಿಗಳು',
+    question: '‘ಮಳೆಗಾಲ’ ಪದವು ಈ ಕೆಳಗಿನ ಯಾವ ಸಂಧಿಗೆ ಉದಾಹರಣೆಯಾಗಿದೆ?',
+    options: ['ಆದೇಶ ಸಂಧಿ', 'ಲೋಪ ಸಂಧಿ', 'ಆಗಮ ಸಂಧಿ', 'ಗುಣ ಸಂಧಿ'],
+    correctIndex: 0,
+    explanation: 'ಮಳೆ + ಕಾಲ = ಮಳೆಗಾಲ. ‘ಕ’ ಕಾರಕ್ಕೆ ‘ಗ’ ಕಾರ ಆದೇಶವಾಗಿ ಬಂದಿರುವುದರಿಂದ ಇದು ಆದೇಶ ಸಂಧಿ.',
+    prerequisiteConcept: 'ಕನ್ನಡ ವ್ಯಾಕರಣದ ಮೂಲ ಸಂಧಿ ನಿಯಮಗಳು',
     difficulty: 'EASY'
+  },
+  {
+    id: 'q_eng_01',
+    subjectId: 'sub_eng',
+    chapter: 'A Hero (R. K. Narayan)',
+    topic: 'Reported Speech & Tenses',
+    question: 'Identify the correct passive voice: "Swami caught the burglar."',
+    options: [
+      'The burglar was caught by Swami.',
+      'The burglar is caught by Swami.',
+      'Swami was catching the burglar.',
+      'The burglar has been caught by Swami.'
+    ],
+    correctIndex: 0,
+    explanation: 'Simple past tense active (Subject + V2 + Object) converts to (Object + was/were + V3 + by Subject).',
+    prerequisiteConcept: 'Active to Passive Voice transformation rules',
+    difficulty: 'EASY'
+  },
+  {
+    id: 'q_hin_01',
+    subjectId: 'sub_hin',
+    chapter: 'मातृभूमि (भगवतीचरण वर्मा)',
+    topic: 'हिंदी व्याकरण - समास',
+    question: '‘यथाशक्ति’ में कौन सा समास है?',
+    options: ['अव्ययीभाव समास', 'तत्पुरुष समास', 'द्विगु समास', 'द्वंद्व समास'],
+    correctIndex: 0,
+    explanation: 'जिस समास का पहला पद प्रधान और अव्यय हो, उसे अव्ययीभाव समास कहते हैं (यथा + शक्ति = शक्ति के अनुसार).',
+    prerequisiteConcept: 'समास के भेद और पहचान के नियम',
+    difficulty: 'MEDIUM'
   }
 ];
 
@@ -167,8 +196,8 @@ export const INITIAL_LEARNING_GAPS: LearningGap[] = [
   },
   {
     id: 'gap_02',
-    subject: 'Physics',
-    chapter: 'Light & Optics',
+    subject: 'Science',
+    chapter: 'Light - Reflection and Refraction',
     topic: 'Mirror Formula & Cartesian Sign Conventions',
     performanceScore: 52,
     severity: 'MODERATE',
@@ -185,8 +214,8 @@ export const INITIAL_LEARNING_GAPS: LearningGap[] = [
   },
   {
     id: 'gap_03',
-    subject: 'Chemistry',
-    chapter: 'Chemical Reactions',
+    subject: 'Science',
+    chapter: 'Chemical Reactions and Equations',
     topic: 'Balancing Redox Equations with Oxidation States',
     performanceScore: 64,
     severity: 'MILD',
@@ -211,34 +240,35 @@ export const INITIAL_STUDY_PLAN: StudyPlan = {
   examDate: '2026-12-05',
   tasks: [
     { id: 'st_01', day: 'Monday', timeSlot: '04:30 PM - 05:30 PM', subject: 'Mathematics', topic: 'Negative Integers & 1-Step Equations (Gap Remediation)', type: 'PREREQUISITE_FIX', durationMinutes: 60, completed: true, priority: 'HIGH' },
-    { id: 'st_02', day: 'Monday', timeSlot: '05:45 PM - 06:30 PM', subject: 'Physics', topic: 'Ray Diagrams for Concave Mirrors', type: 'CONCEPT_REVIEW', durationMinutes: 45, completed: true, priority: 'MEDIUM' },
+    { id: 'st_02', day: 'Monday', timeSlot: '05:45 PM - 06:30 PM', subject: 'Science', topic: 'Ray Diagrams for Concave Mirrors', type: 'CONCEPT_REVIEW', durationMinutes: 45, completed: true, priority: 'MEDIUM' },
     { id: 'st_03', day: 'Tuesday', timeSlot: '04:30 PM - 05:15 PM', subject: 'Mathematics', topic: 'Linear Equations with Fractions & Parentheses', type: 'ACTIVE_RECALL', durationMinutes: 45, completed: true, priority: 'HIGH' },
-    { id: 'st_04', day: 'Tuesday', timeSlot: '05:30 PM - 06:15 PM', subject: 'Chemistry', topic: 'Oxidation States & Redox Identification', type: 'CONCEPT_REVIEW', durationMinutes: 45, completed: true, priority: 'MEDIUM' },
+    { id: 'st_04', day: 'Tuesday', timeSlot: '05:30 PM - 06:15 PM', subject: 'Science', topic: 'Oxidation States & Redox Identification', type: 'CONCEPT_REVIEW', durationMinutes: 45, completed: true, priority: 'MEDIUM' },
     { id: 'st_05', day: 'Wednesday', timeSlot: '04:30 PM - 05:00 PM', subject: 'General', topic: 'Active Rest / Brain Recharge', type: 'BREAK', durationMinutes: 30, completed: true, priority: 'LOW' },
-    { id: 'st_06', day: 'Wednesday', timeSlot: '05:00 PM - 06:00 PM', subject: 'Mathematics', topic: 'Speed Drill: Algebra Linear Equations Quiz', type: 'PRACTICE_QUIZ', durationMinutes: 60, completed: true, priority: 'HIGH' },
-    { id: 'st_07', day: 'Thursday', timeSlot: '04:30 PM - 05:30 PM', subject: 'Physics', topic: 'Optics Mirror Formula Numerical Practice', type: 'PREREQUISITE_FIX', durationMinutes: 60, completed: false, priority: 'HIGH' },
-    { id: 'st_08', day: 'Friday', timeSlot: '04:30 PM - 05:30 PM', subject: 'Biology', topic: 'Cell Respiration Pathways & ATP Production', type: 'CONCEPT_REVIEW', durationMinutes: 60, completed: false, priority: 'MEDIUM' },
-    { id: 'st_09', day: 'Saturday', timeSlot: '10:00 AM - 11:30 AM', subject: 'Mathematics', topic: 'Quadratic Equations Factoring Mastery Test', type: 'PRACTICE_QUIZ', durationMinutes: 90, completed: false, priority: 'HIGH' },
-    { id: 'st_10', day: 'Sunday', timeSlot: '03:00 PM - 04:00 PM', subject: 'All Subjects', topic: 'Weekly Flashcard Spaced Repetition', type: 'ACTIVE_RECALL', durationMinutes: 60, completed: false, priority: 'MEDIUM' },
+    { id: 'st_06', day: 'Wednesday', timeSlot: '05:00 PM - 06:00 PM', subject: 'Social Science', topic: 'Advent of Europeans & Treaties Review', type: 'PRACTICE_QUIZ', durationMinutes: 60, completed: true, priority: 'HIGH' },
+    { id: 'st_07', day: 'Thursday', timeSlot: '04:30 PM - 05:30 PM', subject: 'English', topic: 'Reported Speech & Active-Passive Voice Drills', type: 'PREREQUISITE_FIX', durationMinutes: 60, completed: false, priority: 'HIGH' },
+    { id: 'st_08', day: 'Friday', timeSlot: '04:30 PM - 05:30 PM', subject: 'Kannada', topic: 'ಸಿರಿ ಕನ್ನಡ ವ್ಯಾಕರಣ: ಸಂಧಿ ಮತ್ತು ಸಮಾಸಗಳು', type: 'CONCEPT_REVIEW', durationMinutes: 60, completed: false, priority: 'MEDIUM' },
+    { id: 'st_09', day: 'Saturday', timeSlot: '10:00 AM - 11:30 AM', subject: 'Hindi', topic: 'व्याकरण: समास और मुहावरे अभ्यास', type: 'PRACTICE_QUIZ', durationMinutes: 90, completed: false, priority: 'HIGH' },
+    { id: 'st_10', day: 'Sunday', timeSlot: '03:00 PM - 04:00 PM', subject: 'All Subjects', topic: 'Weekly Flashcard Spaced Repetition (KSEAB Blueprint)', type: 'ACTIVE_RECALL', durationMinutes: 60, completed: false, priority: 'MEDIUM' },
   ]
 };
 
 export const INITIAL_ATTENDANCE: AttendanceRecord[] = [
-  { id: 'att_01', studentId: 'usr_student_01', studentName: 'Alex Johnson', date: '2026-11-17', status: 'PRESENT', subject: 'Mathematics' },
-  { id: 'att_02', studentId: 'usr_student_01', studentName: 'Alex Johnson', date: '2026-11-18', status: 'PRESENT', subject: 'Physics' },
-  { id: 'att_03', studentId: 'usr_student_01', studentName: 'Alex Johnson', date: '2026-11-19', status: 'LATE', subject: 'Chemistry' },
-  { id: 'att_04', studentId: 'usr_student_01', studentName: 'Alex Johnson', date: '2026-11-20', status: 'PRESENT', subject: 'Biology' },
-  { id: 'att_05', studentId: 'usr_student_01', studentName: 'Alex Johnson', date: '2026-11-21', status: 'PRESENT', subject: 'Mathematics' },
-  { id: 'att_06', studentId: 'usr_student_02', studentName: 'Maya Patel', date: '2026-11-21', status: 'PRESENT', subject: 'Mathematics' },
-  { id: 'att_07', studentId: 'usr_student_03', studentName: 'Lucas Silva', date: '2026-11-21', status: 'ABSENT', subject: 'Mathematics' },
-  { id: 'att_08', studentId: 'usr_student_04', studentName: 'Chloe Bennett', date: '2026-11-21', status: 'PRESENT', subject: 'Mathematics' },
-  { id: 'att_09', studentId: 'usr_student_05', studentName: 'Aarav Sharma', date: '2026-11-21', status: 'PRESENT', subject: 'Mathematics' },
+  { id: 'att_01', studentId: 'usr_student_01', studentName: 'Alex Johnson', date: '2026-11-17', status: 'PRESENT', subject: 'Kannada' },
+  { id: 'att_02', studentId: 'usr_student_01', studentName: 'Alex Johnson', date: '2026-11-18', status: 'PRESENT', subject: 'English' },
+  { id: 'att_03', studentId: 'usr_student_01', studentName: 'Alex Johnson', date: '2026-11-19', status: 'PRESENT', subject: 'Hindi' },
+  { id: 'att_04', studentId: 'usr_student_01', studentName: 'Alex Johnson', date: '2026-11-20', status: 'LATE', subject: 'Mathematics' },
+  { id: 'att_05', studentId: 'usr_student_01', studentName: 'Alex Johnson', date: '2026-11-21', status: 'PRESENT', subject: 'Science' },
+  { id: 'att_06', studentId: 'usr_student_01', studentName: 'Alex Johnson', date: '2026-11-22', status: 'PRESENT', subject: 'Social Science' },
+  { id: 'att_07', studentId: 'usr_student_02', studentName: 'Maya Patel', date: '2026-11-22', status: 'PRESENT', subject: 'Mathematics' },
+  { id: 'att_08', studentId: 'usr_student_03', studentName: 'Lucas Silva', date: '2026-11-22', status: 'ABSENT', subject: 'Mathematics' },
+  { id: 'att_09', studentId: 'usr_student_04', studentName: 'Chloe Bennett', date: '2026-11-22', status: 'PRESENT', subject: 'Mathematics' },
+  { id: 'att_10', studentId: 'usr_student_05', studentName: 'Aarav Sharma', date: '2026-11-22', status: 'PRESENT', subject: 'Mathematics' },
 ];
 
 export const INITIAL_MARKS: MarkRecord[] = [
   { id: 'mrk_01', studentId: 'usr_student_01', studentName: 'Alex Johnson', examName: 'Mid-Term Assessment', subject: 'Mathematics', marksObtained: 74, totalMarks: 100, grade: 'B', feedback: 'Solid arithmetic, needs revision on negative linear equations.', date: '2026-10-15' },
-  { id: 'mrk_02', studentId: 'usr_student_01', studentName: 'Alex Johnson', examName: 'Unit Test 2', subject: 'Physics', marksObtained: 85, totalMarks: 100, grade: 'A', feedback: 'Very strong wave optics concepts.', date: '2026-11-02' },
-  { id: 'mrk_03', studentId: 'usr_student_01', studentName: 'Alex Johnson', examName: 'Unit Test 2', subject: 'Chemistry', marksObtained: 92, totalMarks: 100, grade: 'A+', feedback: 'Excellent conceptual clarity in periodic table trends.', date: '2026-11-05' },
+  { id: 'mrk_02', studentId: 'usr_student_01', studentName: 'Alex Johnson', examName: 'Unit Test 2', subject: 'Science', marksObtained: 85, totalMarks: 100, grade: 'A', feedback: 'Very strong light reflection & chemistry concepts.', date: '2026-11-02' },
+  { id: 'mrk_03', studentId: 'usr_student_01', studentName: 'Alex Johnson', examName: 'Unit Test 2', subject: 'Social Science', marksObtained: 92, totalMarks: 100, grade: 'A+', feedback: 'Excellent conceptual clarity in history and geography.', date: '2026-11-05' },
   { id: 'mrk_04', studentId: 'usr_student_01', studentName: 'Alex Johnson', examName: 'Diagnostic Quiz', subject: 'Mathematics', marksObtained: 35, totalMarks: 100, grade: 'D', feedback: 'Learning gap identified in linear equations algebra.', date: '2026-11-18' },
   { id: 'mrk_05', studentId: 'usr_student_02', studentName: 'Maya Patel', examName: 'Mid-Term Assessment', subject: 'Mathematics', marksObtained: 96, totalMarks: 100, grade: 'A+', feedback: 'Outstanding problem solving precision.', date: '2026-10-15' },
   { id: 'mrk_06', studentId: 'usr_student_03', studentName: 'Lucas Silva', examName: 'Mid-Term Assessment', subject: 'Mathematics', marksObtained: 62, totalMarks: 100, grade: 'C', feedback: 'Frequent calculation errors in multi-step problems.', date: '2026-10-15' },

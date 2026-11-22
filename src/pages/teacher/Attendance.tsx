@@ -13,8 +13,8 @@ import {
 
 export const TeacherAttendance: React.FC = () => {
   const { recordAttendance } = useEduData();
-  const [selectedClass, setSelectedClass] = useState('Grade 10 - Section A');
-  const [selectedSubject, setSelectedSubject] = useState('Mathematics');
+  const [selectedClass, setSelectedClass] = useState('Class 10 - Section A');
+  const [selectedSubject, setSelectedSubject] = useState('Kannada');
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
 
   // Attendance map: studentId -> 'PRESENT' | 'ABSENT' | 'LATE'
@@ -77,9 +77,10 @@ export const TeacherAttendance: React.FC = () => {
             onChange={(e) => setSelectedClass(e.target.value)}
             className="w-full px-3.5 py-2.5 rounded-xl bg-[#111831] border border-white/10 text-xs text-white focus:outline-none focus:border-[#3B82F6]"
           >
-            <option>Grade 10 - Section A</option>
-            <option>Grade 9 - Section B</option>
-            <option>Grade 11 - Advanced Physics</option>
+            <option>Class 10 - Section A</option>
+            <option>Class 10 - Section B</option>
+            <option>Class 10 - Section C</option>
+            <option>Class 10 - Section D (Kannada Medium)</option>
           </select>
         </div>
 
@@ -90,9 +91,12 @@ export const TeacherAttendance: React.FC = () => {
             onChange={(e) => setSelectedSubject(e.target.value)}
             className="w-full px-3.5 py-2.5 rounded-xl bg-[#111831] border border-white/10 text-xs text-white focus:outline-none focus:border-[#3B82F6]"
           >
+            <option>Kannada</option>
+            <option>English</option>
+            <option>Hindi</option>
             <option>Mathematics</option>
-            <option>Physics</option>
-            <option>Chemistry</option>
+            <option>Science</option>
+            <option>Social Science</option>
           </select>
         </div>
 

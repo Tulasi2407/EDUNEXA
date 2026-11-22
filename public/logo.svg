@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 80" fill="none">
+  <defs>
+    <linearGradient id="bgGradFull" x1="0" y1="0" x2="80" y2="80" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#1E1B4B" />
+      <stop offset="50%" stop-color="#0F172A" />
+      <stop offset="100%" stop-color="#0B1020" />
+    </linearGradient>
+
+    <linearGradient id="borderGradFull" x1="0" y1="0" x2="80" y2="80" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#A78BFA" stop-opacity="0.9" />
+      <stop offset="50%" stop-color="#7657F6" stop-opacity="0.4" />
+      <stop offset="100%" stop-color="#06B6D4" stop-opacity="0.8" />
+    </linearGradient>
+
+    <linearGradient id="leftWingFull" x1="18" y1="20" x2="40" y2="60" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#818CF8" />
+      <stop offset="50%" stop-color="#6366F1" />
+      <stop offset="100%" stop-color="#4F46E5" />
+    </linearGradient>
+
+    <linearGradient id="rightWingFull" x1="40" y1="20" x2="62" y2="60" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#38BDF8" />
+      <stop offset="50%" stop-color="#06B6D4" />
+      <stop offset="100%" stop-color="#0284C7" />
+    </linearGradient>
+
+    <linearGradient id="nexusBridgeFull" x1="20" y1="25" x2="60" y2="55" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#C084FC" />
+      <stop offset="50%" stop-color="#A855F7" />
+      <stop offset="100%" stop-color="#7C3AED" />
+    </linearGradient>
+
+    <radialGradient id="coreGlowFull" cx="40" cy="40" r="22" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFC857" stop-opacity="0.9" />
+      <stop offset="40%" stop-color="#F59E0B" stop-opacity="0.4" />
+      <stop offset="100%" stop-color="#7657F6" stop-opacity="0" />
+    </radialGradient>
+
+    <linearGradient id="sparkGradFull" x1="36" y1="34" x2="44" y2="46" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFFBEB" />
+      <stop offset="40%" stop-color="#FFD166" />
+      <stop offset="100%" stop-color="#F59E0B" />
+    </linearGradient>
+
+    <linearGradient id="nexaTextGrad" x1="135" y1="25" x2="215" y2="25" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#A78BFA" />
+      <stop offset="50%" stop-color="#C084FC" />
+      <stop offset="100%" stop-color="#38BDF8" />
+    </linearGradient>
+  </defs>
+
+  <!-- Left Icon Emblem (80x80 scaled) -->
+  <g transform="translate(4, 4)">
+    <rect x="2" y="2" width="68" height="68" rx="18" fill="url(#bgGradFull)" stroke="url(#borderGradFull)" stroke-width="1.8" />
+    <circle cx="36" cy="36" r="18" fill="url(#coreGlowFull)" />
+    
+    <!-- Wings -->
+    <path d="M 35 24 C 27 23 18 27 15 35 C 13 41 15 49 20 53 C 24 57 31 55 35 51 Z" fill="url(#leftWingFull)" opacity="0.9" />
+    <path d="M 37 24 C 45 23 54 27 57 35 C 59 41 57 49 52 53 C 48 57 41 55 37 51 Z" fill="url(#rightWingFull)" opacity="0.9" />
+    
+    <!-- Nexus Loop -->
+    <path d="M 23 44 C 27 49 33 50 36 45 C 40 40 45 31 51 35 C 55 37 54 44 50 47 C 45 52 39 50 36 45 C 34 40 27 31 21 35 C 18 37 19 41 23 44 Z" fill="url(#nexusBridgeFull)" opacity="0.85" />
+    
+    <!-- Nodes -->
+    <circle cx="21" cy="30" r="2.2" fill="#A78BFA" />
+    <circle cx="51" cy="30" r="2.2" fill="#38BDF8" />
+    <circle cx="36" cy="54" r="2" fill="#10B981" />
+    
+    <!-- Spark Star -->
+    <path d="M 36 29 Q 36 36 29 36 Q 36 36 36 43 Q 36 36 43 36 Q 36 36 36 29 Z" fill="url(#sparkGradFull)" />
+    <circle cx="36" cy="36" r="1.5" fill="#FFFFFF" />
+  </g>
+
+  <!-- Typography: EduNexa AI -->
+  <text x="88" y="44" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="28" font-weight="900" fill="#FFFFFF" letter-spacing="-0.5">Edu</text>
+  <text x="140" y="44" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="28" font-weight="900" fill="url(#nexaTextGrad)" letter-spacing="-0.5">Nexa</text>
+
+  <!-- AI Badge Pill -->
+  <g transform="translate(216, 25)">
+    <rect x="0" y="0" width="34" height="20" rx="5" fill="#7657F6" fill-opacity="0.25" stroke="#38BDF8" stroke-opacity="0.4" stroke-width="1" />
+    <circle cx="9" cy="10" r="2.5" fill="#10B981" />
+    <text x="15" y="14" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="10" font-weight="800" fill="#38BDF8" letter-spacing="0.5">AI</text>
+  </g>
+
+  <!-- Subtitle -->
+  <text x="88" y="60" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="500" fill="#94A3B8" letter-spacing="0.2">Smart Learning Ecosystem • Karnataka SSLC</text>
+</svg>

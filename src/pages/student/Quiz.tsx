@@ -72,9 +72,17 @@ export const Quiz: React.FC = () => {
       } else {
         // Log mistake into learning gaps if not already there
         if (q.prerequisiteConcept) {
+          const subNameMap: Record<string, string> = {
+            sub_math: 'Mathematics',
+            sub_sci: 'Science',
+            sub_soc: 'Social Science',
+            sub_kan: 'Kannada',
+            sub_eng: 'English',
+            sub_hin: 'Hindi'
+          };
           addLearningGap({
             id: `gap_quiz_${Date.now()}_${i}`,
-            subject: q.subjectId === 'sub_math' ? 'Mathematics' : 'Physics',
+            subject: subNameMap[q.subjectId] || 'Mathematics',
             chapter: q.chapter,
             topic: q.topic,
             performanceScore: 40,

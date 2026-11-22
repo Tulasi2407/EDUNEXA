@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { UserRole } from '../types';
+import { EduNexaLogo } from '../components/common/EduNexaLogo';
 import {
   Sparkles,
   ArrowRight,
@@ -19,11 +20,12 @@ import {
 
 export const Register: React.FC = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { register } = useAuth();
 
   const [role, setRole] = useState<UserRole>('STUDENT');
   const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState(searchParams.get('email') || '');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [preferredLanguage, setPreferredLanguage] = useState<'English' | 'Kannada' | 'Hindi'>('English');
@@ -32,6 +34,7 @@ export const Register: React.FC = () => {
   const [linkedChildName, setLinkedChildName] = useState('Alex Johnson');
   const [termsAgreed, setTermsAgreed] = useState(true);
   const [errorMsg, setErrorMsg] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,38 +55,21 @@ export const Register: React.FC = () => {
       return;
     }
 
-    // Call register in AuthContext
+    setErrorMsg('');
     register({
       name,
       email,
+      password,
       role,
       section,
       preferredLanguage,
       department: role === 'TEACHER' ? specialization : undefined,
       linkedStudentName: role === 'PARENT' ? linkedChildName : undefined
+    }).then(() => {
+      navigate('/welcome');
+    }).catch((err: any) => {
+      setErrorMsg(err?.message || 'Registration failed. Please try again.');
     });
-
-    // Also inform FastAPI backend asynchronously if available
-    try {
-      fetch('http://127.0.0.1:8000/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name,
-          email,
-          password,
-          role,
-          grade: 'Class 10',
-          board: 'Karnataka State Board',
-          preferred_language: preferredLanguage,
-          section,
-          specialization: role === 'TEACHER' ? specialization : undefined
-        })
-      }).catch(() => {});
-    } catch (err) {}
-
-    // Redirect to personalized welcome screen
-    navigate('/welcome');
   };
 
   return (
@@ -93,14 +79,14 @@ export const Register: React.FC = () => {
 
       <div className="max-w-xl w-full bg-[#171F3A] border border-white/10 rounded-2xl p-6 sm:p-8 shadow-2xl relative z-10 space-y-6">
         {/* Header */}
-        <div className="text-center space-y-2">
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-[#7657F6] to-[#A78BFA] flex items-center justify-center mx-auto shadow-glow-primary">
-            <Sparkles className="w-6 h-6 text-white" />
-          </div>
-          <h1 className="text-2xl font-extrabold text-white">Join EduNexa AI</h1>
-          <p className="text-xs text-slate-400">
-            Dedicated Personalized Learning for <strong className="text-[#FFC857]">Karnataka SSLC Class 10</strong>
-          </p>
+        <div className="flex flex-col items-center text-center space-y-2">
+          <EduNexaLogo
+            size="lg"
+            layout="stacked"
+            subtitle="Personalized Learning for Karnataka SSLC Class 10"
+            onClick={() => navigate('/')}
+          />
+          <h1 className="text-xl sm:text-2xl font-extrabold text-white pt-2">Join EduNexa AI</h1>
         </div>
 
         {/* Karnataka Board Scope Badge */}
@@ -257,7 +243,7 @@ export const Register: React.FC = () => {
                   className="w-full px-3.5 py-2.5 rounded-xl bg-[#111831] border border-white/10 text-xs text-white focus:outline-none focus:border-[#7657F6] transition-colors"
                 >
                   <option value="Mathematics">Mathematics</option>
-                  <option value="Science">Science (Physics/Chem/Bio)</option>
+                  <option value="Science">Science</option>
                   <option value="Social Science">Social Science</option>
                   <option value="Kannada">First Language Kannada</option>
                   <option value="English">Second Language English</option>

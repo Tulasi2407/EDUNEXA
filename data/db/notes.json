@@ -1,0 +1,94 @@
+[
+  {
+    "_id": "6b0201ca3ba2ef7976f72030",
+    "id": "note-math-ch10",
+    "subject": "Mathematics",
+    "chapter_no": 10,
+    "chapter_title": "Quadratic Equations",
+    "summary": "Covers standard form ax² + bx + c = 0, methods of finding roots (factorization, completing the square, quadratic formula), and nature of roots via discriminant D = b² - 4ac.",
+    "important_points": [
+      "Standard Form: ax² + bx + c = 0 where a ≠ 0",
+      "Quadratic Formula: x = (-b ± √(b² - 4ac)) / (2a)",
+      "Discriminant Δ = b² - 4ac determines root nature",
+      "If Δ > 0: Two distinct real roots",
+      "If Δ = 0: Two equal real roots (-b / 2a)",
+      "If Δ < 0: No real roots exist"
+    ],
+    "formulae_or_terms": [
+      "x = (-b ± √(b² - 4ac)) / 2a",
+      "Δ = b² - 4ac",
+      "Sum of roots α + β = -b / a",
+      "Product of roots α · β = c / a"
+    ],
+    "model_qa": [
+      {
+        "q": "Find the discriminant of 2x² - 4x + 3 = 0 and describe the nature of roots.",
+        "a": "Here a = 2, b = -4, c = 3. Δ = b² - 4ac = (-4)² - 4(2)(3) = 16 - 24 = -8. Since Δ < 0, there are no real roots."
+      },
+      {
+        "q": "Find the value of k for which 2x² + kx + 3 = 0 has two equal roots.",
+        "a": "For equal roots, Δ = 0 => k² - 4(2)(3) = 0 => k² - 24 = 0 => k = ±√24 = ±2√6."
+      }
+    ],
+    "pdf_url": "https://edunexa.ai/materials/notes/SSLC_Class10_Maths_Ch10_Notes.pdf"
+  },
+  {
+    "_id": "6b0201cb3ba2ef7976f72031",
+    "id": "note-sci-ch12",
+    "subject": "Science",
+    "chapter_no": 12,
+    "chapter_title": "Electricity",
+    "summary": "Electric current, potential difference, Ohm's law, factors on which resistance depends, series and parallel circuits, heating effect of electric current, and electric power.",
+    "important_points": [
+      "Current I = Q / t (Ampere, A)",
+      "Potential Difference V = W / Q (Volt, V)",
+      "Ohm's Law: V = I × R at constant temperature",
+      "Resistance R = ρ × (l / A)",
+      "Series: Rs = R1 + R2 + R3",
+      "Parallel: 1/Rp = 1/R1 + 1/R2 + 1/R3",
+      "Joule's Law of Heating: H = I²Rt",
+      "Electric Power: P = VI = I²R = V²/R"
+    ],
+    "formulae_or_terms": [
+      "V = IR",
+      "R = ρ(l/A)",
+      "Rs = R1 + R2",
+      "1/Rp = 1/R1 + 1/R2",
+      "H = I²Rt",
+      "1 kWh = 3.6 × 10⁶ Joules"
+    ],
+    "model_qa": [
+      {
+        "q": "Why is parallel arrangement used in domestic electrical circuits rather than series?",
+        "a": "1. Each appliance gets the full line voltage (220V). 2. If one appliance fails, others continue working. 3. Each appliance can have an independent on/off switch. 4. Total resistance decreases, ensuring sufficient current."
+      }
+    ],
+    "pdf_url": "https://edunexa.ai/materials/notes/SSLC_Class10_Science_Ch12_Notes.pdf"
+  },
+  {
+    "_id": "6b0201cb3ba2ef7976f72032",
+    "id": "note-math-ch1",
+    "subject": "Mathematics",
+    "chapter_no": 1,
+    "chapter_title": "Arithmetic Progressions",
+    "summary": "Arithmetic Progression definition, common difference d, nth term formula an = a + (n-1)d, and sum of first n terms Sn = n/2 [2a + (n-1)d].",
+    "important_points": [
+      "AP general form: a, a+d, a+2d, a+3d...",
+      "Common difference d = a2 - a1 = a3 - a2",
+      "nth term: an = a + (n - 1)d",
+      "Sum formula: Sn = n/2 [2a + (n - 1)d] or Sn = n/2 [a + l]"
+    ],
+    "formulae_or_terms": [
+      "an = a + (n-1)d",
+      "Sn = (n/2)[2a + (n-1)d]",
+      "Sn = (n/2)[a + an]"
+    ],
+    "model_qa": [
+      {
+        "q": "Find the 20th term of the AP: 3, 8, 13, 18...",
+        "a": "Here a = 3, d = 8 - 3 = 5, n = 20. a20 = a + 19d = 3 + 19(5) = 3 + 95 = 98."
+      }
+    ],
+    "pdf_url": "https://edunexa.ai/materials/notes/SSLC_Class10_Maths_Ch1_Notes.pdf"
+  }
+]

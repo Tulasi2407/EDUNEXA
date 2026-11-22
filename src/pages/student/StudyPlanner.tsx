@@ -31,7 +31,7 @@ export const StudyPlanner: React.FC = () => {
   const daysOfWeek = ['All', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
   const weakSubjects = Array.from(new Set(learningGaps.filter(g => g.status !== 'RESOLVED').map(g => g.subject)));
-  const strongSubjects = ['Computer Science', 'English Literature'];
+  const strongSubjects = ['English', 'Social Science'];
 
   // Today's Mission Tasks (Monday by default for demo)
   const todayTasks = studyPlan.tasks.filter(t => t.day === 'Monday');

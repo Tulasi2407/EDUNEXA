@@ -113,10 +113,12 @@ export const TeacherMarks: React.FC = () => {
             onChange={(e) => setSubject(e.target.value)}
             className="w-full px-3.5 py-2.5 rounded-xl bg-[#111831] border border-white/10 text-xs text-white focus:outline-none focus:border-[#7657F6]"
           >
+            <option>Kannada</option>
+            <option>English</option>
+            <option>Hindi</option>
             <option>Mathematics</option>
-            <option>Physics</option>
-            <option>Chemistry</option>
-            <option>Biology</option>
+            <option>Science</option>
+            <option>Social Science</option>
           </select>
         </div>
       </div>

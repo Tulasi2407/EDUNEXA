@@ -7,14 +7,14 @@ class Settings(BaseSettings):
     API_PREFIX: str = "/api"
     
     # MongoDB Atlas
-    MONGODB_URI: str = os.getenv("MONGODB_URI", "mongodb://localhost:27017")
+    MONGODB_URI: str = os.getenv("MONGODB_URI", "")
     DATABASE_NAME: str = os.getenv("DATABASE_NAME", "edunexa_ai")
     
-    # Google Gemini AI Key
-    GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", os.getenv("VITE_GEMINI_API_KEY", "AIzaSyDRMFHzwyh3xadlxVFEDBPtrEpfWFIdBC0"))
+    # Google Gemini AI Key (Backend-only; never exposed to browser)
+    GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "")
     
     # JWT Settings
-    JWT_SECRET: str = os.getenv("JWT_SECRET", "edunexa-sslc-secret-key-2026")
+    JWT_SECRET: str = os.getenv("JWT_SECRET", "edunexa-sslc-2026-b8f419c8e9b62a14d59a7201c74f518e")
     JWT_ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7  # 7 days
     
@@ -23,7 +23,7 @@ class Settings(BaseSettings):
     CLASS_STANDARD: str = "SSLC Class 10"
 
     class Config:
-        env_file = ".env"
+        env_file = [".env", "backend/.env", "../.env"]
         extra = "ignore"
 
 settings = Settings()

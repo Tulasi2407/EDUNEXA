@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useEduData } from '../../contexts/DataContext';
 import {
   CalendarCheck,
@@ -6,14 +6,30 @@ import {
   XCircle,
   Clock,
   Calendar as CalendarIcon,
-  AlertTriangle
+  AlertTriangle,
+  Filter
 } from 'lucide-react';
+
+const TEACHER_MAP: Record<string, string> = {
+  Kannada: 'ಶ್ರೀ ರಮೇಶ್ ಭಟ್',
+  English: 'Ms. Claire Harper',
+  Hindi: 'श्रीमती सुनीता शर्मा',
+  Mathematics: 'Ms. Sarah Chen',
+  Science: 'Dr. Marcus Vance',
+  'Social Science': 'Mrs. Anita Rao'
+};
+
+const SSLC_SUBJECTS = ['ALL', 'Kannada', 'English', 'Hindi', 'Mathematics', 'Science', 'Social Science'] as const;
 
 export const Attendance: React.FC = () => {
   const { attendance } = useEduData();
+  const [selectedSubjectFilter, setSelectedSubjectFilter] = useState<string>('ALL');
 
   // Filter Alex's attendance records
   const alexRecords = attendance.filter(a => a.studentId === 'usr_student_01');
+  const filteredRecords = selectedSubjectFilter === 'ALL'
+    ? alexRecords
+    : alexRecords.filter(a => a.subject === selectedSubjectFilter);
 
   const total = alexRecords.length;
   const presentCount = alexRecords.filter(a => a.status === 'PRESENT').length;
@@ -30,11 +46,13 @@ export const Attendance: React.FC = () => {
             <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-[#10B981]/20 text-[#10B981] border border-[#10B981]/30">
               Attendance Module
             </span>
-            <span className="text-xs text-slate-400">Actual Saved Database Records</span>
+            <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-[#FFC857]/20 text-[#FFC857] border border-[#FFC857]/30">
+              Karnataka SSLC Class 10
+            </span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-white mt-1">Student Attendance Log</h1>
           <p className="text-xs text-slate-300 mt-1">
-            Real-time verified daily and subject-wise attendance recorded directly by classroom faculty.
+            Real-time verified daily and subject-wise attendance recorded directly by classroom faculty across all 6 board subjects.
           </p>
         </div>
 
@@ -75,7 +93,31 @@ export const Attendance: React.FC = () => {
 
       {/* Attendance History Table */}
       <div className="p-6 rounded-2xl bg-[#171F3A] border border-white/5 space-y-4">
-        <h2 className="text-base font-bold text-white">Daily Attendance Records</h2>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-white/5">
+          <div>
+            <h2 className="text-base font-bold text-white">Daily Attendance Records</h2>
+            <p className="text-xs text-slate-400">Karnataka SSLC Class 10 Subjects Log</p>
+          </div>
+
+          {/* Subject Filter Pills */}
+          <div className="flex flex-wrap items-center gap-1.5">
+            {SSLC_SUBJECTS.map((sub) => (
+              <button
+                key={sub}
+                type="button"
+                onClick={() => setSelectedSubjectFilter(sub)}
+                className={`text-[11px] font-semibold px-2.5 py-1 rounded-lg border transition-all cursor-pointer ${
+                  selectedSubjectFilter === sub
+                    ? 'bg-[#7657F6] text-white border-[#7657F6] shadow-sm'
+                    : 'bg-[#111831] border-white/5 text-slate-400 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                {sub}
+              </button>
+            ))}
+          </div>
+        </div>
+
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead className="bg-[#111831] text-slate-400 uppercase text-[10px] tracking-wider">
@@ -87,10 +129,10 @@ export const Attendance: React.FC = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
-              {alexRecords.map((rec) => (
+              {filteredRecords.map((rec) => (
                 <tr key={rec.id} className="hover:bg-white/5 transition-colors">
                   <td className="p-3 font-semibold text-white">{rec.date}</td>
-                  <td className="p-3 text-slate-300">{rec.subject || 'Core Mathematics'}</td>
+                  <td className="p-3 text-slate-200 font-medium">{rec.subject || 'Mathematics'}</td>
                   <td className="p-3">
                     <span
                       className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center gap-1 ${
@@ -104,9 +146,18 @@ export const Attendance: React.FC = () => {
                       {rec.status}
                     </span>
                   </td>
-                  <td className="p-3 text-slate-400">Ms. Sarah Chen</td>
+                  <td className="p-3 text-slate-400">
+                    {(rec.subject && TEACHER_MAP[rec.subject]) || 'Ms. Sarah Chen'}
+                  </td>
                 </tr>
               ))}
+              {filteredRecords.length === 0 && (
+                <tr>
+                  <td colSpan={4} className="p-6 text-center text-slate-400">
+                    No attendance records found for {selectedSubjectFilter}.
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>

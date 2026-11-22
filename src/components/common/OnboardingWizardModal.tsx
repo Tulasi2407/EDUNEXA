@@ -14,6 +14,7 @@ import {
   Award
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { UserAvatar } from './UserAvatar';
 
 interface OnboardingWizardModalProps {
   isOpen: boolean;
@@ -26,7 +27,14 @@ export const OnboardingWizardModal: React.FC<OnboardingWizardModalProps> = ({ is
 
   const [step, setStep] = useState(1);
   const [grade, setGrade] = useState('Grade 10');
-  const [selectedSubjects, setSelectedSubjects] = useState<string[]>(['Mathematics', 'Physics', 'Chemistry']);
+  const [selectedSubjects, setSelectedSubjects] = useState<string[]>([
+    'Kannada',
+    'English',
+    'Hindi',
+    'Mathematics',
+    'Science',
+    'Social Science'
+  ]);
   const [language, setLanguage] = useState<'English' | 'Hindi' | 'Kannada'>('English');
   const [dailyHours, setDailyHours] = useState(3);
   const [schoolHours, setSchoolHours] = useState('08:00 AM - 03:30 PM');
@@ -93,7 +101,7 @@ export const OnboardingWizardModal: React.FC<OnboardingWizardModalProps> = ({ is
             </p>
             <div className="p-4 rounded-xl bg-[#111831] border border-white/5 space-y-2">
               <div className="flex items-center gap-3">
-                <img src={user.avatar} alt={user.name} className="w-12 h-12 rounded-xl object-cover ring-2 ring-[#7657F6]" />
+                <UserAvatar name={user.name} role={user.role} size="lg" rounded="xl" />
                 <div>
                   <p className="text-xs font-bold text-white">{user.name}</p>
                   <p className="text-[11px] text-slate-400">{user.email}</p>
@@ -106,18 +114,17 @@ export const OnboardingWizardModal: React.FC<OnboardingWizardModalProps> = ({ is
         {/* Step 2: Select Grade */}
         {step === 2 && (
           <div className="space-y-4">
-            <h3 className="text-sm font-bold text-white">Step 2: What Grade Are You In?</h3>
-            <p className="text-xs text-slate-300">Curriculum standards and question difficulty adapt to your grade level.</p>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
-              {['Grade 8', 'Grade 9', 'Grade 10', 'Grade 11 (Science)', 'Grade 12 (Science)'].map(g => (
+            <h3 className="text-sm font-bold text-white">Step 2: Grade Level & Board Verification</h3>
+            <p className="text-xs text-slate-300">Curriculum standards and question difficulty are strictly tuned for Karnataka SSLC Class 10.</p>
+            <div className="grid grid-cols-1 gap-2.5">
+              {['Class 10 (Karnataka SSLC State Board)'].map(g => (
                 <button
                   key={g}
-                  onClick={() => setGrade(g)}
-                  className={`p-3 rounded-xl border text-xs font-bold transition-all ${
-                    grade === g ? 'bg-[#7657F6] text-white border-[#7657F6] shadow-glow-primary' : 'bg-[#111831] border-white/5 text-slate-300 hover:bg-white/5'
-                  }`}
+                  onClick={() => setGrade('Class 10')}
+                  className="p-3.5 rounded-xl border text-xs font-bold transition-all bg-[#7657F6] text-white border-[#7657F6] shadow-glow-primary flex items-center justify-between"
                 >
-                  {g}
+                  <span>{g}</span>
+                  <CheckCircle2 className="w-4 h-4 text-[#FFC857]" />
                 </button>
               ))}
             </div>
@@ -128,9 +135,9 @@ export const OnboardingWizardModal: React.FC<OnboardingWizardModalProps> = ({ is
         {step === 3 && (
           <div className="space-y-4">
             <h3 className="text-sm font-bold text-white">Step 3: Choose Your Active Subjects</h3>
-            <p className="text-xs text-slate-300">Select the courses you want to track and master this term.</p>
+            <p className="text-xs text-slate-300">Official 6 KSEAB Karnataka State Board subjects for Class 10 examination.</p>
             <div className="grid grid-cols-2 gap-2.5">
-              {['Mathematics', 'Physics', 'Chemistry', 'Biology', 'Computer Science', 'English Literature'].map(s => {
+              {['Kannada', 'English', 'Hindi', 'Mathematics', 'Science', 'Social Science'].map(s => {
                 const isSelected = selectedSubjects.includes(s);
                 return (
                   <button

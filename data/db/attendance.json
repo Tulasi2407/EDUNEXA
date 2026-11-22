@@ -1,0 +1,102 @@
+[
+  {
+    "_id": "6b021773e25be6b341e8476d",
+    "id": "att_01",
+    "studentId": "usr_student_01",
+    "studentName": "Alex Johnson",
+    "date": "2026-11-17",
+    "status": "PRESENT",
+    "subject": "Kannada",
+    "faculty": "ಶ್ರೀ ರಮೇಶ್ ಭಟ್"
+  },
+  {
+    "_id": "6b021773e25be6b341e8476e",
+    "id": "att_02",
+    "studentId": "usr_student_01",
+    "studentName": "Alex Johnson",
+    "date": "2026-11-18",
+    "status": "PRESENT",
+    "subject": "English",
+    "faculty": "Ms. Claire Harper"
+  },
+  {
+    "_id": "6b021773e25be6b341e8476f",
+    "id": "att_03",
+    "studentId": "usr_student_01",
+    "studentName": "Alex Johnson",
+    "date": "2026-11-19",
+    "status": "PRESENT",
+    "subject": "Hindi",
+    "faculty": "श्रीमती सुनीता शर्मा"
+  },
+  {
+    "_id": "6b021773e25be6b341e84770",
+    "id": "att_04",
+    "studentId": "usr_student_01",
+    "studentName": "Alex Johnson",
+    "date": "2026-11-20",
+    "status": "LATE",
+    "subject": "Mathematics",
+    "faculty": "Ms. Sarah Chen"
+  },
+  {
+    "_id": "6b021773e25be6b341e84771",
+    "id": "att_05",
+    "studentId": "usr_student_01",
+    "studentName": "Alex Johnson",
+    "date": "2026-11-21",
+    "status": "PRESENT",
+    "subject": "Science",
+    "faculty": "Dr. Marcus Vance"
+  },
+  {
+    "_id": "6b021773e25be6b341e84772",
+    "id": "att_06",
+    "studentId": "usr_student_01",
+    "studentName": "Alex Johnson",
+    "date": "2026-11-22",
+    "status": "PRESENT",
+    "subject": "Social Science",
+    "faculty": "Mrs. Anita Rao"
+  },
+  {
+    "_id": "6b021773e25be6b341e84773",
+    "id": "att_07",
+    "studentId": "usr_student_02",
+    "studentName": "Maya Patel",
+    "date": "2026-11-22",
+    "status": "PRESENT",
+    "subject": "Mathematics",
+    "faculty": "Ms. Sarah Chen"
+  },
+  {
+    "_id": "6b021773e25be6b341e84774",
+    "id": "att_08",
+    "studentId": "usr_student_03",
+    "studentName": "Lucas Silva",
+    "date": "2026-11-22",
+    "status": "ABSENT",
+    "subject": "Mathematics",
+    "faculty": "Ms. Sarah Chen"
+  },
+  {
+    "_id": "6b021773e25be6b341e84775",
+    "id": "att_09",
+    "studentId": "usr_student_04",
+    "studentName": "Chloe Bennett",
+    "date": "2026-11-22",
+    "status": "PRESENT",
+    "subject": "Mathematics",
+    "faculty": "Ms. Sarah Chen"
+  },
+  {
+    "_id": "6b021773e25be6b341e84776",
+    "id": "att_10",
+    "studentId": "usr_student_05",
+    "studentName": "Aarav Sharma",
+    "date": "2026-11-22",
+    "status": "PRESENT",
+    "subject": "Mathematics",
+    "faculty": "Ms. Sarah Chen"
+  }
+]

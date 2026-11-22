@@ -11,7 +11,7 @@ export const TeacherAssignments: React.FC = () => {
 
   const [list, setList] = useState([
     { id: '1', title: 'Linear Equations Problem Set 4', subject: 'Mathematics', dueDate: 'Nov 24', submissions: 24, total: 28 },
-    { id: '2', title: 'Optics Focal Length Calculations', subject: 'Physics', dueDate: 'Nov 26', submissions: 19, total: 28 },
+    { id: '2', title: 'Light Reflection & Refraction Numerical Problems', subject: 'Science', dueDate: 'Nov 26', submissions: 19, total: 28 },
   ]);
 
   const handleCreate = (e: React.FormEvent) => {
@@ -82,9 +82,12 @@ export const TeacherAssignments: React.FC = () => {
                 onChange={e => setSubject(e.target.value)}
                 className="w-full px-3.5 py-2 rounded-xl bg-[#111831] border border-white/10 text-xs text-white focus:outline-none"
               >
+                <option>Kannada</option>
+                <option>English</option>
+                <option>Hindi</option>
                 <option>Mathematics</option>
-                <option>Physics</option>
-                <option>Chemistry</option>
+                <option>Science</option>
+                <option>Social Science</option>
               </select>
             </div>
             <div className="space-y-1">

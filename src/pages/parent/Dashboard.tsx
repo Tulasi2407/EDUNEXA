@@ -107,7 +107,7 @@ export const ParentDashboard: React.FC = () => {
           </div>
 
           <div className="p-4 rounded-xl bg-[#111831] border border-white/5 space-y-2">
-            <span className="text-xs font-bold text-[#10B981]">Celebration: Physics Wave Optics</span>
+            <span className="text-xs font-bold text-[#10B981]">Celebration: Science - Light & Reflection</span>
             <p className="text-xs text-slate-300 leading-relaxed">
               Alex scored in the top 10% of their class on the latest light reflection quiz. Be sure to acknowledge their hard work!
             </p>

@@ -1,91 +1,84 @@
-from fastapi import APIRouter
-from backend.app.schemas.models import StudyPlanGenerateRequest
+import uuid
+from datetime import datetime, timezone
+from typing import List, Optional
+from fastapi import APIRouter, Depends
+from pydantic import BaseModel
+from backend.app.database.mongodb import db_manager
+from backend.app.services.gemini_service import gemini_service
+from backend.app.core.dependencies import get_optional_current_user
 
 router = APIRouter(prefix="/study-planner", tags=["Smart Study Planner"])
 
-@router.post("/generate")
-def generate_study_plan(req: StudyPlanGenerateRequest):
-    """
-    Generates a personalized free-time timetable for Karnataka SSLC Class 10.
-    Strictly protects school hours (08:00 AM - 03:30 PM) and sleep window (10:30 PM - 06:00 AM).
-    Allocates high-priority slots to identified weak areas.
-    """
-    days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
-    
-    # Study slots exclusively during after-school and weekend free hours
-    weekday_slots = [
-        {"slot": "04:30 PM - 05:30 PM", "type": "PREREQUISITE_FIX", "duration": 60, "priority": "HIGH"},
-        {"slot": "05:45 PM - 06:45 PM", "type": "CONCEPT_REVIEW", "duration": 60, "priority": "MEDIUM"},
-        {"slot": "07:30 PM - 08:30 PM", "type": "PRACTICE_QUIZ", "duration": 60, "priority": "HIGH"},
-        {"slot": "09:00 PM - 09:45 PM", "type": "ACTIVE_RECALL", "duration": 45, "priority": "MEDIUM"}
-    ]
+class StudyPlanRequest(BaseModel):
+    student_id: Optional[str] = "student-10-alex"
+    daily_hours: float = 3.0
+    exam_date: str = "2026-12-05"
+    weak_subjects: Optional[List[str]] = ["Mathematics", "Science"]
+    strong_subjects: Optional[List[str]] = ["English", "Social Science"]
 
-    weekend_slots = [
-        {"slot": "08:30 AM - 10:00 AM", "type": "CONCEPT_REVIEW", "duration": 90, "priority": "HIGH"},
-        {"slot": "10:30 AM - 12:00 PM", "type": "PRACTICE_QUIZ", "duration": 90, "priority": "HIGH"},
-        {"slot": "04:00 PM - 05:30 PM", "type": "PREREQUISITE_FIX", "duration": 90, "priority": "HIGH"},
-        {"slot": "06:30 PM - 08:00 PM", "type": "ACTIVE_RECALL", "duration": 90, "priority": "MEDIUM"}
-    ]
+@router.get("/")
+def get_study_plan(
+    student_id: Optional[str] = "student-10-alex",
+    current_user: Optional[dict] = Depends(get_optional_current_user)
+):
+    """Retrieves the active study plan from MongoDB Atlas."""
+    active_student_id = student_id
+    if current_user and current_user.get("role") == "STUDENT":
+        active_student_id = current_user.get("id")
 
-    curriculum_topics = {
-        "Mathematics": [
-            "Quadratic Equations - Discriminant & Roots",
-            "Arithmetic Progressions - nth term and sum Sn",
-            "Trigonometry - Standard Identities",
-            "Circles & Tangents Theorems"
-        ],
-        "Science": [
-            "Electricity - Parallel & Series Circuits",
-            "Chemical Reactions & Equations - Balancing",
-            "Life Processes - Human Heart & Nephron",
-            "Light - Reflection, Refraction & Lens Formula"
-        ],
-        "Social Science": [
-            "Advent of Europeans to India - Battle of Plassey",
-            "Geography - Indian Soils & Agriculture",
-            "Economics - Public Finance and Budgeting",
-            "Political Science - Indian Foreign Policy"
-        ]
+    col = db_manager.get_collection("study_plans")
+    plan = col.find_one({"student_id": active_student_id})
+    if plan:
+        plan["_id"] = str(plan.get("_id", ""))
+        return plan
+
+    # Default starter plan if none generated yet
+    return {
+        "id": "plan-default",
+        "title": "Karnataka SSLC Class 10 Foundation Plan",
+        "weeklyTargetHours": 21.0,
+        "completedHours": 0.0,
+        "dailyGoalHours": 3.0,
+        "examDate": "2026-12-05",
+        "tasks": []
     }
 
-    generated_tasks = []
-    task_id_counter = 1
+@router.post("/generate")
+async def generate_plan(
+    req: StudyPlanRequest,
+    current_user: Optional[dict] = Depends(get_optional_current_user)
+):
+    """
+    Generates a personalized study plan using Gemini AI, allocating high-priority slots
+    to detected prerequisite gaps, and persists it to MongoDB Atlas.
+    """
+    student_id = req.student_id or (current_user.get("id") if current_user else "student-10-alex")
 
-    for day in days:
-        slots = weekend_slots if day in ["Saturday", "Sunday"] else weekday_slots
-        for i, s in enumerate(slots):
-            subject_idx = (task_id_counter) % len(req.target_subjects)
-            subject = req.target_subjects[subject_idx]
-            topic_list = curriculum_topics.get(subject, ["General Chapter Revision"])
-            topic = topic_list[i % len(topic_list)]
+    plan_result = await gemini_service.generate_study_plan(
+        daily_hours=req.daily_hours,
+        exam_date=req.exam_date,
+        weak_subjects=req.weak_subjects or ["Mathematics", "Science"],
+        strong_subjects=req.strong_subjects or ["English"]
+    )
 
-            task = {
-                "id": f"task-sslc-{task_id_counter}",
-                "day": day,
-                "timeSlot": s["slot"],
-                "subject": subject,
-                "topic": topic,
-                "type": s["type"],
-                "durationMinutes": s["duration"],
-                "completed": False,
-                "priority": s["priority"]
-            }
-            generated_tasks.append(task)
-            task_id_counter += 1
+    plan_doc = {
+        "id": f"plan-{uuid.uuid4().hex[:8]}",
+        "student_id": student_id,
+        "title": f"AI Prerequisite Remediation Timetable ({req.daily_hours}h/day)",
+        "weeklyTargetHours": plan_result["weeklyTargetHours"],
+        "completedHours": 0.0,
+        "dailyGoalHours": plan_result["dailyGoalHours"],
+        "examDate": req.exam_date,
+        "tasks": plan_result["tasks"],
+        "updated_at": datetime.now(timezone.utc).isoformat()
+    }
+
+    col = db_manager.get_collection("study_plans")
+    # Upsert plan for student
+    col.update_one({"student_id": student_id}, {"$set": plan_doc}, upsert=True)
+    plan_doc["_id"] = str(plan_doc.get("_id", ""))
 
     return {
         "success": True,
-        "student_id": req.student_id,
-        "school_protected_hours": f"{req.school_start_time} - {req.school_end_time}",
-        "sleep_protected_hours": f"{req.sleep_time} - {req.wake_time}",
-        "weekly_target_hours": 21.5,
-        "daily_goal_hours": req.daily_available_hours,
-        "tasks_count": len(generated_tasks),
-        "tasks": generated_tasks,
-        "todays_learning_mission": {
-            "title": "Master Quadratic Discriminant & Parallel Circuits",
-            "subject": "Mathematics & Science",
-            "target_xp": 250,
-            "estimated_minutes": 105
-        }
+        "plan": plan_doc
     }

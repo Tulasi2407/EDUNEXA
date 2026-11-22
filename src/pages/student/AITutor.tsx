@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useOutletContext } from 'react-router-dom';
 import { askNexaTutor } from '../../lib/gemini';
 import { useEduData } from '../../contexts/DataContext';
+import { useLanguage, LanguageCode } from '../../contexts/LanguageContext';
 import {
   Bot,
   Send,
@@ -26,27 +26,59 @@ interface ChatBubble {
 }
 
 export const AITutor: React.FC = () => {
-  const { language: parentLang } = useOutletContext<{ language: 'en' | 'hi' | 'kn' }>() || { language: 'en' };
+  const { language, setLanguage, t } = useLanguage();
   const { learningGaps, addXP } = useEduData();
 
   const [subject, setSubject] = useState('Mathematics');
   const [learningMode, setLearningMode] = useState<'BEGINNER' | 'STEP_BY_STEP' | 'EXAM_PREP' | 'PRACTICE' | 'QUICK_REVISION'>('STEP_BY_STEP');
-  const [language, setLanguage] = useState<'en' | 'hi' | 'kn'>(parentLang || 'en');
   const [inputMessage, setInputMessage] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+
+  const getWelcomeContent = (lang: LanguageCode) => {
+    if (lang === 'kn') {
+      return `ನಮಸ್ಕಾರ! ನಾನು **ನೆಕ್ಸಾ ಎಐ (Nexa AI)**, ನಿಮ್ಮ 24/7 ವೈಯಕ್ತಿಕ ಕಲಿಕಾ ಮಾರ್ಗದರ್ಶಿ.
+ಕರ್ನಾಟಕ 10ನೇ ತರಗತಿ ಪಠ್ಯಕ್ರಮದ **ಗಣಿತ, ವಿಜ್ಞಾನ, ಸಮಾಜ ವಿಜ್ಞಾನ ಅಥವಾ ಭಾಷೆಗಳ** ಯಾವುದೇ ಪ್ರಶ್ನೆಯನ್ನು ಕೇಳಿ.
+ಹಂತ-ಹಂತವಾಗಿ ಲೆಕ್ಕಗಳನ್ನು ಬಿಡಿಸಲು ಅಥವಾ ಪರೀಕ್ಷಾ ತಯಾರಿಗೆ ನಾನು ಸಿದ್ಧನಾಗಿದ್ದೇನೆ!`;
+    }
+    if (lang === 'hi') {
+      return `नमस्ते! मैं **नेक्सा एआई (Nexa AI)** हूँ, आपका 24/7 व्यक्तिगत अध्ययन सहायक।
+कर्नाटक बोर्ड कक्षा 10 के किसी भी विषय (**गणित, विज्ञान, सामाजिक विज्ञान या भाषा**) पर प्रश्न पूछें!
+स्टेप-बाय-स्टेप समाधान और परीक्षा तैयारी के लिए नीचे दिए गए सुझावों को आजमाएं।`;
+    }
+    return `Hello Alex! I am **Nexa AI**, your 24/7 personalized tutor.
+I see you are working on **Karnataka SSLC Class 10** curriculum.
+How would you like to explore this today? Feel free to ask any question or try one of the suggested prompts below!`;
+  };
 
   const [messages, setMessages] = useState<ChatBubble[]>([
     {
       id: 'init_1',
       sender: 'assistant',
-      content: `Hello Alex! I am **Nexa AI**, your 24/7 personalized tutor.
-I see you are working on **Algebra & Linear Equations**, and we detected a prerequisite gap with **negative integer rules**.
-How would you like to explore this today? Feel free to ask any question or try one of the suggested prompts below!`,
+      content: getWelcomeContent(language),
       timestamp: '19:40',
       mode: 'STEP_BY_STEP',
-      language: 'en'
+      language: language
     }
   ]);
+
+  // Keep initial message updated if no chat history yet
+  useEffect(() => {
+    setMessages(prev => {
+      if (prev.length <= 1) {
+        return [
+          {
+            id: 'init_1',
+            sender: 'assistant',
+            content: getWelcomeContent(language),
+            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            mode: learningMode,
+            language: language
+          }
+        ];
+      }
+      return prev;
+    });
+  }, [language]);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -142,12 +174,12 @@ How would you like to explore this today? Feel free to ask any question or try o
             onChange={(e) => setSubject(e.target.value)}
             className="px-2.5 py-1.5 rounded-lg bg-[#171F3A] border border-white/10 text-white font-medium focus:outline-none"
           >
+            <option>Kannada</option>
+            <option>English</option>
+            <option>Hindi</option>
             <option>Mathematics</option>
-            <option>Physics</option>
-            <option>Chemistry</option>
-            <option>Biology</option>
-            <option>Computer Science</option>
-            <option>English Literature</option>
+            <option>Science</option>
+            <option>Social Science</option>
           </select>
 
           {/* 5 Pedagogic Modes */}
@@ -309,7 +341,7 @@ How would you like to explore this today? Feel free to ask any question or try o
             type="text"
             value={inputMessage}
             onChange={(e) => setInputMessage(e.target.value)}
-            placeholder={`Ask Nexa anything about ${subject} (${learningMode.replace('_', ' ')})...`}
+            placeholder={t('tutor.placeholder', `Ask Nexa anything about ${subject}...`)}
             className="flex-1 px-4 py-3 rounded-xl bg-[#171F3A] border border-white/10 text-xs sm:text-sm text-white focus:outline-none focus:border-[#7657F6] transition-colors"
           />
           <button

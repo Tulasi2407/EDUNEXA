@@ -1,8 +1,11 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { useEduData } from '../../contexts/DataContext';
+import { useLanguage } from '../../contexts/LanguageContext';
 import { UserRole } from '../../types';
+import { EduNexaLogo } from '../common/EduNexaLogo';
+import { UserAvatar } from '../common/UserAvatar';
 import {
   LayoutDashboard,
   Sparkles,
@@ -35,8 +38,10 @@ interface SidebarProps {
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onCloseMobile }) => {
+  const navigate = useNavigate();
   const { user, role, switchRole, logout } = useAuth();
   const { studentXP, streakDays, learningGaps } = useEduData();
+  const { t } = useLanguage();
 
   const unresolvedGaps = learningGaps.filter(g => g.status !== 'RESOLVED').length;
 
@@ -44,53 +49,53 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onCloseMobile }) => {
     switch (role) {
       case 'STUDENT':
         return [
-          { to: '/student', label: 'Dashboard', icon: LayoutDashboard },
+          { to: '/student', label: t('nav.dashboard', 'Dashboard'), icon: LayoutDashboard },
           {
             to: '/student/gap-finder',
-            label: 'AI Gap Finder',
+            label: t('nav.gapFinder', 'AI Gap Finder'),
             icon: Sparkles,
             badge: unresolvedGaps > 0 ? `${unresolvedGaps} Gaps` : undefined,
             badgeColor: 'bg-[#EF4444]/20 text-[#EF4444] border border-[#EF4444]/30 animate-pulse'
           },
-          { to: '/student/planner', label: 'Study Planner', icon: CalendarDays },
-          { to: '/student/tutor', label: 'Nexa AI Tutor', icon: Bot, highlight: true },
-          { to: '/student/study-materials', label: 'Study Materials', icon: BookOpen },
-          { to: '/student/quiz', label: 'Quizzes & Tests', icon: GraduationCap },
-          { to: '/student/practice', label: 'Practice Drills', icon: Zap },
-          { to: '/student/pace', label: 'Learning Pace', icon: Sliders },
-          { to: '/student/results', label: 'My Results', icon: BarChart3 },
-          { to: '/student/attendance', label: 'Attendance', icon: CalendarCheck },
-          { to: '/student/assignments', label: 'Assignments', icon: ClipboardList },
-          { to: '/student/achievements', label: 'Achievements', icon: Award },
-          { to: '/student/profile', label: 'My Profile', icon: UserCheck },
+          { to: '/student/planner', label: t('nav.planner', 'Study Planner'), icon: CalendarDays },
+          { to: '/student/tutor', label: t('nav.tutor', 'Nexa AI Tutor'), icon: Bot, highlight: true },
+          { to: '/student/study-materials', label: t('nav.materials', 'Study Materials'), icon: BookOpen },
+          { to: '/student/quiz', label: t('nav.quiz', 'Quizzes & Tests'), icon: GraduationCap },
+          { to: '/student/practice', label: t('nav.practice', 'Practice Drills'), icon: Zap },
+          { to: '/student/pace', label: t('nav.pace', 'Learning Pace'), icon: Sliders },
+          { to: '/student/results', label: t('nav.results', 'My Results'), icon: BarChart3 },
+          { to: '/student/attendance', label: t('nav.attendance', 'Attendance'), icon: CalendarCheck },
+          { to: '/student/assignments', label: t('nav.assignments', 'Assignments'), icon: ClipboardList },
+          { to: '/student/achievements', label: t('nav.achievements', 'Achievements'), icon: Award },
+          { to: '/student/profile', label: t('nav.profile', 'My Profile'), icon: UserCheck },
         ];
       case 'TEACHER':
         return [
-          { to: '/teacher', label: 'Dashboard', icon: LayoutDashboard },
-          { to: '/teacher/students', label: 'Class & Students', icon: Users },
-          { to: '/teacher/attendance', label: 'Attendance', icon: CalendarCheck },
-          { to: '/teacher/marks', label: 'Marks & Exams', icon: CheckSquare },
-          { to: '/teacher/assignments', label: 'Assignments', icon: ClipboardList },
-          { to: '/teacher/quiz-builder', label: 'Quiz Builder', icon: BookOpen },
-          { to: '/teacher/analytics', label: 'Learning Analytics', icon: BarChart3 },
-          { to: '/teacher/announcements', label: 'Announcements', icon: Bell },
-          { to: '/teacher/profile', label: 'Profile', icon: UserCheck },
+          { to: '/teacher', label: t('nav.dashboard', 'Dashboard'), icon: LayoutDashboard },
+          { to: '/teacher/students', label: t('nav.students', 'Class & Students'), icon: Users },
+          { to: '/teacher/attendance', label: t('nav.attendance', 'Attendance'), icon: CalendarCheck },
+          { to: '/teacher/marks', label: t('nav.marks', 'Marks & Exams'), icon: CheckSquare },
+          { to: '/teacher/assignments', label: t('nav.assignments', 'Assignments'), icon: ClipboardList },
+          { to: '/teacher/quiz-builder', label: t('nav.quizBuilder', 'Quiz Builder'), icon: BookOpen },
+          { to: '/teacher/analytics', label: t('nav.analytics', 'Learning Analytics'), icon: BarChart3 },
+          { to: '/teacher/announcements', label: t('nav.announcements', 'Announcements'), icon: Bell },
+          { to: '/teacher/profile', label: t('nav.profile', 'Profile'), icon: UserCheck },
         ];
       case 'PARENT':
         return [
-          { to: '/parent', label: 'Child Overview', icon: LayoutDashboard },
-          { to: '/parent/progress', label: 'Academic Progress', icon: BarChart3 },
-          { to: '/parent/attendance', label: 'Attendance Records', icon: CalendarCheck },
-          { to: '/parent/communication', label: 'Teacher Notices', icon: Bell },
-          { to: '/parent/profile', label: 'Family Profile', icon: UserCheck },
+          { to: '/parent', label: t('nav.childOverview', 'Child Overview'), icon: LayoutDashboard },
+          { to: '/parent/progress', label: t('nav.academicProgress', 'Academic Progress'), icon: BarChart3 },
+          { to: '/parent/attendance', label: t('nav.attendance', 'Attendance Records'), icon: CalendarCheck },
+          { to: '/parent/communication', label: t('nav.communication', 'Teacher Notices'), icon: Bell },
+          { to: '/parent/profile', label: t('nav.profile', 'Family Profile'), icon: UserCheck },
         ];
       case 'ADMIN':
         return [
-          { to: '/admin', label: 'Platform Overview', icon: LayoutDashboard },
-          { to: '/admin/users', label: 'User Directory', icon: Users },
-          { to: '/admin/classes', label: 'Classes & Courses', icon: FolderTree },
-          { to: '/admin/reports', label: 'System Reports', icon: FileText },
-          { to: '/admin/settings', label: 'Platform Settings', icon: Settings },
+          { to: '/admin', label: t('nav.dashboard', 'Platform Overview'), icon: LayoutDashboard },
+          { to: '/admin/users', label: t('nav.userDirectory', 'User Directory'), icon: Users },
+          { to: '/admin/classes', label: t('nav.classes', 'Classes & Courses'), icon: FolderTree },
+          { to: '/admin/reports', label: t('nav.reports', 'System Reports'), icon: FileText },
+          { to: '/admin/settings', label: t('nav.settings', 'Platform Settings'), icon: Settings },
         ];
       default:
         return [];
@@ -115,21 +120,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onCloseMobile }) => {
         }`}
       >
         {/* Brand Header */}
-        <div className="h-16 px-6 flex items-center justify-between border-b border-white/5">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#7657F6] to-[#A78BFA] flex items-center justify-center shadow-glow-primary">
-              <Sparkles className="w-5 h-5 text-white" />
-            </div>
-            <div>
-              <div className="flex items-center gap-1.5">
-                <span className="font-extrabold text-base tracking-tight text-white">EduNexa</span>
-                <span className="text-[10px] uppercase font-bold px-1.5 py-0.5 rounded bg-[#7657F6]/30 text-[#A78BFA] border border-[#7657F6]/40">
-                  AI
-                </span>
-              </div>
-              <p className="text-[10px] text-slate-400 font-medium">Smart Learning System</p>
-            </div>
-          </div>
+        <div className="h-16 px-5 flex items-center justify-between border-b border-white/5">
+          <EduNexaLogo
+            size="sm"
+            subtitle="Smart Learning System"
+            onClick={() => navigate('/welcome')}
+          />
         </div>
 
         {/* Current Active Role Indicator */}
@@ -204,27 +200,28 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onCloseMobile }) => {
         {/* User Card & Demo Quick-Switch */}
         <div className="p-3 border-t border-white/5 bg-[#0B1020]/60">
           <div className="flex items-center gap-3 mb-2">
-            <img
-              src={user.avatar}
-              alt={user.name}
-              className="w-8 h-8 rounded-full object-cover ring-2 ring-[#7657F6]/40"
-            />
+            <UserAvatar name={user?.name} role={role} size="md" rounded="full" />
             <div className="flex-1 min-w-0">
-              <p className="text-xs font-bold text-white truncate">{user.name}</p>
-              <p className="text-[10px] text-slate-400 truncate">{user.email}</p>
+              <p className="text-xs font-bold text-white truncate">{user?.name || 'SSLC Scholar'}</p>
+              <p className="text-[10px] text-slate-400 truncate">{user?.email || 'scholar@edunexa.ai'}</p>
             </div>
-            <NavLink
-              to="/login"
-              title="Logout / Change Account"
-              className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-colors"
+            <button
+              onClick={() => {
+                logout();
+                window.location.href = '/login';
+              }}
+              title={t('nav.logout', 'Sign Out')}
+              className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-colors cursor-pointer"
             >
               <LogOut className="w-4 h-4" />
-            </NavLink>
+            </button>
           </div>
 
           {/* Quick Demo Switcher Pills */}
           <div className="pt-2 border-t border-white/5">
-            <p className="text-[9px] uppercase tracking-wider text-slate-400 font-semibold mb-1">Quick Role Switch</p>
+            <p className="text-[9px] uppercase tracking-wider text-slate-400 font-semibold mb-1">
+              {t('top.switchRole', 'Quick Role Switch')}
+            </p>
             <div className="grid grid-cols-4 gap-1">
               {(['STUDENT', 'TEACHER', 'PARENT', 'ADMIN'] as UserRole[]).map((r) => (
                 <button

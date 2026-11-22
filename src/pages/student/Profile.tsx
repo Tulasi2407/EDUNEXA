@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useEduData } from '../../contexts/DataContext';
 import { UserCheck, Mail, BookOpen, ShieldCheck, Save } from 'lucide-react';
+import { UserAvatar } from '../../components/common/UserAvatar';
 
 export const StudentProfile: React.FC = () => {
   const { user } = useAuth();
@@ -20,11 +21,7 @@ export const StudentProfile: React.FC = () => {
   return (
     <div className="max-w-3xl mx-auto space-y-8">
       <div className="p-6 rounded-2xl bg-[#171F3A] border border-white/5 flex items-center gap-4">
-        <img
-          src={user.avatar}
-          alt={user.name}
-          className="w-16 h-16 rounded-2xl object-cover ring-2 ring-[#7657F6]"
-        />
+        <UserAvatar name={user.name} role={user.role} size="xl" rounded="2xl" />
         <div>
           <h1 className="text-xl font-bold text-white">{user.name}</h1>
           <p className="text-xs text-slate-400">{user.email} • {user.grade} ({user.section})</p>

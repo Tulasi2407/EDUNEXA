@@ -1,0 +1,327 @@
+[
+  {
+    "_id": "6b0201c93ba2ef7976f7201f",
+    "id": "tb-math-10-en",
+    "title": "Mathematics (Part 1 & 2) - English Medium",
+    "subject": "Mathematics",
+    "medium": "English",
+    "academic_year": "2024-2025",
+    "total_chapters": 15,
+    "pdf_url": "https://ktbs.kar.nic.in/New/textbook/10th/10th_maths_em_part1.pdf",
+    "file_size": "24.5 MB",
+    "thumbnail": "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&w=400&q=80",
+    "download_allowed": true,
+    "chapters": [
+      {
+        "number": 1,
+        "title": "Arithmetic Progressions",
+        "pages": "1-32"
+      },
+      {
+        "number": 2,
+        "title": "Triangles (Theorems 2.1 to 2.8)",
+        "pages": "33-78"
+      },
+      {
+        "number": 3,
+        "title": "Pair of Linear Equations in Two Variables",
+        "pages": "79-112"
+      },
+      {
+        "number": 4,
+        "title": "Circles",
+        "pages": "113-130"
+      },
+      {
+        "number": 5,
+        "title": "Areas Related to Circles",
+        "pages": "131-150"
+      },
+      {
+        "number": 6,
+        "title": "Constructions",
+        "pages": "151-164"
+      },
+      {
+        "number": 7,
+        "title": "Coordinate Geometry",
+        "pages": "165-190"
+      },
+      {
+        "number": 8,
+        "title": "Real Numbers",
+        "pages": "191-214"
+      },
+      {
+        "number": 9,
+        "title": "Polynomials",
+        "pages": "215-238"
+      },
+      {
+        "number": 10,
+        "title": "Quadratic Equations",
+        "pages": "239-268"
+      },
+      {
+        "number": 11,
+        "title": "Introduction to Trigonometry",
+        "pages": "269-298"
+      },
+      {
+        "number": 12,
+        "title": "Some Applications of Trigonometry",
+        "pages": "299-316"
+      },
+      {
+        "number": 13,
+        "title": "Statistics",
+        "pages": "317-348"
+      },
+      {
+        "number": 14,
+        "title": "Probability",
+        "pages": "349-368"
+      },
+      {
+        "number": 15,
+        "title": "Surface Areas and Volumes",
+        "pages": "369-410"
+      }
+    ]
+  },
+  {
+    "_id": "6b0201c93ba2ef7976f72020",
+    "id": "tb-sci-10-en",
+    "title": "Science (Part 1 & 2) - English Medium",
+    "subject": "Science",
+    "medium": "English",
+    "academic_year": "2024-2025",
+    "total_chapters": 16,
+    "pdf_url": "https://ktbs.kar.nic.in/New/textbook/10th/10th_science_em_part1.pdf",
+    "file_size": "31.2 MB",
+    "thumbnail": "https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=400&q=80",
+    "download_allowed": true,
+    "chapters": [
+      {
+        "number": 1,
+        "title": "Chemical Reactions and Equations",
+        "pages": "1-22"
+      },
+      {
+        "number": 2,
+        "title": "Acids, Bases and Salts",
+        "pages": "23-44"
+      },
+      {
+        "number": 3,
+        "title": "Metals and Non-metals",
+        "pages": "45-72"
+      },
+      {
+        "number": 4,
+        "title": "Carbon and Its Compounds",
+        "pages": "73-102"
+      },
+      {
+        "number": 5,
+        "title": "Periodic Classification of Elements",
+        "pages": "103-120"
+      },
+      {
+        "number": 6,
+        "title": "Life Processes (Nutrition, Respiration, Transport, Excretion)",
+        "pages": "121-158"
+      },
+      {
+        "number": 7,
+        "title": "Control and Coordination",
+        "pages": "159-182"
+      },
+      {
+        "number": 8,
+        "title": "How do Organisms Reproduce?",
+        "pages": "183-208"
+      },
+      {
+        "number": 9,
+        "title": "Heredity and Evolution",
+        "pages": "209-230"
+      },
+      {
+        "number": 10,
+        "title": "Light - Reflection and Refraction",
+        "pages": "231-264"
+      },
+      {
+        "number": 11,
+        "title": "The Human Eye and Colourful World",
+        "pages": "265-284"
+      },
+      {
+        "number": 12,
+        "title": "Electricity",
+        "pages": "285-316"
+      },
+      {
+        "number": 13,
+        "title": "Magnetic Effects of Electric Current",
+        "pages": "317-342"
+      },
+      {
+        "number": 14,
+        "title": "Sources of Energy",
+        "pages": "343-360"
+      },
+      {
+        "number": 15,
+        "title": "Our Environment",
+        "pages": "361-376"
+      },
+      {
+        "number": 16,
+        "title": "Sustainable Management of Natural Resources",
+        "pages": "377-398"
+      }
+    ]
+  },
+  {
+    "_id": "6b0201c93ba2ef7976f72021",
+    "id": "tb-soc-10-en",
+    "title": "Social Science (Parts 1 & 2) - English Medium",
+    "subject": "Social Science",
+    "medium": "English",
+    "academic_year": "2024-2025",
+    "total_chapters": 24,
+    "pdf_url": "https://ktbs.kar.nic.in/New/textbook/10th/10th_social_em_part1.pdf",
+    "file_size": "28.4 MB",
+    "thumbnail": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=400&q=80",
+    "download_allowed": true,
+    "chapters": [
+      {
+        "number": 1,
+        "title": "Advent of Europeans to India",
+        "pages": "1-14"
+      },
+      {
+        "number": 2,
+        "title": "The Extension of the British Rule",
+        "pages": "15-26"
+      },
+      {
+        "number": 3,
+        "title": "India's Foreign Policy",
+        "pages": "70-80"
+      },
+      {
+        "number": 4,
+        "title": "Indian Physiography & Climate",
+        "pages": "110-135"
+      },
+      {
+        "number": 5,
+        "title": "Economy and Government",
+        "pages": "180-198"
+      }
+    ]
+  },
+  {
+    "_id": "6b0201c93ba2ef7976f72022",
+    "id": "tb-kan-10-kn",
+    "title": "ಪ್ರಥಮ ಭಾಷೆ ಸಿರಿ ಕನ್ನಡ (Siri Kannada - First Language)",
+    "subject": "Kannada",
+    "medium": "Kannada",
+    "academic_year": "2024-2025",
+    "total_chapters": 18,
+    "pdf_url": "https://ktbs.kar.nic.in/New/textbook/10th/10th_fl_kannada.pdf",
+    "file_size": "19.8 MB",
+    "thumbnail": "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=400&q=80",
+    "download_allowed": true,
+    "chapters": [
+      {
+        "number": 1,
+        "title": "ಯುದ್ಧ (ಕಥೆ)",
+        "pages": "1-12"
+      },
+      {
+        "number": 2,
+        "title": "ಶಬರಿ (ನಾಟಕ)",
+        "pages": "13-28"
+      },
+      {
+        "number": 3,
+        "title": "ಸಂಕಲ್ಪ ಗೀತೆ (ಪದ್ಯ)",
+        "pages": "29-36"
+      },
+      {
+        "number": 4,
+        "title": "ಹಲ್ಮಿಡಿ ಶಾಸನ ಮತ್ತು ವ್ಯಾಕರಣ",
+        "pages": "110-130"
+      }
+    ]
+  },
+  {
+    "_id": "6b0201c93ba2ef7976f72023",
+    "id": "tb-eng-10-en",
+    "title": "Second Language English (Main Reader & Supplementary)",
+    "subject": "English",
+    "medium": "English",
+    "academic_year": "2024-2025",
+    "total_chapters": 14,
+    "pdf_url": "https://ktbs.kar.nic.in/New/textbook/10th/10th_sl_english.pdf",
+    "file_size": "16.4 MB",
+    "thumbnail": "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&w=400&q=80",
+    "download_allowed": true,
+    "chapters": [
+      {
+        "number": 1,
+        "title": "A Hero (R. K. Narayan)",
+        "pages": "1-15"
+      },
+      {
+        "number": 2,
+        "title": "There's a Girl by the Tracks!",
+        "pages": "16-32"
+      },
+      {
+        "number": 3,
+        "title": "Gentleman of Rio en Medio",
+        "pages": "33-46"
+      },
+      {
+        "number": 4,
+        "title": "Quality (John Galsworthy)",
+        "pages": "47-60"
+      }
+    ]
+  },
+  {
+    "_id": "6b0201c93ba2ef7976f72024",
+    "id": "tb-hin-10-hi",
+    "title": "तृतीय भाषा हिंदी (Third Language Hindi)",
+    "subject": "Hindi",
+    "medium": "Hindi",
+    "academic_year": "2024-2025",
+    "total_chapters": 12,
+    "pdf_url": "https://ktbs.kar.nic.in/New/textbook/10th/10th_tl_hindi.pdf",
+    "file_size": "14.2 MB",
+    "thumbnail": "https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&w=400&q=80",
+    "download_allowed": true,
+    "chapters": [
+      {
+        "number": 1,
+        "title": "मातृभूमि (भगवतीचरण वर्मा)",
+        "pages": "1-10"
+      },
+      {
+        "number": 2,
+        "title": "कश्मीरी सेब (प्रेमचंद)",
+        "pages": "11-22"
+      },
+      {
+        "number": 3,
+        "title": "गिल्लू (महादेवी वर्मा)",
+        "pages": "23-34"
+      }
+    ]
+  }
+]
