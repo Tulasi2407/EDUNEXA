@@ -17,7 +17,7 @@ async def chat_with_tutor(req: AIChatRequest, current_user: dict = Depends(get_o
         subject=req.subject or "Mathematics",
         mode=req.mode or "STEP_BY_STEP",
         language=req.language or "English",
-        history=[]
+        history=req.history or []
     )
 
     return AIChatResponse(

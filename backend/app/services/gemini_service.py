@@ -5,6 +5,7 @@ from typing import List, Dict, Any, Optional
 from google import genai
 from google.genai import types
 from backend.app.core.config import settings
+from backend.app.services.sslc_knowledge import solve_math_expression, get_curriculum_answer
 
 logger = logging.getLogger("gemini_service")
 
@@ -216,7 +217,33 @@ class GeminiAIService:
             }
 
         # -------------------------------------------------------------
-        # 3. CURRICULUM CONCEPTS: INTUITIVE & CONVERSATIONAL EXPLANATIONS
+        # 3. DIRECT MATH CALCULATIONS & EXPRESSION SOLVER
+        # -------------------------------------------------------------
+        math_ans = solve_math_expression(message)
+        if math_ans:
+            return {
+                "reply": math_ans,
+                "mode": mode,
+                "language": language,
+                "suggested_followups": [
+                    "Can you solve another calculation?",
+                    "Show me the formula used here",
+                    "How is this tested on the board exam?"
+                ],
+                "karnataka_curriculum_reference": f"Karnataka SSLC Class 10 {subject}",
+                "powered_by": "EduNexa Academic Engine"
+            }
+
+        # -------------------------------------------------------------
+        # 4. COMPREHENSIVE KARNATAKA SSLC CURRICULUM KNOWLEDGE ENGINE
+        # Covers Trigonometry, Real Numbers, Science, History, Languages
+        # -------------------------------------------------------------
+        curriculum_res = get_curriculum_answer(message, subject, mode, language)
+        if curriculum_res:
+            return curriculum_res
+
+        # -------------------------------------------------------------
+        # 5. CURRICULUM CONCEPTS: INTUITIVE & CONVERSATIONAL EXPLANATIONS
         # -------------------------------------------------------------
 
         # A) Negative Numbers & Linear Equations

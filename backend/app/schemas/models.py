@@ -91,6 +91,7 @@ class AIChatRequest(BaseModel):
     mode: Optional[str] = "simple"  # simple, real_life, step_by_step, analogy, summary
     language: Optional[str] = "English"  # English, Kannada, Hindi
     student_id: Optional[str] = "student-10-alex"
+    history: Optional[List[Dict[str, Any]]] = None
 
 class AIChatResponse(BaseModel):
     reply: str

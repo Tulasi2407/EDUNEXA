@@ -111,6 +111,7 @@ export async function askNexaTutor(
       subject,
       mode,
       language: langMap[language] || 'English',
+      history: chatHistory,
     });
     if (response && response.reply) {
       return response.reply;
@@ -140,6 +141,47 @@ export async function askNexaTutor(
   const isStress = ['stress', 'anxious', 'scared', 'fear', 'nervous', 'tired', 'cant do this', 'hard', 'difficult', 'overwhelmed'].some(s => msgL.includes(s));
   if (isStress) {
     return `Hey, take a deep breath! 💙 First off, it's completely normal to feel like that. Class 10 board exams can feel overwhelming, but remember: you don't need to master everything all at once.\n\nSuccess in Karnataka SSLC is all about small, steady wins. Pick just ONE small concept or formula today. Let's walk through it together with zero judgment.\n\nWhich subject has been feeling heaviest on your shoulders? Tell me and we'll take it step by step!`;
+  }
+
+  // 1. Direct Trigonometry Concept Resolution
+  if (
+    msgL.includes('trigonometry') ||
+    msgL.includes('trig') ||
+    msgL.includes('trikonamiti') ||
+    msgL.includes('ತ್ರಿಕೋನಮಿತಿ') ||
+    msgL.includes('त्रिकोणमिति') ||
+    msgL.includes('sin') ||
+    msgL.includes('cos') ||
+    msgL.includes('tan')
+  ) {
+    if (language === 'kn') {
+      return `### ತ್ರಿಕೋನಮಿತಿ (Introduction to Trigonometry) — ಕರ್ನಾಟಕ 10ನೇ ತರಗತಿ ಗಣಿತ 📐✨\n\n**ತ್ರಿಕೋನಮಿತಿ ಎಂದರೇನು?**\nತ್ರಿಕೋನಮಿತಿ ಎಂಬ ಪದವು ಗ್ರೀಕ್ ಮೂಲದ ಮೂರು ಪದಗಳಿಂದ ಬಂದಿದೆ:\n* **Tri** = ಮೂರು\n* **Gon** = ಬಾಹುಗಳು\n* **Metron** = ಅಳತೆ\n\nಅಂದರೆ, **ಲಂಬಕೋನ ತ್ರಿಭುಜದ (Right-Angled Triangle) ಬಾಹುಗಳು ಮತ್ತು ಕೋನಗಳ ನಡುವಿನ ಸಂಬಂಧಗಳನ್ನು** ಅಧ್ಯಯನ ಮಾಡುವ ಗಣಿತದ ಶಾಖೆಗೆ ತ್ರಿಕೋನಮಿತಿ ಎನ್ನುತ್ತಾರೆ.\n\n---\n\n### 1. ಪ್ರಮುಖ 6 ತ್ರಿಕೋನಮಿತೀಯ ಅನುಪಾತಗಳು:\n1. $$\\sin \\theta = \\frac{\\text{ಅಭಿಮುಖ ಬಾಹು}}{\\text{ವಿಕರ್ಣ}}$$\n2. $$\\cos \\theta = \\frac{\\text{ಪಾರ್ಶ್ವ ಬಾಹು}}{\\text{ವಿಕರ್ಣ}}$$\n3. $$\\tan \\theta = \\frac{\\text{ಅಭಿಮುಖ ಬಾಹು}}{\\text{ಪಾರ್ಶ್ವ ಬಾಹು}} = \\frac{\\sin \\theta}{\\cos \\theta}$$\n\n**ವ್ಯುತ್ಕ್ರಮ ಅನುಪಾತಗಳು:**\n4. $$\\csc \\theta = \\frac{1}{\\sin \\theta}$$, 5. $$\\sec \\theta = \\frac{1}{\\cos \\theta}$$, 6. $$\\cot \\theta = \\frac{1}{\\tan \\theta}$$\n\n---\n\n### 2. ಪರೀಕ್ಷೆಗೆ ಅತ್ಯಗತ್ಯವಾದ 3 ನಿತ್ಯಸಮೀಕರಣಗಳು (Identities):\n1. $$\\sin^2 \\theta + \\cos^2 \\theta = 1$$\n2. $$1 + \\tan^2 \\theta = \\sec^2 \\theta$$\n3. $$1 + \\cot^2 \\theta = \\csc^2 \\theta$$\n\n💡 **ಪರೀಕ್ಷಾ ಸಲಹೆ:** ಎಸ್‌ಎಸ್‌ಎಲ್‌ಸಿ ಪರೀಕ್ಷೆಯಲ್ಲಿ $0^\\circ, 30^\\circ, 45^\\circ, 60^\\circ, 90^\\circ$ ಕೋನಗಳ ಕೋಷ್ಟಕವನ್ನು ಬರೆಯುವುದು 2 ಅಂಕಗಳಿಗೆ ಖಚಿತವಾಗಿ ಬರುತ್ತದೆ.`;
+    } else if (language === 'hi') {
+      return `### त्रिकोणमिति (Introduction to Trigonometry) — कर्नाटक कक्षा 10 गणित 📐✨\n\n**त्रिकोणमिति का क्या अर्थ है?**\nत्रिकोणमिति (Trigonometry) शब्द तीन ग्रीक शब्दों से मिलकर बना है:\n* **Tri** = तीन\n* **Gon** = भुजाएँ\n* **Metron** = मापन\n\nअर्थात्, **समकोण त्रिभुज (Right-Angled Triangle) की भुजाओं और कोणों के बीच के संबंधों का अध्ययन** करना ही त्रिकोणमिति कहलाता है।\n\n---\n\n### 1. मुख्य 6 त्रिकोणमितीय अनुपात:\n1. $$\\sin \\theta = \\frac{\\text{लंब}}{\\text{कर्ण}}$$\n2. $$\\cos \\theta = \\frac{\\text{आधार}}{\\text{कर्ण}}$$\n3. $$\\tan \\theta = \\frac{\\text{लंब}}{\\text{आधार}} = \\frac{\\sin \\theta}{\\cos \\theta}$$\n\n**व्युत्क्रम (Reciprocal) अनुपात:**\n4. $$\\csc \\theta = \\frac{1}{\\sin \\theta}$$, 5. $$\\sec \\theta = \\frac{1}{\\cos \\theta}$$, 6. $$\\cot \\theta = \\frac{1}{\\tan \\theta}$$\n\n---\n\n### 2. बोर्ड परीक्षा की 3 महत्वपूर्ण सर्वसमिकाएँ:\n1. $$\\sin^2 \\theta + \\cos^2 \\theta = 1$$\n2. $$1 + \\tan^2 \\theta = \\sec^2 \\theta$$\n3. $$1 + \\cot^2 \\theta = \\csc^2 \\theta$$`;
+    }
+    return `### What Is Trigonometry? — Karnataka SSLC Class 10 Mathematics 📐✨\n\n**Trigonometry** is one of the most exciting and practical branches of mathematics! Here is the complete breakdown:\n\n#### 1. What Does the Word Literally Mean?\nThe word comes from three Greek words:\n* **Tri** = Three\n* **Gon** = Sides / Angles\n* **Metron** = Measure\n\nLiterally, trigonometry means **\"measuring the sides and angles of triangles\"**.\nIn your Karnataka SSLC Class 10 curriculum, trigonometry specifically deals with the **relationships between the acute angles and the side lengths of a right-angled triangle**.\n\n---\n\n#### 2. The 3 Sides of a Right-Angled Triangle\nFor any acute angle $\\theta$ (pronounced *theta*):\n* **Hypotenuse:** The longest side, directly opposite the $90^\\circ$ right angle.\n* **Opposite Side:** The side directly facing angle $\\theta$.\n* **Adjacent Side:** The side next to angle $\\theta$ (between $\\theta$ and the $90^\\circ$ angle).\n\n---\n\n#### 3. The 6 Trigonometric Ratios (Easy Memory Trick!)\nRemember the famous mnemonic: **SOH - CAH - TOA**\n\n1. **Sine ($\\sin \\theta$):**\n   $$\\sin \\theta = \\frac{\\text{Opposite}}{\\text{Hypotenuse}}$$\n2. **Cosine ($\\cos \\theta$):**\n   $$\\cos \\theta = \\frac{\\text{Adjacent}}{\\text{Hypotenuse}}$$\n3. **Tangent ($\\tan \\theta$):**\n   $$\\tan \\theta = \\frac{\\text{Opposite}}{\\text{Adjacent}} = \\frac{\\sin \\theta}{\\cos \\theta}$$\n\n**The 3 Reciprocal (Flipped) Ratios:**\n4. **Cosecant ($\\csc \\theta$):** $\\frac{1}{\\sin \\theta} = \\frac{\\text{Hypotenuse}}{\\text{Opposite}}$\n5. **Secant ($\\sec \\theta$):** $\\frac{1}{\\cos \\theta} = \\frac{\\text{Hypotenuse}}{\\text{Adjacent}}$\n6. **Cotangent ($\\cot \\theta$):** $\\frac{1}{\\tan \\theta} = \\frac{\\text{Adjacent}}{\\text{Opposite}}$\n\n---\n\n#### 4. High-Yield Values of Standard Angles ($0^\\circ$ to $90^\\circ$):\n| Angle ($\\theta$) | $0^\\circ$ | $30^\\circ$ | $45^\\circ$ | $60^\\circ$ | $90^\\circ$ |\n| :--- | :---: | :---: | :---: | :---: | :---: |\n| **$\\sin \\theta$** | $0$ | $\\frac{1}{2}$ | $\\frac{1}{\\sqrt{2}}$ | $\\frac{\\sqrt{3}}{2}$ | $1$ |\n| **$\\cos \\theta$** | $1$ | $\\frac{\\sqrt{3}}{2}$ | $\\frac{1}{\\sqrt{2}}$ | $\\frac{1}{2}$ | $0$ |\n| **$\\tan \\theta$** | $0$ | $\\frac{1}{\\sqrt{3}}$ | $1$ | $\\sqrt{3}$ | $\\text{Not Defined}$ |\n\n> 💡 **Memorization Hack:** Notice that $\\cos \\theta$ values are just $\\sin \\theta$ written in reverse! And $\\tan \\theta = \\frac{\\sin \\theta}{\\cos \\theta}$.\n\n---\n\n#### 5. The 3 Master Identities Tested on Karnataka Board Papers:\n1. $$\\sin^2 \\theta + \\cos^2 \\theta = 1$$\n2. $$1 + \\tan^2 \\theta = \\sec^2 \\theta$$\n3. $$1 + \\cot^2 \\theta = \\csc^2 \\theta$$\n\n---\n\n#### 6. Real-World Applications (Heights & Distances):\nBy measuring distance to the base and the **angle of elevation**, height is calculated as:\n$$\\text{Height} = \\text{Distance} \\times \\tan \\theta$$\n\n💡 **SSLC Board Strategy:** 3-mark questions always test either proving an identity or solving a heights and distances word problem.\n\nWould you like me to walk through a model 2-mark problem or solve an identity together?`;
+  }
+
+  // 2. Direct Arithmetic / Percentage / Square Root Solver
+  const sqrtMatch = msgL.match(/(?:square\s*root\s*of|sqrt\s*\(?)\s*([0-9]+(?:\.[0-9]+)?)\)?/);
+  if (sqrtMatch) {
+    const val = parseFloat(sqrtMatch[1]);
+    const ans = Math.sqrt(val);
+    return `### Square Root Calculation: 📐\n\n$$\\sqrt{${val}} = ${ans}$$\n\n**Verification:** $${ans} \\times ${ans} = ${val}$.`;
+  }
+
+  const arithMatch = msgL.match(/([0-9]+(?:\.[0-9]+)?)\s*([\+\-\*\/xX])\s*([0-9]+(?:\.[0-9]+)?)/);
+  if (arithMatch) {
+    const n1 = parseFloat(arithMatch[1]);
+    const op = arithMatch[2].toLowerCase();
+    const n2 = parseFloat(arithMatch[3]);
+    let res = 0;
+    let sym = op;
+    if (op === '+') { res = n1 + n2; sym = '+'; }
+    else if (op === '-') { res = n1 - n2; sym = '-'; }
+    else if (op === '*' || op === 'x') { res = n1 * n2; sym = '\\times'; }
+    else if (op === '/') { res = n2 !== 0 ? n1 / n2 : 0; sym = '\\div'; }
+    return `### Arithmetic Calculation: 🔢\n\n$$${n1} ${sym} ${n2} = ${res}$$\n\n**Result:** **${res}**.`;
   }
 
   if (language === 'hi') {
