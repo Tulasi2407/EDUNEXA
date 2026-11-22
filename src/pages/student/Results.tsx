@@ -1,4 +1,5 @@
 import React from 'react';
+import { useAuth } from '../../contexts/AuthContext';
 import { useEduData } from '../../contexts/DataContext';
 import {
   BarChart3,
@@ -27,9 +28,11 @@ import {
 } from 'recharts';
 
 export const Results: React.FC = () => {
+  const { user } = useAuth();
   const { marks, subjects, addToast } = useEduData();
+  const studentName = user?.name ? user.name.trim() : 'Scholar';
 
-  // Filter Alex's marks
+  // Filter student's marks
   const alexMarks = marks.filter(m => m.studentId === 'usr_student_01');
 
   const historyData = [
@@ -40,7 +43,7 @@ export const Results: React.FC = () => {
   ];
 
   const handleExportReport = (type: 'Weekly' | 'Monthly') => {
-    addToast(`Exported Alex Johnson's ${type} Academic Growth & Gap Audit Report (PDF)`, 'success');
+    addToast(`Exported ${studentName}'s ${type} Academic Growth & Gap Audit Report (PDF)`, 'success');
   };
 
   return (

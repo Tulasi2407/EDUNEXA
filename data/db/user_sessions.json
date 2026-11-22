@@ -11,25 +11,25 @@
     "_id": "6b02351c6540853b28b5224d"
   },
   {
-    "id": "sess-5b9d5245cc",
+    "id": "sess-2aa1d75cd5",
     "user_id": "student-10-alex",
     "name": "Alex Johnson",
     "email": "alex.johnson@edunexa.ai",
     "role": "STUDENT",
     "event": "LOGIN",
-    "timestamp": "2026-11-22T00:35:23.327731+00:00",
+    "timestamp": "2026-11-22T00:40:17.556127+00:00",
     "status": "SUCCESS",
-    "_id": "6b0238cbc6e2799ec6e7690f"
+    "_id": "6b0239f1df03d4ed30f5272c"
   },
   {
-    "id": "sess-07f5282b05",
+    "id": "sess-0684f44b7d",
     "user_id": "teacher-10-sarah",
     "name": "Ms. Sarah Chen",
     "email": "sarah.chen@edunexa.ai",
     "role": "TEACHER",
     "event": "LOGIN",
-    "timestamp": "2026-11-22T00:35:24.035530+00:00",
+    "timestamp": "2026-11-22T00:40:18.313982+00:00",
     "status": "SUCCESS",
-    "_id": "6b0238ccc6e2799ec6e76910"
+    "_id": "6b0239f2df03d4ed30f5272d"
   }
 ]

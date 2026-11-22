@@ -97,7 +97,8 @@ export async function askNexaTutor(
   subject: string = 'General',
   mode: 'BEGINNER' | 'STEP_BY_STEP' | 'EXAM_PREP' | 'PRACTICE' | 'QUICK_REVISION' = 'STEP_BY_STEP',
   language: 'en' | 'hi' | 'kn' = 'en',
-  chatHistory: { role: 'user' | 'model'; parts: string }[] = []
+  chatHistory: { role: 'user' | 'model'; parts: string }[] = [],
+  studentName?: string
 ): Promise<string> {
   const langMap: Record<'en' | 'hi' | 'kn', string> = {
     en: 'English',
@@ -111,6 +112,7 @@ export async function askNexaTutor(
       subject,
       mode,
       language: langMap[language] || 'English',
+      user_name: studentName,
       history: chatHistory,
     });
     if (response && response.reply) {

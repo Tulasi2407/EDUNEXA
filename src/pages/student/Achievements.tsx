@@ -1,4 +1,5 @@
 import React from 'react';
+import { useAuth } from '../../contexts/AuthContext';
 import { useEduData } from '../../contexts/DataContext';
 import {
   Award,
@@ -14,13 +15,16 @@ import {
 import { CLASS_ROSTER } from '../../data/mockData';
 
 export const Achievements: React.FC = () => {
+  const { user } = useAuth();
   const { studentXP, streakDays, badges } = useEduData();
+
+  const studentName = user?.name ? user.name.trim() : 'Scholar';
 
   // Simulated leaderboard
   const leaderboard = [
     { rank: 1, name: 'Maya Patel', xp: 3420, level: 17, streak: 14, isUser: false },
     { rank: 2, name: 'Aarav Sharma', xp: 3100, level: 15, streak: 11, isUser: false },
-    { rank: 3, name: 'Alex Johnson (You)', xp: studentXP, level: 14, streak: streakDays, isUser: true },
+    { rank: 3, name: `${studentName} (You)`, xp: studentXP, level: 14, streak: streakDays, isUser: true },
     { rank: 4, name: 'Chloe Bennett', xp: 2650, level: 13, streak: 6, isUser: false },
     { rank: 5, name: 'Lucas Silva', xp: 1980, level: 10, streak: 3, isUser: false },
   ];

@@ -12,12 +12,14 @@ async def chat_with_tutor(req: AIChatRequest, current_user: dict = Depends(get_o
     Powered by official Google GenAI Python SDK.
     Supports 5 pedagogical modes and multilingual queries (English, Kannada, Hindi).
     """
+    active_name = (req.user_name or (current_user.get("name") if current_user else None) or "Scholar").strip()
     result = await gemini_service.chat_with_nexa(
         message=req.message,
         subject=req.subject or "Mathematics",
         mode=req.mode or "STEP_BY_STEP",
         language=req.language or "English",
-        history=req.history or []
+        history=req.history or [],
+        user_name=active_name
     )
 
     return AIChatResponse(

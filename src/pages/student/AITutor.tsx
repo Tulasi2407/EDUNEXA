@@ -1,7 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { askNexaTutor } from '../../lib/gemini';
+import { useAuth } from '../../contexts/AuthContext';
 import { useEduData } from '../../contexts/DataContext';
 import { useLanguage, LanguageCode } from '../../contexts/LanguageContext';
+import { UserAvatar } from '../../components/common/UserAvatar';
 import {
   Bot,
   Send,
@@ -26,8 +28,11 @@ interface ChatBubble {
 }
 
 export const AITutor: React.FC = () => {
+  const { user, role } = useAuth();
   const { language, setLanguage, t } = useLanguage();
   const { learningGaps, addXP } = useEduData();
+
+  const studentName = user?.name ? user.name.trim() : 'Scholar';
 
   const [subject, setSubject] = useState('Mathematics');
   const [learningMode, setLearningMode] = useState<'BEGINNER' | 'STEP_BY_STEP' | 'EXAM_PREP' | 'PRACTICE' | 'QUICK_REVISION'>('STEP_BY_STEP');
@@ -36,18 +41,18 @@ export const AITutor: React.FC = () => {
 
   const getWelcomeContent = (lang: LanguageCode) => {
     if (lang === 'kn') {
-      return `ನಮಸ್ಕಾರ! ನಾನು **ನೆಕ್ಸಾ ಎಐ (Nexa AI)**, ನಿಮ್ಮ 24/7 ವೈಯಕ್ತಿಕ ಕಲಿಕಾ ಮಾರ್ಗದರ್ಶಿ.
+      return `ನಮಸ್ಕಾರ ${studentName}! ನಾನು **ನೆಕ್ಸಾ ಎಐ (Nexa AI)**, ನಿಮ್ಮ 24/7 ವೈಯಕ್ತಿಕ ಕಲಿಕಾ ಮಾರ್ಗದರ್ಶಿ.
 ಕರ್ನಾಟಕ 10ನೇ ತರಗತಿ ಪಠ್ಯಕ್ರಮದ **ಗಣಿತ, ವಿಜ್ಞಾನ, ಸಮಾಜ ವಿಜ್ಞಾನ ಅಥವಾ ಭಾಷೆಗಳ** ಯಾವುದೇ ಪ್ರಶ್ನೆಯನ್ನು ಕೇಳಿ.
 ಹಂತ-ಹಂತವಾಗಿ ಲೆಕ್ಕಗಳನ್ನು ಬಿಡಿಸಲು ಅಥವಾ ಪರೀಕ್ಷಾ ತಯಾರಿಗೆ ನಾನು ಸಿದ್ಧನಾಗಿದ್ದೇನೆ!`;
     }
     if (lang === 'hi') {
-      return `नमस्ते! मैं **नेक्सा एआई (Nexa AI)** हूँ, आपका 24/7 व्यक्तिगत अध्ययन सहायक।
+      return `नमस्ते ${studentName}! मैं **नेക്ಸಾ एआई (Nexa AI)** हूँ, आपका 24/7 व्यक्तिगत अध्ययन सहायक।
 कर्नाटक बोर्ड कक्षा 10 के किसी भी विषय (**गणित, विज्ञान, सामाजिक विज्ञान या भाषा**) पर प्रश्न पूछें!
 स्टेप-बाय-स्टेप समाधान और परीक्षा तैयारी के लिए नीचे दिए गए सुझावों को आजमाएं।`;
     }
-    return `Hello Alex! I am **Nexa AI**, your 24/7 personalized tutor.
-I see you are working on **Karnataka SSLC Class 10** curriculum.
-How would you like to explore this today? Feel free to ask any question or try one of the suggested prompts below!`;
+    return `Hello ${studentName}! I am **Nexa AI**, your 24/7 personalized study companion and tutor.
+I see you are logged in to your **Karnataka SSLC Class 10** workspace.
+How would you like to explore today? Ask any question in **Mathematics, Science, Social Science, or Languages** — or try one of the suggested prompts below!`;
   };
 
   const [messages, setMessages] = useState<ChatBubble[]>([
@@ -55,13 +60,13 @@ How would you like to explore this today? Feel free to ask any question or try o
       id: 'init_1',
       sender: 'assistant',
       content: getWelcomeContent(language),
-      timestamp: '19:40',
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       mode: 'STEP_BY_STEP',
       language: language
     }
   ]);
 
-  // Keep initial message updated if no chat history yet
+  // Keep initial message updated when user or language changes
   useEffect(() => {
     setMessages(prev => {
       if (prev.length <= 1) {
@@ -78,7 +83,7 @@ How would you like to explore this today? Feel free to ask any question or try o
       }
       return prev;
     });
-  }, [language]);
+  }, [language, user?.name]);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -117,7 +122,7 @@ How would you like to explore this today? Feel free to ask any question or try o
         parts: m.content
       }));
 
-      const reply = await askNexaTutor(text, subject, learningMode, language, history);
+      const reply = await askNexaTutor(text, subject, learningMode, language, history, studentName);
 
       const aiMsg: ChatBubble = {
         id: `msg_ai_${Date.now()}`,
@@ -162,8 +167,11 @@ How would you like to explore this today? Feel free to ask any question or try o
             <div className="flex items-center gap-2">
               <h2 className="text-sm font-bold text-white">Nexa AI Tutor</h2>
               <span className="w-2 h-2 rounded-full bg-[#10B981] animate-pulse" />
+              <span className="px-2 py-0.5 rounded-full bg-[#7657F6]/20 border border-[#7657F6]/40 text-[#A78BFA] text-[10px] font-bold">
+                Student: {studentName}
+              </span>
             </div>
-            <p className="text-[10px] text-slate-400">Powered by Gemini AI • Multilingual & Adaptive</p>
+            <p className="text-[10px] text-slate-400">Personalized 24/7 Companion for {studentName} • Karnataka SSLC</p>
           </div>
         </div>
 
@@ -230,9 +238,7 @@ How would you like to explore this today? Feel free to ask any question or try o
                 <Bot className="w-4 h-4" />
               </div>
             ) : (
-              <div className="w-8 h-8 rounded-xl bg-[#FFC857]/20 border border-[#FFC857]/40 flex items-center justify-center shrink-0 text-[#FFC857] font-bold text-xs">
-                AJ
-              </div>
+              <UserAvatar name={studentName} role={role} size="md" rounded="xl" />
             )}
 
             <div

@@ -36,7 +36,8 @@ class GeminiAIService:
         subject: str = "Mathematics",
         mode: str = "STEP_BY_STEP",
         language: str = "English",
-        history: Optional[List[Dict[str, str]]] = None
+        history: Optional[List[Dict[str, str]]] = None,
+        user_name: Optional[str] = None
     ) -> Dict[str, Any]:
         """
         Nexa AI Tutor Chat powered by Google GenAI Python SDK.
@@ -60,13 +61,15 @@ class GeminiAIService:
         }
         lang_instruction = language_instructions.get(language, language_instructions["English"])
 
+        student_display_name = (user_name or "Scholar").strip()
         system_instruction = (
             f"You are Nexa AI, a brilliant, warm, and empathetic personal AI study companion and tutor for Karnataka State Board SSLC Class 10 (KSEAB) students.\n"
+            f"Student Name: {student_display_name}\n"
             f"Subject Context: {subject}\n"
             f"Active Pedagogical Mode: {mode_upper} — {active_mode_instruction}\n"
             f"Language Direction: {lang_instruction}\n\n"
             f"Persona & Conversation Style Guidelines:\n"
-            f"1. Conversational & Comfortable: Talk naturally and warmly like Claude or ChatGPT, or a supportive, encouraging top student friend.\n"
+            f"1. Conversational & Comfortable: Talk naturally and warmly like Claude or ChatGPT, address the student by their name ({student_display_name}) naturally.\n"
             f"2. Natural Greetings: When the student says 'hi', 'hello', or chats casually, respond warmly and conversationally. Do NOT output a stiff syllabus breakdown for simple greetings.\n"
             f"3. Intuitive Explanations: Use real-life analogies, clear step-by-step logic, and intuitive examples that make complex topics click.\n"
             f"4. Supportive & Empathetic: Validate their feelings if they express stress or confusion. Keep their morale high!\n"
@@ -117,9 +120,9 @@ class GeminiAIService:
                     logger.debug(f"Google GenAI ({model_name}) query note: {e}")
 
         # High-Fidelity Conversational SSLC Class 10 Fallback Engine
-        return self._offline_tutor_fallback(message, subject, mode, language)
+        return self._offline_tutor_fallback(message, subject, mode, language, student_display_name)
 
-    def _offline_tutor_fallback(self, message: str, subject: str, mode: str, language: str) -> Dict[str, Any]:
+    def _offline_tutor_fallback(self, message: str, subject: str, mode: str, language: str, user_name: str = "Scholar") -> Dict[str, Any]:
         """
         Empathetic, highly conversational, and intuitive dialogue engine.
         Responds naturally like Claude & ChatGPT — friendly, comfortable, and human.
@@ -151,7 +154,7 @@ class GeminiAIService:
         if is_greeting:
             if language == "Kannada":
                 reply = (
-                    "ನಮಸ್ಕಾರ! ಹೇಗಿದ್ದೀರಾ? ನಿಮ್ಮನ್ನು ಭೇಟಿಯಾಗಿದ್ದು ತುಂಬಾ ಸಂತೋಷವಾಯಿತು! 👋😊\n\n"
+                    f"ನಮಸ್ಕಾರ {user_name}! ಹೇಗಿದ್ದೀರಾ? ನಿಮ್ಮನ್ನು ಭೇಟಿಯಾಗಿದ್ದು ತುಂಬಾ ಸಂತೋಷವಾಯಿತು! 👋😊\n\n"
                     "ನಾನು ನಿಮ್ಮ **ನೆಕ್ಸಾ (Nexa)** — ಕರ್ನಾಟಕ 10ನೇ ತರಗತಿ (SSLC) ಪರೀಕ್ಷಾ ತಯಾರಿಗೆ ನಿಮ್ಮ ವೈಯಕ್ತಿಕ ಕಲಿಕಾ ಮಿತ್ರ. "
                     "ಸ್ನೇಹಿತನಂತೆ ನನ್ನೊಂದಿಗೆ ಧೈರ್ಯವಾಗಿ ಮಾತನಾಡಬಹುದು!\n\n"
                     "ಇವತ್ತು ಯಾವ ವಿಷಯ ಅಥವಾ ಪಾಠದ ಬಗ್ಗೆ ಕಲಿಯೋಣ? ಗಣಿತ, ವಿಜ್ಞಾನ, ಸಮಾಜ ವಿಜ್ಞಾನ ಅಥವಾ ಭಾಷೆಗಳಲ್ಲಿ ಯಾವುದೇ ಡೌಟ್ ಇದ್ದರೂ ಕೇಳಿ, "
@@ -159,7 +162,7 @@ class GeminiAIService:
                 )
             elif language == "Hindi":
                 reply = (
-                    "नमस्ते! कैसे हैं आप? आपसे मिलकर बहुत खुशी हुई! 👋😊\n\n"
+                    f"नमस्ते {user_name}! कैसे हैं आप? आपसे मिलकर बहुत खुशी हुई! 👋😊\n\n"
                     "मैं हूँ **नेक्ಸಾ (Nexa)** — कर्नाटक बोर्ड क्लास 10 (SSLC) की तैयारी के लिए आपका पर्सनल एआई स्टडी पार्टनर। "
                     "मुझसे आप बिल्कुल एक दोस्त की तरह खुलकर बात कर सकते हैं!\n\n"
                     "आज क्या पढ़ने का मूड है? मैथ्स, साइंस, सोशल साइंस या किसी भाषा में कोई भी डाउट या मुश्किल टॉपिक हो, "
@@ -167,7 +170,7 @@ class GeminiAIService:
                 )
             else:
                 reply = (
-                    "Hey there! 👋 Great to see you! How's your day going?\n\n"
+                    f"Hey {user_name}! 👋 Great to see you! How's your day going?\n\n"
                     "I'm **Nexa**, your 24/7 personal study buddy for Karnataka SSLC Class 10. Think of me like a helpful friend who's always around to make studying easier and way less stressful.\n\n"
                     f"Are we working on **{subject}** today, or would you like to explore something else? Whether you have a tricky question, need a concept explained in simple words, or want to practice some board exam problems — I'm right here with you!\n\n"
                     "What's on your mind right now?"
