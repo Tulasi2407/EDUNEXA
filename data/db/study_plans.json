@@ -5,7 +5,7 @@
     "completedHours": 0.0,
     "dailyGoalHours": 3.0,
     "examDate": "2026-12-05",
-    "id": "plan-bdfa75b7",
+    "id": "plan-877b944a",
     "tasks": [
       {
         "id": "task-plan-1",
@@ -317,7 +317,7 @@
       }
     ],
     "title": "AI Prerequisite Remediation Timetable (3.0h/day)",
-    "updated_at": "2026-11-21T23:50:04.376989+00:00",
+    "updated_at": "2026-11-22T00:40:20.285843+00:00",
     "weeklyTargetHours": 21.0
   }
 ]
