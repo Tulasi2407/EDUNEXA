@@ -11,25 +11,80 @@
     "_id": "6b02351c6540853b28b5224d"
   },
   {
-    "id": "sess-ccf846b715",
+    "id": "sess-f87ca2946a",
+    "user_id": "parent-10-robert",
+    "name": "Robert Johnson",
+    "email": "robert.johnson@edunexa.ai",
+    "role": "PARENT",
+    "event": "LOGIN",
+    "timestamp": "2026-11-22T00:49:54.237058+00:00",
+    "status": "SUCCESS",
+    "_id": "6b023c32ece7b33cff912881"
+  },
+  {
+    "id": "sess-ef68b30d7a",
     "user_id": "student-10-alex",
     "name": "Alex Johnson",
     "email": "alex.johnson@edunexa.ai",
     "role": "STUDENT",
     "event": "LOGIN",
-    "timestamp": "2026-11-22T00:41:57.780042+00:00",
+    "timestamp": "2026-11-22T00:49:55.149622+00:00",
     "status": "SUCCESS",
-    "_id": "6b023a55f940e6a690d8386c"
+    "_id": "6b023c33ece7b33cff912882"
   },
   {
-    "id": "sess-7c22a94565",
+    "id": "sess-e65e3e8e4e",
+    "user_id": "user-c0248c67",
+    "name": "Thippesh ",
+    "email": "thippeshagmym346@gmail.com",
+    "role": "STUDENT",
+    "event": "LOGIN",
+    "timestamp": "2026-11-22T01:33:05.972876+00:00",
+    "status": "SUCCESS",
+    "_id": "57891a7a-cb0c-4fb3-9367-1e0bf6e36f7b"
+  },
+  {
+    "id": "sess-393da864db",
+    "user_id": "user-c0248c67",
+    "name": "Thippesh ",
+    "email": "thippeshagmym346@gmail.com",
+    "role": "STUDENT",
+    "event": "LOGIN",
+    "timestamp": "2026-11-22T01:34:12.683649+00:00",
+    "status": "SUCCESS",
+    "_id": "e12639a9-b6a8-4dda-b38f-3511518ed289"
+  },
+  {
+    "id": "sess-a88d0689d7",
+    "user_id": "parent-10-robert",
+    "name": "Robert Johnson",
+    "email": "robert.johnson@edunexa.ai",
+    "role": "PARENT",
+    "event": "LOGIN",
+    "timestamp": "2026-11-22T01:43:12.795764+00:00",
+    "status": "SUCCESS",
+    "_id": "ebaf0698-6433-4a5d-baf8-9ebace961bf8"
+  },
+  {
+    "id": "sess-c4b9504155",
+    "user_id": "user-c0248c67",
+    "name": "Thippesh ",
+    "email": "thippeshagmym346@gmail.com",
+    "role": "STUDENT",
+    "event": "LOGIN",
+    "timestamp": "2026-11-22T01:52:14.543400+00:00",
+    "status": "SUCCESS",
+    "_id": "e5aaf124-c3fc-44a3-a821-e850ecf86eda"
+  },
+  {
+    "id": "sess-22902ba748",
     "user_id": "teacher-10-sarah",
     "name": "Ms. Sarah Chen",
     "email": "sarah.chen@edunexa.ai",
     "role": "TEACHER",
     "event": "LOGIN",
-    "timestamp": "2026-11-22T00:41:58.399662+00:00",
+    "timestamp": "2026-11-22T01:56:23.772215+00:00",
     "status": "SUCCESS",
-    "_id": "6b023a56f940e6a690d8386d"
+    "_id": "2aab91ae-a2da-44d3-a7b1-92e252d2db85"
   }
 ]

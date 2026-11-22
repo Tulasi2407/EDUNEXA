@@ -1,21 +1,5 @@
 [
   {
-    "_id": "6b02040b0d1e9cd4f9f312a1",
-    "id": "parent-10-robert",
-    "name": "Robert Johnson",
-    "email": "robert.johnson@edunexa.ai",
-    "password": "$2b$12$KGfbSiPMoR7ZYv/lj59FmOL8EDwMmjYePbzw5CwguGob/bJCka0Te",
-    "role": "PARENT",
-    "grade": "Class 10",
-    "board": "Karnataka State Board",
-    "preferred_language": "English",
-    "section": "Section A",
-    "specialization": null,
-    "student_id_to_link": "student-10-alex",
-    "avatar": "",
-    "created_at": "2026-11-21T20:50:19.083415+00:00"
-  },
-  {
     "_id": "6b02040b0d1e9cd4f9f312a2",
     "id": "admin-10-emma",
     "name": "Dr. Emma Wilson",
@@ -48,11 +32,9 @@
     "created_at": "2026-11-21T21:21:31.960250+00:00"
   },
   {
-    "_id": "6b022a0edf122f1a44266dc2",
     "id": "user-c0248c67",
     "name": "Thippesh ",
     "email": "thippeshagmym346@gmail.com",
-    "password": "$2b$12$SB/PtD7MxzCTaKdTc2BJN.ZQYVpasyG40CPm0nzhD.I0uQLxgyD8G",
     "role": "STUDENT",
     "grade": "Class 10",
     "board": "Karnataka State Board",
@@ -63,14 +45,28 @@
     "avatar": "",
     "created_at": "2026-11-21T23:32:30.046070+00:00",
     "is_online": true,
-    "last_login": "2026-11-22T00:19:40.811422+00:00"
+    "last_login": "2026-11-22T01:52:14.543400+00:00"
   },
   {
-    "_id": "6b02040a0d1e9cd4f9f3129f",
+    "id": "parent-10-robert",
+    "name": "Robert Johnson",
+    "email": "robert.johnson@edunexa.ai",
+    "role": "PARENT",
+    "grade": "Class 10",
+    "board": "Karnataka State Board",
+    "preferred_language": "English",
+    "section": "Section A",
+    "specialization": null,
+    "student_id_to_link": "student-10-alex",
+    "avatar": "",
+    "created_at": "2026-11-21T20:50:19.083415+00:00",
+    "is_online": true,
+    "last_login": "2026-11-22T01:43:12.795764+00:00"
+  },
+  {
     "id": "student-10-alex",
     "name": "Alex Johnson",
     "email": "alex.johnson@edunexa.ai",
-    "password": "$2b$12$/tLsPOX14bqrCaKdIMQ9YusCbYB6ch7FgebAaXBhgQCqxy4X4XvUW",
     "role": "STUDENT",
     "grade": "Class 10",
     "board": "Karnataka State Board",
@@ -81,7 +77,7 @@
     "avatar": "",
     "created_at": "2026-11-21T20:50:18.429278+00:00",
     "is_online": true,
-    "last_login": "2026-11-22T00:41:57.780042+00:00",
+    "last_login": "2026-11-22T00:49:55.149622+00:00",
     "last_logout": "2026-11-21T23:49:52.969198+00:00"
   },
   {
@@ -100,6 +96,6 @@
     "avatar": "",
     "created_at": "2026-11-21T20:50:18.758820+00:00",
     "is_online": true,
-    "last_login": "2026-11-22T00:41:58.399662+00:00"
+    "last_login": "2026-11-22T01:56:23.772215+00:00"
   }
 ]
